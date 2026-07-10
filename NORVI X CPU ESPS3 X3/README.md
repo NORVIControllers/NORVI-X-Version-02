@@ -129,7 +129,6 @@ The example code in this repository is compatible with the following NORVI X CPU
 - NORVI X-CPU-ESPS3-X3-E
 - NORVI X-CPU-ESPS3-X3-AUX
 - NORVI X-CPU-ESPS3-X3-AF
-- NORVI X-CPU-ESPS3-X3-ER8
 
 These models share the same ESP32-S3 hardware platform and firmware architecture. The same example code can be used for all of the above products without modification.
 
