@@ -96,7 +96,7 @@ Install the following libraries before compiling:
 - TFT_eSPI  
 - CST816S  
 
-**Download Libraries:** https://github.com/NORVIControllers/NORVI-X-Version-01/tree/main/libraries
+**Download Libraries:** https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries
 
 **Installation Steps:**  
 1. Open Arduino IDE.  
@@ -123,7 +123,7 @@ Install the following libraries before compiling:
 
 ---
 
-**Test Date:** 2026-03-16  
+**Test Date:** 2026-07-10
 
 **Verified By:** Kaveesha  
 
