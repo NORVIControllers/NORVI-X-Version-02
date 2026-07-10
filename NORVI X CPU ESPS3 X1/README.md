@@ -128,7 +128,7 @@ Install the following libraries before compiling.
 - `TFT_eSPI`
 - `CST816S`
 
-Download Libraries:  https://github.com/NORVIControllers/NORVI-X-Version-01/tree/main/libraries
+Download Libraries:  https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries
 
 ---
 
