@@ -35,7 +35,7 @@ bool configMode = false;
 unsigned long lastRead = 0;
 #define READ_INTERVAL 1000
 
-CST816S touch(8, 9, 45, 48);
+CST816S touch(8, 9, 47, 48);
 
 // ---------------- CRC ----------------
 uint8_t crc8(uint8_t *data, int len)
@@ -189,7 +189,7 @@ void readRTD()
 void setup()
 {
   Serial.begin(115200);
-  delay(1000);
+  delay(10000);
 
   Wire.begin(SDA, SCL);
   delay(100);
