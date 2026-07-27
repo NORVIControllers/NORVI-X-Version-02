@@ -109,11 +109,10 @@ After uploading, the **TFT display** will show the status of the digital inputs.
 
 When the program runs successfully:
 
-- The controller initializes the display
-- The TFT screen shows the **DI16 test screen**
-- The status of each input is displayed as **0 or 1**
-- Values update continuously as inputs change
-
+- The controller initializes successfully.
+- The Serial Monitor displays the test status and input readings.
+- The status of each input is displayed as 0 or 1 in the Serial Monitor.
+- Input values update continuously as the input signals change.
 ---
 
 ## Example Output
