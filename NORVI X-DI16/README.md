@@ -105,7 +105,7 @@ Set the **Baud Rate** to:
 
 ## 5. Observe the Display
 
-After uploading, the **TFT display** will show the status of the digital inputs.
+After uploading, the **Serial Monitor** will show the status of the digital inputs.
 
 When the program runs successfully:
 
