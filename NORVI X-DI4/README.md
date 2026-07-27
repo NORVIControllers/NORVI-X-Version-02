@@ -67,8 +67,10 @@ No additional user configuration is required before uploading this example.
 ### 3. Upload the Program
 
 1. Open the example program in **Arduino IDE / PlatformIO**
-2. Select the correct **board** and **port**
-3. Upload the program to the **NORVI controller**
+2. Download the Free_Fonts.h file from the NORVI X Version 02 GitHub repository and place it in the same folder as the Arduino sketch.
+   Repository : https://github.com/NORVIControllers/NORVI-X-Version-02 
+4. Select the correct **board** and **port**
+5. Upload the program to the **NORVI controller**
 
 ---
 
