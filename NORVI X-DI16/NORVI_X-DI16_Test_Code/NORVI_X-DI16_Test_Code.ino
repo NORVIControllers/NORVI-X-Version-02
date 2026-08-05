@@ -1,6 +1,8 @@
 
-//"NPD-NORVI X-DI16"
-//2025.10.21
+/*
+ * NORVI X-DI16 N16R2
+ * 2026.07.20
+ */
 
 #include <Wire.h>
 #include <WiFi.h>
@@ -10,219 +12,189 @@
 #include <CST816S.h>
 #include "Free_Fonts.h" // Include the header file attached to this sketch
 
-#define PCA_ADDR 0x27 // Base address starts at 0x74 for A0 = L and A1 = L
+PCA9555 ioport(0x27); // Base address starts at 0x74 for A0 = L and A1 = L
 
-PCA9555 ioport(PCA_ADDR);
+#define SDA   8
+#define SCL   9
 
-#define SDA   8     
-#define SCL   9     
-
-#define MISO 37
-#define MOSI 35
-#define SCLK 36
+#define MISO 13
+#define MOSI 11
+#define SCLK 12
 
 #define DSP_CS 45
 
-#define INPUT1 0
-#define INPUT2 1
-#define INPUT3 2
-#define INPUT4 3
-#define INPUT5 4
-#define INPUT6 5
-#define INPUT7 6
-#define INPUT8 7
+#define PCA_A0 0
+#define PCA_A1 1
+#define PCA_A2 2
+#define PCA_A3 3
+#define PCA_A4 4
+#define PCA_A5 5
+#define PCA_A6 6
+#define PCA_A7 7
 
-#define INPUT9  8
-#define INPUT10 9
-#define INPUT11 10
-#define INPUT12 11
-#define INPUT13 12
-#define INPUT14 13
-#define INPUT15 14
-#define INPUT16 15
+#define PCA_B0 8
+#define PCA_B1 9
+#define PCA_B2 10
+#define PCA_B3 11
+#define PCA_B4 12
+#define PCA_B5 13
+#define PCA_B6 14
+#define PCA_B7 15
 
 
 CST816S touch(8, 9, 47, 48);  // sda, scl, rst, irq
 
 TFT_eSPI tft = TFT_eSPI();
 
+int oldState[16] =
+{
+  -1, -1, -1, -1,
+  -1, -1, -1, -1,
+  -1, -1, -1, -1,
+  -1, -1, -1, -1
+};
+
+
 void setup() {
   Serial.begin(115200);
-  delay(2000);
-  
+  delay(100);
+
   Serial.println("NPD-NORVI X-DI16 TEST");
   delay(1000);
 
+
   Wire.begin(SDA, SCL);
-  delay(100);
+  delay(200);
 
   I2C_SCAN();
-  delay(100);
+  delay(1000);
 
-  ioport.pinMode(INPUT1, INPUT);
-  ioport.pinMode(INPUT2, INPUT);
-  ioport.pinMode(INPUT3, INPUT);
-  ioport.pinMode(INPUT4, INPUT);
-  ioport.pinMode(INPUT5, INPUT);
-  ioport.pinMode(INPUT6, INPUT);
-  ioport.pinMode(INPUT7, INPUT);
-  ioport.pinMode(INPUT8, INPUT);
-  ioport.pinMode(INPUT9, INPUT);
-  ioport.pinMode(INPUT10, INPUT);
-  ioport.pinMode(INPUT11, INPUT);
-  ioport.pinMode(INPUT12, INPUT);
-  ioport.pinMode(INPUT13, INPUT);
-  ioport.pinMode(INPUT14, INPUT);
-  ioport.pinMode(INPUT15, INPUT);
-  ioport.pinMode(INPUT16, INPUT);
+  ioport.pinMode(PCA_A0, INPUT);
+  ioport.pinMode(PCA_A1, INPUT);
+  ioport.pinMode(PCA_A2, INPUT);
+  ioport.pinMode(PCA_A3, INPUT);
+  ioport.pinMode(PCA_A4, INPUT);
+  ioport.pinMode(PCA_A5, INPUT);
+  ioport.pinMode(PCA_A6, INPUT);
+  ioport.pinMode(PCA_A7, INPUT);
 
-  SPI.begin(SCLK, MISO, MOSI); // Ensure these pin numbers are correct 
+  ioport.pinMode(PCA_B0, INPUT);
+  ioport.pinMode(PCA_B1, INPUT);
+  ioport.pinMode(PCA_B2, INPUT);
+  ioport.pinMode(PCA_B3, INPUT);
+  ioport.pinMode(PCA_B4, INPUT);
+  ioport.pinMode(PCA_B5, INPUT);
+  ioport.pinMode(PCA_B6, INPUT);
+  ioport.pinMode(PCA_B7, INPUT);
+
+  SPI.begin(SCLK, MISO, MOSI); // Ensure these pin numbers are correct
   delay(1000);
 
   tft.init();
   tft.begin();
   tft.setRotation(0);
+  drawLabel();
 
-  tft.fillScreen(TFT_BLACK);            // Clear screen
-  tft.setTextColor(TFT_YELLOW);
-  tft.setFreeFont(FSB12);
-  
-  tft.setCursor(60, 20);      //xpos, ypos
-  tft.print("NORVI");
 
-  tft.setCursor(20, 40);      //xpos, ypos
-  tft.print("x-DI16 TEST");
 }
 
-void loop() {
+void loop()
+{
+  int state[16];
 
-  tft.fillScreen(TFT_BLACK);            // Clear screen
-  tft.setTextColor(TFT_GREEN);
-  tft.setFreeFont(FSB12);
-  
-  tft.setCursor(60, 20);      //xpos, ypos
-  tft.print("NORVI");
+  // Read Inputs
+  state[0]  = ioport.digitalRead(PCA_A0);
+  state[1]  = ioport.digitalRead(PCA_A1);
+  state[2]  = ioport.digitalRead(PCA_A2);
+  state[3]  = ioport.digitalRead(PCA_A3);
+  state[4]  = ioport.digitalRead(PCA_A4);
+  state[5]  = ioport.digitalRead(PCA_A5);
+  state[6]  = ioport.digitalRead(PCA_A6);
+  state[7]  = ioport.digitalRead(PCA_A7);
 
-  tft.setCursor(20, 40);      //xpos, ypos
-  tft.print("X-DI16 TEST");
+  state[8]  = ioport.digitalRead(PCA_B0);
+  state[9]  = ioport.digitalRead(PCA_B1);
+  state[10] = ioport.digitalRead(PCA_B2);
+  state[11] = ioport.digitalRead(PCA_B3);
+  state[12] = ioport.digitalRead(PCA_B4);
+  state[13] = ioport.digitalRead(PCA_B5);
+  state[14] = ioport.digitalRead(PCA_B6);
+  state[15] = ioport.digitalRead(PCA_B7);
 
-  tft.setTextColor(TFT_YELLOW);
-  tft.setCursor(10, 70);      //xpos, ypos
-  tft.setFreeFont(FSB9);
-  tft.print("I1      -----------");
-
-  tft.setCursor(10, 85);      //xpos, ypos
-  tft.print("I2      -----------");
-
-  tft.setCursor(10, 100);      //xpos, ypos
-  tft.print("I3      -----------");
-
-  tft.setCursor(10, 115);      //xpos, ypos
-  tft.print("I4      -----------");
-
-  tft.setCursor(10, 130);      //xpos, ypos
-  tft.print("I5      -----------");
-
-  tft.setCursor(10, 145);      //xpos, ypos
-  tft.print("I6      -----------");
-
-  tft.setCursor(10, 160);      //xpos, ypos
-  tft.print("I7      -----------");
-
-  tft.setCursor(10, 175);      //xpos, ypos
-  tft.print("I8      -----------");
-
-  tft.setCursor(10, 190);      //xpos, ypos
-  tft.print("I9      -----------");
-
-  tft.setCursor(10, 205);      //xpos, ypos
-  tft.print("I10    -----------");
-
-  tft.setCursor(10, 220);      //xpos, ypos
-  tft.print("I11    -----------");
-
-  tft.setCursor(10, 235);      //xpos, ypos
-  tft.print("I12    -----------");
-
-  tft.setCursor(10, 250);      //xpos, ypos
-  tft.print("I13    -----------");
-
-  tft.setCursor(10, 265);      //xpos, ypos
-  tft.print("I14    -----------");
-
-  tft.setCursor(10, 280);      //xpos, ypos
-  tft.print("I15    -----------");
-
-  tft.setCursor(10, 295);      //xpos, ypos
-  tft.print("I16   -----------");
-
-  tft.setTextColor(TFT_GREEN);
-  tft.setCursor(140, 70);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT1));
-  Serial.printf("Input1: %d\n",ioport.digitalRead(INPUT1));
-
-  tft.setCursor(140, 85);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT2));
-  Serial.printf("Input2: %d\n",ioport.digitalRead(INPUT2));
-
-  tft.setCursor(140, 100);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT3));
-  Serial.printf("Input3: %d\n",ioport.digitalRead(INPUT3));
-
-  tft.setCursor(140, 115);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT4));
-  Serial.printf("Input4: %d\n",ioport.digitalRead(INPUT4));
-
-  tft.setCursor(140, 130);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT5));
-  Serial.printf("Input5: %d\n",ioport.digitalRead(INPUT5));
-
-  tft.setCursor(140, 145);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT6));
-  Serial.printf("Input6: %d\n",ioport.digitalRead(INPUT6));
-
-  tft.setCursor(140, 160);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT7));
-  Serial.printf("Input7: %d\n",ioport.digitalRead(INPUT7));
-
-  tft.setCursor(140, 175);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT8));
-  Serial.printf("Input8: %d\n",ioport.digitalRead(INPUT8));
-
-  tft.setCursor(140, 190);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT9));
-  Serial.printf("Input9: %d\n",ioport.digitalRead(INPUT9));
-
-  tft.setCursor(140, 205);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT10));
-  Serial.printf("Input10: %d\n",ioport.digitalRead(INPUT10));
-
-  tft.setCursor(140, 220);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT11));
-  Serial.printf("Input11: %d\n",ioport.digitalRead(INPUT11));
-
-  tft.setCursor(140, 235);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT12));
-  Serial.printf("Input12: %d\n",ioport.digitalRead(INPUT12));
-
-  tft.setCursor(140, 250);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT13));
-  Serial.printf("Input13: %d\n",ioport.digitalRead(INPUT13));
-
-  tft.setCursor(140, 265);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT14));
-  Serial.printf("Input14: %d\n",ioport.digitalRead(INPUT14));
-
-  tft.setCursor(140, 280);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT15));
-  Serial.printf("Input15: %d\n",ioport.digitalRead(INPUT15));
-
-  tft.setCursor(140, 295);      //xpos, ypos
-  tft.print(ioport.digitalRead(INPUT16));
-  Serial.printf("Input16: %d\n",ioport.digitalRead(INPUT16));
-  Serial.println("........................................................................");
+  // Update only changed values
+  for (int i = 0; i < 16; i++)
+  {
+    if (state[i] != oldState[i])
+    {
+      updateInput(i, state[i]);
+      oldState[i] = state[i];
+    }
+  }
 
   delay(10);
+}
+
+void updateInput(uint8_t ch, uint8_t value)
+{
+  int x, y;
+
+  if(ch < 8)
+  {
+    x = 60;
+    y = 80 + (ch * 30);
+  }
+  else
+  {
+    x = 190;
+    y = 80 + ((ch - 8) * 30);
+  }
+
+  tft.fillRect(x, y - 18, 20, 20, TFT_BLACK);
+
+  if(value)
+    tft.setTextColor(TFT_GREEN, TFT_BLACK);
+  else
+    tft.setTextColor(TFT_RED, TFT_BLACK);
+
+  tft.setCursor(x, y);
+  tft.print(value);
+}
+
+void drawLabel()
+{
+  tft.fillScreen(TFT_BLACK);
+
+  tft.setTextColor(TFT_YELLOW, TFT_BLACK);
+  tft.setFreeFont(FSB12);
+
+  tft.setCursor(50,20);
+  tft.print("  NORVI");
+
+  tft.setCursor(10,45);
+  tft.print("X-DI16 INPUT TEST");
+
+  tft.setFreeFont(FSB9);
+  tft.setTextColor(TFT_WHITE, TFT_BLACK);
+
+  // Left side
+  tft.setCursor(0,80);   tft.print("DI1:");
+  tft.setCursor(0,110);  tft.print("DI2:");
+  tft.setCursor(0,140);  tft.print("DI3:");
+  tft.setCursor(0,170);  tft.print("DI4:");
+  tft.setCursor(0,200);  tft.print("DI5:");
+  tft.setCursor(0,230);  tft.print("DI6:");
+  tft.setCursor(0,260);  tft.print("DI7:");
+  tft.setCursor(0,290);  tft.print("DI8:");
+
+  // Right side
+  tft.setCursor(120,80);   tft.print("DI9:");
+  tft.setCursor(120,110);  tft.print("DI10:");
+  tft.setCursor(120,140);  tft.print("DI11:");
+  tft.setCursor(120,170);  tft.print("DI12:");
+  tft.setCursor(120,200);  tft.print("DI13:");
+  tft.setCursor(120,230);  tft.print("DI14:");
+  tft.setCursor(120,260);  tft.print("DI15:");
+  tft.setCursor(120,290);  tft.print("DI16:");
 }
 
 
