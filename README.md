@@ -11,7 +11,7 @@ NORVI X simplifies monitoring, control, and data acquisition, making deployment 
 Our expansion modules are designed to scale with your project's complexity. Version 01 features a standard 40-pin interface, ideal for core connectivity and essential I/O tasks. 
 For more advanced applications, Version 02 expands this to 50 pins, providing the additional overhead needed for enhanced data throughput and increased peripheral support.
 
-![measurement](Images/measurement.PNG)
+![measurement](docs/Images/measurement.png)
 
 ## Arduino IDE Configuration
 To program the ESP32S3 microcontroller using the Arduino IDE, follow these steps:
