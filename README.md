@@ -38,7 +38,7 @@ Ensure the following libraries are installed with the correct versions for prope
 Example configurations and details for uploading code to the ESP32S3:
 
 ### Upload Configuration
-![Upload Details](Images/Upload_Details.png)
+![Upload Details](docs/Images/Upload_Details.png)
 ## Technical Highlights
 - Modular and expandable design  
 - Reliable industrial-grade hardware  
