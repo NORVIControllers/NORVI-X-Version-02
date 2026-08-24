@@ -1,6 +1,8 @@
 
-//"NPD-NORVI X-R8"
-//2025.11.01
+/*
+ * NORVI-X-Q8 N16R2
+ * 2026.08.12
+ */
 
 #include <Wire.h>
 #include <WiFi.h>
@@ -16,9 +18,9 @@
 #define SDA   8     
 #define SCL   9     
 
-#define MISO 37
-#define MOSI 35
-#define SCLK 36
+#define MISO 13
+#define MOSI 11
+#define SCLK 12
 
 #define DSP_CS 45
 
@@ -41,10 +43,9 @@ TFT_eSPI tft = TFT_eSPI();
 
 void setup() {
   Serial.begin(115200);
-  delay(2000);
-  
+
   Serial.println("NPD-NORVI X-DI8 TEST");
-  delay(1000);
+  delay(100);
 
   pinMode(PCA_RESET, OUTPUT);
   delay(100);
@@ -54,7 +55,7 @@ void setup() {
   delay(100);
 
   I2C_SCAN();
-  delay(1000);
+  delay(100);
 
   io.pinMode(TR1, OUTPUT);
   io.pinMode(TR2, OUTPUT);
@@ -66,7 +67,7 @@ void setup() {
   io.pinMode(TR8, OUTPUT);
 
   SPI.begin(SCLK, MISO, MOSI); // Ensure these pin numbers are correct 
-  delay(1000);
+  delay(100);
 
   tft.init();
   tft.begin();
@@ -127,91 +128,91 @@ void loop() {
   tft.print("ON");
   Serial.println("TR 1 : ON");
   io.digitalWrite(TR1,HIGH);
-  delay(500);
+  delay(300);
   tft.setCursor(170, 70);      //xpos, ypos
   tft.print("OFF");
   Serial.println("TR 1 : OFF");
   io.digitalWrite(TR1,LOW);
-  delay(500);
+  delay(300);
 
   tft.setCursor(120, 100);      //xpos, ypos
   tft.print("ON");
   Serial.println("TR 2 : ON");
   io.digitalWrite(TR2,HIGH);
-  delay(500);
+  delay(300);
   tft.setCursor(170, 100);      //xpos, ypos
   tft.print("OFF");
   Serial.println("TR 2 : OFF");
   io.digitalWrite(TR2,LOW);
-  delay(500);
+  delay(300);
   
 
   tft.setCursor(120, 130);      //xpos, ypos
   tft.print("ON");
   Serial.println("TR 3 : ON");
   io.digitalWrite(TR3,HIGH);
-  delay(500);
+  delay(300);
   tft.setCursor(170, 130);      //xpos, ypos
   tft.print("OFF");
   Serial.println("TR 3 : OFF");
   io.digitalWrite(TR3,LOW);
-  delay(500);
+  delay(300);
   
 
   tft.setCursor(120, 160);      //xpos, ypos
   tft.print("ON");
   Serial.println("TR 4 : ON");
   io.digitalWrite(TR4,HIGH);
-  delay(500);
+  delay(300);
   tft.setCursor(170, 160);      //xpos, ypos
   tft.print("OFF");
   Serial.println("TR 4 : OFF");
   io.digitalWrite(TR4,LOW);
-  delay(500);
+  delay(300);
 
   tft.setCursor(120, 190);      //xpos, ypos
   tft.print("ON");
   Serial.println("TR 5 : ON");
   io.digitalWrite(TR5,HIGH);
-  delay(500);
+  delay(300);
   tft.setCursor(170, 190);      //xpos, ypos
   tft.print("OFF");
   Serial.println("TR 5 : OFF");
   io.digitalWrite(TR5,LOW);
-  delay(500);
+  delay(300);
 
   tft.setCursor(120, 220);      //xpos, ypos
   tft.print("ON");
   Serial.println("TR 6 : ON");
   io.digitalWrite(TR6,HIGH);
-  delay(500);
+  delay(300);
   tft.setCursor(170, 220);      //xpos, ypos
   tft.print("OFF");
   Serial.println("TR 6 : OFF");
   io.digitalWrite(TR6,LOW);
-  delay(500);
+  delay(300);
 
   tft.setCursor(120, 250);      //xpos, ypos
   tft.print("ON");
   Serial.println("TR 7 : ON");
   io.digitalWrite(TR7,HIGH);
-  delay(500);
+  delay(300);
   tft.setCursor(170, 250);      //xpos, ypos
   tft.print("OFF");
   Serial.println("TR 7 : OFF");
   io.digitalWrite(TR7,LOW);
-  delay(500);
+  delay(300);
 
   tft.setCursor(120, 280);      //xpos, ypos
   tft.print("ON");
   Serial.println("TR 8 : ON");
   io.digitalWrite(TR8,HIGH);
-  delay(500);
+  delay(300);
   tft.setCursor(170, 280);      //xpos, ypos
   tft.print("OFF");
   Serial.println("TR 8 : OFF");
   io.digitalWrite(TR8,LOW);
-  delay(500);
+  delay(300);
   
   
   Serial.println("........................................................................");
