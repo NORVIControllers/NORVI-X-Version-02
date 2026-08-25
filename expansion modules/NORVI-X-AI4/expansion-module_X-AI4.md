@@ -109,5 +109,5 @@ void loop()
 ```
 
 ## Related Files
-- CPU board(s): `cpu-board_X1.md`, `cpu-board_X2.md`, `cpu-board_X2.md`
+- CPU board(s): `cpu-board_X1.md`, `cpu-board_X2.md`, `cpu-board_X3.md`
 - Function-specific examples (MQTT publish, Modbus, etc.): `NORVI X-AI4_program.md`
