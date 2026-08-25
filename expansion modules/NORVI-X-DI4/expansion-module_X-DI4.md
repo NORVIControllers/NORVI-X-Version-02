@@ -1,6 +1,6 @@
 ---
 type: expansion_module
-product: NORVI X-DI4 — 4-Channel Digital Input Expansion]
+product: NORVI X-DI4 — 4-Channel Digital Input Expansion
 compatible_cpu_boards: [X1, X2, X3]
 bus: Direct GPIO
 status: relaesed
