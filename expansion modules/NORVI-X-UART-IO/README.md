@@ -180,6 +180,8 @@ Install the following libraries before compiling:
 ## Support
 
 Documentation: https://norvi.io/docs 
+
+Datasheet: https://norvi.io/docs/norvi-x-uartio-datasheet/ 
    
 For additional support, contact the NORVI support team  
 
