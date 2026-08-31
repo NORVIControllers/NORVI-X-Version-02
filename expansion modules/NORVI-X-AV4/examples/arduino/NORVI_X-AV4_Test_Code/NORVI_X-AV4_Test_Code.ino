@@ -41,7 +41,7 @@ void setup() {
   delay(100);
 
 
-if (!ads1.begin(0x48)) {
+if (!ads1.begin(0x49)) {
     Serial.println("Failed to initialize ADS 1 .");
     // while (1);
   }
