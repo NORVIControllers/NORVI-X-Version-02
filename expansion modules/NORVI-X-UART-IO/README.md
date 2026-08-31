@@ -72,6 +72,41 @@ The datasheet defines P1_3 as the selector for RS485/UART1 and P1_4 as the selec
 
 When the program runs successfully:
 
+Startup
+```
+========= COMMAND MENU =========
+1 -> RS485 / RS232 MODE
+2 -> UARTA / UARTB MODE
+================================
+
+Scanning I2C...
+Found I2C: 0x75
+I2C Scan Done
+
+```
+If you enter 1
+```
+MODE SELECTED: 1
+MODE CHANGED
+MODE 1: RS485 + RS232
+
+RS485 01 SUCCESS
+RS232 01 SUCCESS
+```
+This repeats continuously.
+
+If you enter 2
+
+```
+MODE SELECTED: 2
+MODE CHANGED
+MODE 2: UARTA + UARTB
+
+UARTA SUCCESS
+UARTB SUCCESS
+
+```
+This also repeats continuously.
 ## Testing & Validation
 
 ### Mode 1: RS485 + RS232
