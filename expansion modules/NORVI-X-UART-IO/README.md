@@ -144,7 +144,7 @@ Install the following libraries before compiling:
 - Wire  
 - PCA9539 
 
-**Download Libraries:**  [NORVI GitHub Libraries](https://github.com/NORVIControllers/NORVI-X-Version-01/tree/main/libraries)
+**Download Libraries:**  https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries
 
 **Installation Steps:**
 
@@ -172,7 +172,7 @@ Install the following libraries before compiling:
 
 ## Test Information
 
-- **Test Date:** 2026-04-08  
+- **Test Date:** 2026-08-31 
 - **Verified By:** Kaveesha  
 
 ---
