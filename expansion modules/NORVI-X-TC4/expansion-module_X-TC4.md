@@ -42,7 +42,7 @@ The NORVI X-TC4 is a 4-channel thermocouple input module for the NORVI X industr
 | 6 | TC3- | via internal thermocuple amplifier and I2C interface(STM32) | Thermocouple3 negative terminal |
 | 7 | TC4+ | via internal thermocuple amplifier and I2C interface(STM32) | Thermocouple4 positive terminal |
 | 8 | TC4- | via internal thermocuple amplifier and I2C interface(STM32) | Thermocouple4 negative terminal |
-| 5 | GND |  | Power ground |
+| 9 | GND |  | Power ground |
 
 
 > If any terminal is routed through its own IO expander chip on this module (separate from
