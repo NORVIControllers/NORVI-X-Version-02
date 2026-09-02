@@ -162,8 +162,7 @@ TFT_eSPI
 CST816S
 ```
 
-Library Download:  
-https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries 
+Library Download:  https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries  
 
 ### Installation
 
