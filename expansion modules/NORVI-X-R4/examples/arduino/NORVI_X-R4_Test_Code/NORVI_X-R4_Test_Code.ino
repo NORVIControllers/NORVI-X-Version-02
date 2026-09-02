@@ -1,5 +1,8 @@
+/*
+   NPD-NORVI X-R4-N16R2
+   2026.09.01
+*/
 
-//"NPD-NORVI X-R4"
 
 #include <Wire.h>
 #include <WiFi.h>
@@ -7,228 +10,1473 @@
 #include <PCA9538.h>
 #include "TFT_eSPI.h"
 #include <CST816S.h>
-#include "Free_Fonts.h" // Include the header file attached to this sketch
+#include "Free_Fonts.h"
 
-// I2C address of PCA9538
-#define PCA9538_ADDR 0x73
+// I2C
+#define SDA 8
+#define SCL 9
 
-#define SDA   8     
-#define SCL   9     
-
-#define MISO 37
-#define MOSI 35
-#define SCLK 36
+// SPI
+#define MISO 13
+#define MOSI 11
+#define SCLK 12
 
 #define DSP_CS 45
 
+// PCA RESET
 #define PCA_RESET 21
 
-// Relay Pin Definitions for PCA9538
+// PCA9538 ADDRESSES
+#define PCA9538_ADDR1 0x70
+#define PCA9538_ADDR2 0x71
+#define PCA9538_ADDR3 0x72
+#define PCA9538_ADDR4 0x73
+
+// RELAY PINS
 const int relayPins[] = {1, 2, 3, 4};
 
-PCA9538 io(PCA9538_ADDR);
+// PCA9538 OBJECTS
+PCA9538 io1(PCA9538_ADDR1);
+PCA9538 io2(PCA9538_ADDR2);
+PCA9538 io3(PCA9538_ADDR3);
+PCA9538 io4(PCA9538_ADDR4);
 
-CST816S touch(8, 9, 47, 48);  // sda, scl, rst, irq
+
+CST816S touch(8, 9, 47, 48);
+
 
 TFT_eSPI tft = TFT_eSPI();
 
+
+
+// DEVICE DETECTION
+bool devicePresent[4] = {
+  false,
+  false,
+  false,
+  false
+};
+
+
+// DETECTED ADDRESS LIST
+
+byte detectedAddress[4];
+
+int deviceCount = 0;
+
+
+// CURRENT PAGE
+int page = 0;
+
+
+// RELAY STATE
+bool relayState[4][4] = {{false, false, false, false}, {false, false, false, false},
+  {false, false, false, false}, {false, false, false, false}
+};
+
+// TOUCH
+#define TOUCH_ADDR 0x15
+
+unsigned long lastTouchTime = 0;
+
+
 void setup() {
+
   Serial.begin(115200);
-  delay(2000);
-  
+  delay(100);
+
+  Serial.println();
+  Serial.println("--------------------------------");
   Serial.println("NPD-NORVI X-R4 TEST");
-  delay(1000);
+  Serial.println("--------------------------------");
 
   pinMode(PCA_RESET, OUTPUT);
   delay(100);
-  digitalWrite(PCA_RESET, HIGH);
 
-  Wire.begin(SDA, SCL);
+  digitalWrite(PCA_RESET, HIGH );
   delay(100);
 
-  I2C_SCAN();
-  delay(1000);
+  // I2C
+  Wire.begin(SDA, SCL );
+  delay(100);
 
-  // Initialize PCA9538 Pins
-  for(int i=0; i<4; i++) {
-    io.pinMode(relayPins[i], OUTPUT);
-    io.digitalWrite(relayPins[i], LOW);
+  // SCAN DEVICES
+  I2C_SCAN();
+  delay(100);
+
+
+  // INITIALIZE 0x70
+  if (devicePresent[0]) {
+    initPCA(io1, PCA9538_ADDR1);
   }
 
-  SPI.begin(SCLK, MISO, MOSI); // Ensure these pin numbers are correct 
-  delay(1000);
+  // INITIALIZE 0x71
+  if (devicePresent[1]) {
+    initPCA(io2, PCA9538_ADDR2);
+  }
 
+
+
+  // INITIALIZE 0x72
+  if (devicePresent[2]) {
+    initPCA(io3,PCA9538_ADDR3);
+  }
+
+  // INITIALIZE 0x73
+  if (devicePresent[3]) {
+    initPCA(io4, PCA9538_ADDR4);
+  }
+
+  SPI.begin(SCLK, MISO, MOSI);
+  delay(300);
+
+  // TFT
   tft.init();
   tft.begin();
   tft.setRotation(0);
-  drawHeader();
   
+  LOGO_PRINT();
+  delay(100);
+
+  // FIRST PAGE
+  if (deviceCount > 0) {page = 0;displayPage();}
+  else {
+    drawNoDevice();
+  }
+
+
+  Serial.println();
+  Serial.print("TOTAL PCA9538 = ");
+  Serial.println(deviceCount);
 }
+
 
 void loop() {
 
-  // 1. All On / All Off
-  displayPatternName("ALL ON / OFF");
-  setAllRelays(HIGH);
-  delay(2000);
-  setAllRelays(LOW);
-  delay(1000);
-
-  // 2. Sequential Test (The original pattern)
-  displayPatternName("SEQUENTIAL");
-  for(int i=0; i<4; i++) {
-    updateRelay(i, HIGH);
-    delay(300);
-    updateRelay(i, LOW);
-    delay(100);
-  }
-
-  // 3. Odds and Evens
-  displayPatternName("ODDS vs EVENS");
-  for(int repeat=0; repeat<4; repeat++) {
-    toggleOddsEvens(true);  // Odds On
-    delay(500);
-    toggleOddsEvens(false); // Evens On
-    delay(500);
-  }
-  setAllRelays(LOW);
-
-  // 4. Chaser (Knight Rider style)
-  displayPatternName("CHASER");
-  for(int i=0; i<4; i++) { 
-    updateRelay(i, HIGH); 
-    if(i>0) updateRelay(i-1, LOW);
-    delay(150); 
-  }
-  for(int i=3; i>=0; i--) { 
-    updateRelay(i, HIGH); 
-    if(i<3) updateRelay(i, LOW);
-    delay(150); 
-  }
-  setAllRelays(LOW);
-
-  // 5. Binary Counter (Fun visual)
-  displayPatternName("BINARY COUNTER");
-  for(int count=0; count <= 15; count++) { // Counting to 15 for brevity
-    displayBinary(count);
-    delay(400);
-  }
-  setAllRelays(LOW);
+  if (deviceCount > 0) { touchCheck(); }
+  delay(10);
 }
 
 
+
+// I2C SCAN
 void I2C_SCAN() {
-  byte error, address;
-  int deviceCount = 0;
 
-  Serial.println("Scanning...");
+  byte error;
+  byte address;
+  deviceCount = 0;
 
-  for (address = 1; address < 127; address++) {
-    Wire.beginTransmission(address);
-    error = Wire.endTransmission();
+  // Clear detection list
 
-    if (error == 0) {
-      Serial.print("I2C device found at address 0x");
-      if (address < 16) {
-        Serial.print("0");
-      }
-      Serial.print(address, HEX);
-      Serial.println("  !");
-
-      deviceCount++;
-      delay(1);  // Wait for a moment to avoid overloading the I2C bus
-    }
-    else if (error == 4) {
-      Serial.print("Unknown error at address 0x");
-      if (address < 16) {
-        Serial.print("0");
-      }
-      Serial.println(address, HEX);
-    }
+  for (int i = 0; i < 4; i++) {
+    devicePresent[i] = false;
   }
 
-  if (deviceCount == 0) {
-    Serial.println("No I2C devices found\n");
+  Serial.println();
+  Serial.println("I2C SCANNING...");
+
+
+  // SCAN ALL I2C ADDRESSES
+
+  for (address = 1; address < 127;address++) 
+  {
+    Wire.beginTransmission(address);
+    error =
+      Wire.endTransmission();
+    if (error == 0) {
+
+      Serial.print(
+        "I2C DEVICE : 0x"
+      );
+
+
+      if (address < 0x10) {
+
+        Serial.print(
+          "0"
+        );
+
+      }
+
+
+      Serial.println(
+        address,
+        HEX
+      );
+
+
+      // ======================================================
+      // 0x70
+      // ======================================================
+
+      if (address == 0x70) {
+
+        devicePresent[0] = true;
+
+        detectedAddress[deviceCount] =
+          0x70;
+
+        deviceCount++;
+
+      }
+
+
+      // ======================================================
+      // 0x71
+      // ======================================================
+
+      else if (address == 0x71) {
+
+        devicePresent[1] = true;
+
+        detectedAddress[deviceCount] =
+          0x71;
+
+        deviceCount++;
+
+      }
+
+
+      // ======================================================
+      // 0x72
+      // ======================================================
+
+      else if (address == 0x72) {
+
+        devicePresent[2] = true;
+
+        detectedAddress[deviceCount] =
+          0x72;
+
+        deviceCount++;
+
+      }
+
+
+      // ======================================================
+      // 0x73
+      // ======================================================
+
+      else if (address == 0x73) {
+
+        devicePresent[3] = true;
+
+        detectedAddress[deviceCount] =
+          0x73;
+
+        deviceCount++;
+
+      }
+
+    }
+
+  }
+
+
+  // ==========================================================
+  // RESULT
+  // ==========================================================
+
+  Serial.println();
+
+  Serial.print(
+    "PCA9538 FOUND : "
+  );
+
+  Serial.println(
+    deviceCount
+  );
+
+
+  for (
+    int i = 0;
+    i < deviceCount;
+    i++
+  ) {
+
+    Serial.print(
+      "PAGE "
+    );
+
+    Serial.print(
+      i + 1
+    );
+
+    Serial.print(
+      " = 0x"
+    );
+
+    Serial.println(
+      detectedAddress[i],
+      HEX
+    );
+
+  }
+
+}
+
+
+// ============================================================
+// INITIALIZE PCA9538
+// ============================================================
+
+void initPCA(
+  PCA9538 &io,
+  byte address
+) {
+
+  Serial.print(
+    "INITIALIZE PCA : 0x"
+  );
+
+  Serial.println(
+    address,
+    HEX
+  );
+
+
+  for (
+    int i = 0;
+    i < 4;
+    i++
+  ) {
+
+    io.pinMode(
+      relayPins[i],
+      OUTPUT
+    );
+
+
+    io.digitalWrite(
+      relayPins[i],
+      LOW
+    );
+
+  }
+
+}
+
+
+// ============================================================
+// GET CURRENT PCA
+// ============================================================
+
+PCA9538* getCurrentPCA() {
+
+  if (
+    detectedAddress[page] == 0x70
+  ) {
+
+    return &io1;
+
+  }
+
+
+  if (
+    detectedAddress[page] == 0x71
+  ) {
+
+    return &io2;
+
+  }
+
+
+  if (
+    detectedAddress[page] == 0x72
+  ) {
+
+    return &io3;
+
+  }
+
+
+  if (
+    detectedAddress[page] == 0x73
+  ) {
+
+    return &io4;
+
+  }
+
+
+  return NULL;
+
+}
+
+
+// ============================================================
+// DISPLAY PAGE
+// ============================================================
+
+void displayPage() {
+
+  // Clear complete screen
+
+  tft.fillScreen(
+    TFT_BLACK
+  );
+
+
+  // ==========================================================
+  // TOP TITLE
+  // ==========================================================
+
+  tft.setFreeFont(
+    FSB12
+  );
+
+  tft.setTextColor(
+    TFT_WHITE,
+    TFT_BLACK
+  );
+
+
+  tft.setCursor(
+    55,
+    20
+  );
+
+  tft.print(
+    "NORVI-X-R4"
+  );
+
+  tft.setFreeFont(
+    FSB9
+  );
+  tft.setTextColor(
+    TFT_WHITE,
+    TFT_BLACK
+  );
+  // ==========================================================
+  // CONTROLLER NUMBER
+  // ==========================================================
+
+  tft.setCursor(
+    55,
+    42
+  );
+
+  tft.print(
+    "CONTROLLER "
+  );
+
+  tft.print(
+    page + 1
+  );
+
+
+  // ==========================================================
+  // TOP LINE
+  // ==========================================================
+
+  tft.drawFastHLine(
+    0,
+    55,
+    240,
+    TFT_WHITE
+  );
+
+
+  // ==========================================================
+  // RELAY 1
+  // ==========================================================
+
+  drawRelayButton(
+    0,
+    65
+  );
+
+
+  // ==========================================================
+  // RELAY 2
+  // ==========================================================
+
+  drawRelayButton(
+    1,
+    105
+  );
+
+
+  // ==========================================================
+  // RELAY 3
+  // ==========================================================
+
+  drawRelayButton(
+    2,
+    145
+  );
+
+
+  // ==========================================================
+  // RELAY 4
+  // ==========================================================
+
+  drawRelayButton(
+    3,
+    185
+  );
+
+
+  // ==========================================================
+  // PREVIOUS BUTTON
+  // ==========================================================
+
+  tft.drawRect(
+    5,
+    220,
+    105,
+    30,
+    TFT_WHITE
+  );
+
+
+  tft.setFreeFont(
+    FSB9
+  );
+
+  tft.setTextColor(
+    TFT_WHITE,
+    TFT_BLACK
+  );
+
+  tft.setCursor(
+    20,
+    241
+  );
+
+  tft.print(
+    "< PREV"
+  );
+
+
+  // ==========================================================
+  // NEXT BUTTON
+  // ==========================================================
+
+  tft.drawRect(
+    130,
+    220,
+    105,
+    30,
+    TFT_WHITE
+  );
+
+
+  tft.setCursor(
+    150,
+    241
+  );
+
+  tft.print(
+    "NEXT >"
+  );
+
+
+  // ==========================================================
+  // BOTTOM LINE
+  // ==========================================================
+
+  tft.drawFastHLine(
+    0,
+    260,
+    240,
+    TFT_WHITE
+  );
+
+
+  // ==========================================================
+  // ADDRESS
+  // ==========================================================
+
+  tft.setTextColor(
+    TFT_CYAN,
+    TFT_BLACK
+  );
+
+  tft.setCursor(
+    15,
+    285
+  );
+
+  tft.print(
+    "ADDRESS : 0x"
+  );
+
+
+  if (
+    detectedAddress[page] < 0x10
+  ) {
+
+    tft.print(
+      "0"
+    );
+
+  }
+
+
+  tft.print(
+    detectedAddress[page],
+    HEX
+  );
+
+
+  // ==========================================================
+  // PAGE NUMBER
+  // ==========================================================
+
+  tft.setCursor(
+    175,
+    285
+  );
+
+  tft.print(
+    page + 1
+  );
+
+  tft.print(
+    "/"
+  );
+
+  tft.print(
+    deviceCount
+  );
+
+
+  // ==========================================================
+  // SERIAL
+  // ==========================================================
+
+  Serial.print(
+    "PAGE "
+  );
+
+  Serial.print(
+    page + 1
+  );
+
+  Serial.print(
+    "/"
+  );
+
+  Serial.print(
+    deviceCount
+  );
+
+  Serial.print(
+    "  ADDRESS : 0x"
+  );
+
+  Serial.println(
+    detectedAddress[page],
+    HEX
+  );
+
+}
+
+
+// ============================================================
+// DRAW RELAY BUTTON
+// OFF = LEFT
+// ON  = RIGHT
+// ============================================================
+
+void drawRelayButton(
+  int relay,
+  int y
+) {
+
+  bool state =
+    relayState[page][relay];
+
+
+  // ==========================================================
+  // RELAY TEXT
+  // ==========================================================
+
+  tft.setFreeFont(
+    FSB9
+  );
+
+  tft.setTextColor(
+    TFT_WHITE,
+    TFT_BLACK
+  );
+
+
+  tft.setCursor(
+    10,
+    y + 21
+  );
+
+  tft.print(
+    "RELAY "
+  );
+
+  tft.print(
+    relay + 1
+  );
+
+
+  // ==========================================================
+  // OFF BUTTON - LEFT
+  // ==========================================================
+
+  if (!state) {
+
+    // Active OFF
+
+    tft.fillRect(
+      105,
+      y,
+      55,
+      30,
+      TFT_RED
+    );
+
+    tft.drawRect(
+      105,
+      y,
+      55,
+      30,
+      TFT_RED
+    );
+
+    tft.setTextColor(
+      TFT_BLACK
+    );
+
   }
   else {
-    Serial.println("Scanning complete\n");
+
+    // Inactive OFF
+
+    tft.drawRect(
+      105,
+      y,
+      55,
+      30,
+      TFT_RED
+    );
+
+    tft.setTextColor(
+      TFT_RED
+    );
+
   }
+
+
+  tft.setCursor(
+    116,
+    y + 21
+  );
+
+  tft.print(
+    "OFF"
+  );
+
+
+  // ==========================================================
+  // ON BUTTON - RIGHT
+  // ==========================================================
+
+  if (state) {
+
+    // Active ON
+
+    tft.fillRect(
+      170,
+      y,
+      55,
+      30,
+      TFT_GREEN
+    );
+
+    tft.drawRect(
+      170,
+      y,
+      55,
+      30,
+      TFT_GREEN
+    );
+
+    tft.setTextColor(
+      TFT_BLACK
+    );
+
+  }
+  else {
+
+    // Inactive ON
+
+    tft.drawRect(
+      170,
+      y,
+      55,
+      30,
+      TFT_GREEN
+    );
+
+    tft.setTextColor(
+      TFT_GREEN
+    );
+
+  }
+
+
+  tft.setCursor(
+    183,
+    y + 21
+  );
+
+  tft.print(
+    "ON"
+  );
+
 }
 
-// --- Helper Functions ---
 
-void drawHeader() {
+// ============================================================
+// RELAY ON
+// ============================================================
+
+void relayON(
+  int relay
+) {
+
+  PCA9538 *io =
+    getCurrentPCA();
+
+
+  if (
+    io == NULL
+  ) {
+
+    return;
+
+  }
+
+
+  // ==========================================================
+  // STATE
+  // ==========================================================
+
+  relayState[page][relay] =
+    true;
+
+
+  // ==========================================================
+  // PCA OUTPUT
+  // ==========================================================
+
+  io->digitalWrite(
+    relayPins[relay],
+    HIGH
+  );
+
+
+  // ==========================================================
+  // SERIAL
+  // ==========================================================
+
+  Serial.print(
+    "ADDRESS : 0x"
+  );
+
+  Serial.print(
+    detectedAddress[page],
+    HEX
+  );
+
+  Serial.print(
+    "  RELAY "
+  );
+
+  Serial.print(
+    relay + 1
+  );
+
+  Serial.println(
+    " = ON"
+  );
+
+
+  // ==========================================================
+  // UPDATE DISPLAY
+  // ==========================================================
+
+  displayPage();
+
+}
+
+
+// ============================================================
+// RELAY OFF
+// ============================================================
+
+void relayOFF(
+  int relay
+) {
+
+  PCA9538 *io =
+    getCurrentPCA();
+
+
+  if (
+    io == NULL
+  ) {
+
+    return;
+
+  }
+
+
+  // ==========================================================
+  // STATE
+  // ==========================================================
+
+  relayState[page][relay] =
+    false;
+
+
+  // ==========================================================
+  // PCA OUTPUT
+  // ==========================================================
+
+  io->digitalWrite(
+    relayPins[relay],
+    LOW
+  );
+
+
+  // ==========================================================
+  // SERIAL
+  // ==========================================================
+
+  Serial.print(
+    "ADDRESS : 0x"
+  );
+
+  Serial.print(
+    detectedAddress[page],
+    HEX
+  );
+
+  Serial.print(
+    "  RELAY "
+  );
+
+  Serial.print(
+    relay + 1
+  );
+
+  Serial.println(
+    " = OFF"
+  );
+
+
+  // ==========================================================
+  // UPDATE DISPLAY
+  // ==========================================================
+
+  displayPage();
+
+}
+
+
+// ============================================================
+// TOUCH CHECK
+// ============================================================
+
+void touchCheck() {
+
+  uint16_t x;
+  uint16_t y;
+
+
+  // ==========================================================
+  // TOUCH DELAY
+  // ==========================================================
+
+  if (
+    millis() - lastTouchTime < 400
+  ) {
+
+    return;
+
+  }
+
+
+  // ==========================================================
+  // READ TOUCH
+  // ==========================================================
+
+  if (
+    readTouch(
+      x,
+      y
+    ) == false
+  ) {
+
+    return;
+
+  }
+
+
+  lastTouchTime =
+    millis();
+
+
+  Serial.print(
+    "TOUCH X : "
+  );
+
+  Serial.print(
+    x
+  );
+
+  Serial.print(
+    "  Y : "
+  );
+
+  Serial.println(
+    y
+  );
+
+
+  // ==========================================================
+  // RELAY 1
+  // OFF LEFT / ON RIGHT
+  // ==========================================================
+
+  if (
+    y >= 65 &&
+    y < 95
+  ) {
+
+    // OFF
+
+    if (
+      x >= 105 &&
+      x < 160
+    ) {
+
+      relayOFF(
+        0
+      );
+
+      return;
+
+    }
+
+
+    // ON
+
+    if (
+      x >= 170 &&
+      x < 225
+    ) {
+
+      relayON(
+        0
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  // ==========================================================
+  // RELAY 2
+  // ==========================================================
+
+  if (
+    y >= 105 &&
+    y < 135
+  ) {
+
+    // OFF
+
+    if (
+      x >= 105 &&
+      x < 160
+    ) {
+
+      relayOFF(
+        1
+      );
+
+      return;
+
+    }
+
+
+    // ON
+
+    if (
+      x >= 170 &&
+      x < 225
+    ) {
+
+      relayON(
+        1
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  // ==========================================================
+  // RELAY 3
+  // ==========================================================
+
+  if (
+    y >= 145 &&
+    y < 175
+  ) {
+
+    // OFF
+
+    if (
+      x >= 105 &&
+      x < 160
+    ) {
+
+      relayOFF(
+        2
+      );
+
+      return;
+
+    }
+
+
+    // ON
+
+    if (
+      x >= 170 &&
+      x < 225
+    ) {
+
+      relayON(
+        2
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  // ==========================================================
+  // RELAY 4
+  // ==========================================================
+
+  if (
+    y >= 185 &&
+    y < 215
+  ) {
+
+    // OFF
+
+    if (
+      x >= 105 &&
+      x < 160
+    ) {
+
+      relayOFF(
+        3
+      );
+
+      return;
+
+    }
+
+
+    // ON
+
+    if (
+      x >= 170 &&
+      x < 225
+    ) {
+
+      relayON(
+        3
+      );
+
+      return;
+
+    }
+
+  }
+
+
+  // ==========================================================
+  // PREVIOUS PAGE
+  // ==========================================================
+
+  if (
+    y >= 220 &&
+    y < 250 &&
+    x < 120
+  ) {
+
+    page--;
+
+
+    if (
+      page < 0
+    ) {
+
+      page =
+        deviceCount - 1;
+
+    }
+
+
+    displayPage();
+
+    return;
+
+  }
+
+
+  // ==========================================================
+  // NEXT PAGE
+  // ==========================================================
+
+  if (
+    y >= 220 &&
+    y < 250 &&
+    x >= 120
+  ) {
+
+    page++;
+
+
+    if (
+      page >= deviceCount
+    ) {
+
+      page = 0;
+
+    }
+
+
+    displayPage();
+
+    return;
+
+  }
+
+}
+
+
+// ============================================================
+// CST816S TOUCH READ
+// ============================================================
+
+bool readTouch(
+  uint16_t &x,
+  uint16_t &y
+) {
+
+  Wire.beginTransmission(
+    TOUCH_ADDR
+  );
+
+  Wire.write(
+    0x01
+  );
+
+
+  if (
+    Wire.endTransmission(false) != 0
+  ) {
+
+    return false;
+
+  }
+
+
+  uint8_t count =
+    Wire.requestFrom(
+      TOUCH_ADDR,
+      (uint8_t)6
+    );
+
+
+  if (
+    count != 6
+  ) {
+
+    return false;
+
+  }
+
+
+  uint8_t data[6];
+
+
+  for (
+    int i = 0;
+    i < 6;
+    i++
+  ) {
+
+    data[i] =
+      Wire.read();
+
+  }
+
+
+  uint8_t points =
+    data[1] & 0x0F;
+
+
+  if (
+    points == 0
+  ) {
+
+    return false;
+
+  }
+
+
+  x =
+    ((uint16_t)(data[2] & 0x0F) << 8)
+    | data[3];
+
+
+  y =
+    ((uint16_t)(data[4] & 0x0F) << 8)
+    | data[5];
+
+
+  return true;
+
+}
+
+
+// ============================================================
+// NO DEVICE SCREEN
+// ============================================================
+
+void drawNoDevice() {
+
+  tft.fillScreen(
+    TFT_BLACK
+  );
+
+
+  // ==========================================================
+  // TITLE
+  // ==========================================================
+
+  tft.setFreeFont(
+    FSB9
+  );
+
+  tft.setTextColor(
+    TFT_GREEN,
+    TFT_BLACK
+  );
+
+
+  tft.setCursor(
+    55,
+    30
+  );
+
+  tft.print(
+    "NORVI-X-R4"
+  );
+
+
+  tft.setTextColor(
+    TFT_CYAN,
+    TFT_BLACK
+  );
+  tft.setCursor(
+    15,
+    296
+  );
+
+  tft.print(
+    "CONTROLLER"
+  );
+
+
+  // ==========================================================
+  // LINE
+  // ==========================================================
+
+  tft.drawFastHLine(
+    0,
+    55,
+    240,
+    TFT_WHITE
+  );
+
+
+  // ==========================================================
+  // NO DEVICE
+  // ==========================================================
+
+  tft.setFreeFont(
+    FSB12
+  );
+
+  tft.setTextColor(
+    TFT_RED,
+    TFT_BLACK
+  );
+
+
+  tft.setCursor(
+    55,
+    110
+  );
+
+  tft.print(
+    "NO DEVICE"
+  );
+
+
+
+  // CHECK ADDRESS
+
+  tft.setFreeFont(FSB9 );
+
+  tft.setCursor(45, 150);
+
+  tft.print(
+    "CHECK 0x70-0x73"
+  );
+
+}
+
+
+
+void LOGO_PRINT() {
+  tft.setSwapBytes(true);
+
+  // BLACK BACKGROUND
+  tft.fillScreen(TFT_WHITE);
+
+  // DISPLAY IMAGE
+  tft.pushImage(
+    0,
+    0,
+    IMAGE_WIDTH,
+    IMAGE_HEIGHT,
+    image_data
+  );
+delay(2000);
   tft.fillScreen(TFT_BLACK);
-  tft.setTextColor(TFT_GREEN);
-  tft.setFreeFont(FSB12);
-  tft.setCursor(60, 25);
-  tft.print("NORVI");
-  tft.setCursor(40, 50);
-  tft.print("X-R4 TEST");
-  tft.drawFastHLine(0, 60, 240, TFT_WHITE);
-}
-
-void displayPatternName(String name) {
-  tft.fillRect(0, 65, 240, 30, TFT_BLACK); // Clear sub-header area
-  tft.setTextColor(TFT_YELLOW);
-  tft.setFreeFont(FSB9);
-  tft.setCursor(10, 85);
-  tft.print("MODE: " + name);
-  Serial.println("Pattern: " + name);
-}
-
-// Controls a single relay and updates the TFT
-void updateRelay(int index, bool state) {
-  io.digitalWrite(relayPins[index], state);
-  
-  int yPos = 110 + (index * 25);
-  tft.setFreeFont(FSB9);
-  tft.setCursor(10, yPos);
-  
-  // Clear the line
-  tft.fillRect(0, yPos-15, 240, 20, TFT_BLACK);
-  
-  tft.setTextColor(TFT_WHITE);
-  tft.printf("RELAY %d : ", index + 1);
-  
-  if(state) {
-    tft.setTextColor(TFT_RED);
-    tft.print("ON");
-  } else {
-    tft.setTextColor(TFT_BLUE);
-    tft.print("OFF");
-  }
-}
-
-void setAllRelays(bool state) {
-  for(int i=0; i<4; i++) {
-    io.digitalWrite(relayPins[i], state);
-  }
-  
-  // Update UI
-  tft.fillRect(0, 100, 240, 220, TFT_BLACK);
-  tft.setCursor(60, 200);
-  tft.setTextColor(TFT_WHITE);
-  tft.setFreeFont(FSB12);
-  tft.print(state ? "ALL ON" : "ALL OFF");
-}
-
-void toggleOddsEvens(bool odds) {
-  for(int i=0; i<4; i++) {
-    bool state = (odds) ? (i % 2 == 0) : (i % 2 != 0);
-    io.digitalWrite(relayPins[i], state);
-  }
-}
-
-void displayBinary(int num) {
-  for (int i = 0; i < 4; i++) {
-    bool bit = bitRead(num, i);
-    io.digitalWrite(relayPins[i], bit);
-  }
-  tft.fillRect(0, 100, 240, 220, TFT_BLACK);
-  tft.setCursor(80, 200);
-  tft.setFreeFont(FSB12);
-  tft.setTextColor(TFT_CYAN);
-  tft.print("VAL: ");
-  tft.print(num);
 }
