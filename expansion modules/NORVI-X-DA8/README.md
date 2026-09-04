@@ -11,6 +11,7 @@ The DA8 expansion module provides **8 optically isolated 230 V AC digital inputs
 * Refresh live status on the integrated TFT display
 
 This example can be used as a starting point for developers building applications with **NORVI controllers**.
+
 ---
 
 ## Product Used
