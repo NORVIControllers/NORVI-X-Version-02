@@ -5,10 +5,10 @@
 The DA8 expansion module provides **8 optically isolated 230 V AC digital inputs** sharing a common Neutral (`N`) terminal. This example demonstrates how to initialize communication, monitor input channel states, detect state transitions, and display output on both the onboard TFT screen and the Serial Monitor.
 
 ### Key Objectives
-* Initialize the PCA9538 I/O expander via I2C.
-* Read real-time status for 8 AC input channels (`AC1`–`AC8`).
-* Log state transitions to the Serial Monitor (115200 baud).
-* Refresh live status on the integrated TFT display.
+* Initialize the PCA9538 I/O expander via I2C
+* Read real-time status for 8 AC input channels (`AC1`–`AC8`)
+* Log state transitions to the Serial Monitor (115200 baud)
+* Refresh live status on the integrated TFT display
 
 This example can be used as a starting point for developers building applications with **NORVI controllers**.
 ---
