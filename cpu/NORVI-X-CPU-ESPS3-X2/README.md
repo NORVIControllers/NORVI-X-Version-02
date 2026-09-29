@@ -81,7 +81,7 @@ Ensure all required libraries are installed and board settings are correctly con
   | AT+CSQ | +CSQ: 15,99 | Displays signal strength and quality |
   | AT+CFUN? | +CFUN: 1 | Queries current functionality level of the modem |
   | AT+CFUN=1 | OK | Sets modem functionality level |
-  | AT+CGMM | A7672G-xxxx | Displays product firmware/software version |
+  | AT+GMR | A7672G-xxxx | Displays product firmware/software version |
 
 ---
 
@@ -96,10 +96,12 @@ Before running the example, ensure:
 ## Required Libraries
 Install the following libraries before compiling:  
 - Wire, WiFi, Ethernet, SD, SPI (standard libraries)  
-- PCA9539  
+- PCA9539
+- PCA9536D 
 - RTClib (for DS3231)  
 - TFT_eSPI  
-- CST816S  
+- CST816S
+- Free_Fonts
 
 **Download Libraries:** https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries
 
