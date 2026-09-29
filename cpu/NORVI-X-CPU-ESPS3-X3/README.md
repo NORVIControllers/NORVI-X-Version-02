@@ -5,7 +5,6 @@ This example demonstrates how to use various interfaces including **I2C, RS485, 
 
 **Product Used**  
 - Product: NORVI X-CPU-ESPS3-X3  
-- Expansion Module: NORVI X Digital Input Expansion Module  
 - More information: https://norvi.io
 
 ### Purpose of This Example
