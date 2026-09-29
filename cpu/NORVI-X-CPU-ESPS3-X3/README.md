@@ -32,6 +32,8 @@ This example serves as a comprehensive diagnostic tool and a starting point for 
 
 ### 2. Configure the Program
 
+Ensure all required libraries are installed and board settings are correctly configured in Arduino IDE / PlatformIO.
+
 ### 3. Upload the Program
 1. Open the example program in Arduino IDE / PlatformIO.  
 2. Select the correct board and port.  
