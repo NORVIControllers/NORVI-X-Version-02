@@ -72,7 +72,7 @@ Ensure all required libraries are installed and board settings are correctly con
    
 5. **SIM Card Test** – insert a SIM card and check AT command responses in Serial Monitor.
    
- ### AT Commands – Quectel Cellular Engine
+ ### AT Commands – SIMCom A7672G Cellular Modem
 
   | Command | Output | Description |
   |---|---|---|
@@ -81,7 +81,7 @@ Ensure all required libraries are installed and board settings are correctly con
   | AT+CSQ | +CSQ: 15,99 | Displays signal strength and quality |
   | AT+CFUN? | +CFUN: 1 | Queries current functionality level of the modem |
   | AT+CFUN=1 | OK | Sets modem functionality level |
-  | AT+GMR | EC25EFAR02A09M4G | Displays product firmware/software version |
+  | AT+CGMM | A7672G-xxxx | Displays product firmware/software version |
 
 ---
 
