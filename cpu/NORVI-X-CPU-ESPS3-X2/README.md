@@ -92,7 +92,19 @@ Before running the example, ensure:
 - Any required configuration is completed (e.g., power supply: 24V DC).
 
 ---
+## Code Compatibility
+This example is intended for:
+  - NORVI X-CPU-ESPS3-X2
+The NORVI X1, X2, and X3 share the same basic ESP32-S3 CPU architecture and common onboard I/O, display, Ethernet, RS-485, and expansion architecture. The major cellular difference is that:
 
+| Model | Cellular Modem    |
+|:------|:------------------|
+| X1    | No cellular modem |
+| X2    | SIMCOM A7672G     |
+| X3    | Quectel EC25      |
+
+Therefore, cellular-specific code should not be assumed to be interchangeable between X2 and X3.
+---
 ## Required Libraries
 Install the following libraries before compiling:  
 - Wire, WiFi, Ethernet, SD, SPI (standard libraries)  
