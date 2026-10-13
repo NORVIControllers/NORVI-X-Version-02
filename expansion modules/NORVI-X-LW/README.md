@@ -206,24 +206,6 @@ Install the following before compiling:
 Libraries and firmware examples are available here:
 https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main
 
-## Limitations
-
-- This example is provided for demonstration purposes
-- The master code sends dummy random values, not real sensor data
-- The uplink payload buffer is 64 bytes; longer messages are truncated
-- Range and reliability depend on antenna, gateway coverage, and environmental conditions
-- Local RF regulations for the selected frequency band and transmission power must be followed
-
-## Safety Notes
-
-- Disconnect all power before installing, wiring, or servicing the module
-- Do not connect or disconnect the module from the expansion bus while powered
-- Connect the antenna before operating the radio module
-- Do not exceed the rated supply voltage (24 V DC)
-- Ensure proper grounding
-- Install in a suitably rated enclosure; the module is IP20 and not for outdoor or wash-down exposure
-- Verify wiring and configuration on a test setup before connecting to active industrial equipment
-
 ## Troubleshooting
 
 | Problem | Possible Cause | Check |
@@ -236,23 +218,44 @@ https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main
 | No wireless transmission | RAK module configuration or hardware issue | Check module, antenna and configuration |
 | Intermittent communication | Wiring, power or RF conditions | Check connections and installation |
 
+## Limitations
+
+- Provided for demonstration purposes only  
+- Additional calibration may be required for precise measurements  
+- Performance may depend on sensor accuracy and environmental conditions  
+
+---
+
+## Safety Notes
+
+- Do not exceed the rated input voltage  
+- Ensure proper grounding  
+- Incorrect wiring may damage the controller  
+
+---
+
+## Test Information
+
+- **Test Date:** 2026-10-13     
+- **Verified By:** Kaveesha  
+
+---
+
 ## Support
 
-**Documentation:** https://norvi.io/docs 
+Documentation: https://norvi.io/docs
+  
+Datasheet: https://norvi.io/docs/norvi-x-lw-datasheet/
+  
+For additional support, contact the NORVI support team  
 
-**Datasheet:** https://norvi.io/docs/norvi-x-lw-datasheet/
-
-**Technical support:** support@norvi.io 
-
-For additional support or inquiries, contact the NORVI support team.
-
-Test Date: 2026-10-13 
-
-Verified By: Kaveesha
+---
 
 ## License
 
-This example is provided for development and educational purposes.
+This example is provided for **development and educational purposes**.
+
+
 
 
 
