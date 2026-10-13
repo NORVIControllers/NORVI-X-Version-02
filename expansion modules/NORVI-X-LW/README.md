@@ -94,6 +94,32 @@ UART connection between the CPU and the X-LW (made through the expansion bus):
 
 The code has been tested with ChirpStack and can also be used with other compatible LoRaWAN network servers.
 
+### 3. Upload the Programs
+
+Each device is uploaded separately. Change the board and port in the Tools menu every time you switch devices.
+
+**Master code to the NORVI X CPU**
+
+1. Connect the NORVI X CPU to your computer using USB.
+2. Open the master example in Arduino IDE.
+3. Select **Tools → Board → ESP32 Arduino → ESP32S3 Dev Module** and the correct **Port**.
+4. Configure the board settings:
+
+| Setting | Selection |
+|---|---|
+| USB CDC On Boot | Enabled |
+| Flash Size | 16MB (128Mb) |
+| PSRAM | QSPI PSRAM |
+
+5. Upload the program.
+
+**Slave code to the NORVI X-LW**
+
+1. Open the slave example in Arduino IDE.
+2. Select **Tools → Board → RAKwireless RUI nRF Boards → WisBlock Core RAK4631 Board** and the correct **Port**.
+3. Upload the program.
+
+For help installing the RAK4630 board package, refer to the RAK4630 Module Quick Start Guide.
 
 
 
