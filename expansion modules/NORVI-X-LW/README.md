@@ -121,10 +121,135 @@ Each device is uploaded separately. Change the board and port in the Tools menu 
 
 For help installing the RAK4630 board package, refer to the RAK4630 Module Quick Start Guide.
 
+### 4. Observe the Output
 
+Open the Serial Monitor at **115200 baud**.
 
+**Master (NORVI X CPU):**
 
+```
+TX -> {"Analog1":45,"Analog2":72}
+```
 
+A new message is sent approximately every 30 seconds.
+
+**Slave (NORVI X-LW):** the Serial Monitor shows the join status, the received data packet, and the send result:
+
+```
+Join status: 0
+...
+Sending is requested
+Successfully sent
+```
+
+On a successful uplink the green LED pulses; on a failed uplink the blue LED pulses.
+
+## How to Validate the Example
+
+To verify the example works correctly:
+
+1. Power the system and confirm the red power LED on the X-LW is on.
+2. Confirm the slave Serial Monitor reports a successful join (`Join status: 0`).
+3. Confirm the master Serial Monitor shows a new `TX ->` message every 30 seconds.
+4. Confirm the slave Serial Monitor shows the same JSON data and `Successfully sent`.
+5. In your LoRaWAN network server (for example ChirpStack), open the device and check **LoRaWAN Frames** and **Device Data** for the join request, join accept, and uplinks.
+6. Confirm the payload values change between transmissions.
+
+## Device Preparation / Configuration
+
+Before running the example ensure:
+
+- The controller is powered correctly
+- The antenna is connected
+- A LoRaWAN gateway is in range and connected to your network server
+- The device is registered on the network server with the same DevEUI, AppEUI/JoinEUI and AppKey used in the slave code
+- The region in the slave code matches your gateway and network server
+
+**Power Supply:** 24 V DC
+**Current Consumption:** 40 mA @ 24 V DC
+
+## Technical Summary
+
+| Parameter | Value |
+|---|---|
+| Wireless module | RAK4630 (Nordic nRF52840 + Semtech SX1262) |
+| Wireless technology | LoRa / LoRaWAN 1.0.3 (also LoRa P2P), Bluetooth 5.0 |
+| Host interface | UART / I²C |
+| UART settings | 115200 baud, 8 data bits, no parity, 1 stop bit (8-N-1) |
+| Operating temperature | −40 °C to +85 °C |
+| Protection | IP20 |
+| Mounting | DIN rail (NORVI X-N1 enclosure) |
+
+## LED Indicators
+
+| LED | Colour | Behaviour |
+|---|---|---|
+| Power | Red | Power indicator |
+| LED1 | Green | User configurable |
+| LED2 | Green | User configurable |
+
+## Required Libraries
+
+Install the following before compiling:
+
+- ESP32 board package (for the NORVI X CPU)
+- RAKwireless RUI nRF board package (for the X-LW)
+- ArduinoJson
+- Wire
+
+**Installation:**
+
+1. Open Arduino IDE.
+2. Go to **Sketch → Include Library → Manage Libraries**.
+3. Search for and install the required libraries.
+
+Libraries and firmware examples are available here:
+https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main
+
+## Limitations
+
+- This example is provided for demonstration purposes
+- The master code sends dummy random values, not real sensor data
+- The uplink payload buffer is 64 bytes; longer messages are truncated
+- Range and reliability depend on antenna, gateway coverage, and environmental conditions
+- Local RF regulations for the selected frequency band and transmission power must be followed
+
+## Safety Notes
+
+- Disconnect all power before installing, wiring, or servicing the module
+- Do not connect or disconnect the module from the expansion bus while powered
+- Connect the antenna before operating the radio module
+- Do not exceed the rated supply voltage (24 V DC)
+- Ensure proper grounding
+- Install in a suitably rated enclosure; the module is IP20 and not for outdoor or wash-down exposure
+- Verify wiring and configuration on a test setup before connecting to active industrial equipment
+
+## Troubleshooting
+
+| Problem | Possible Cause | Check |
+|---|---|---|
+| No output on Serial Monitor | Incorrect COM port or baud rate | Check COM port and 115200 baud |
+| ESP32 does not upload | Incorrect board/port selection | Check Arduino IDE settings |
+| Garbled UART data | Baud-rate mismatch | Verify 115200 baud on both sides |
+| JSON not received correctly | Message handling mismatch | Check newline/message parsing |
+| Slave does not join | Wrong credentials or region | Check DevEUI, AppEUI, AppKey and region |
+| No wireless transmission | RAK module configuration or hardware issue | Check module, antenna and configuration |
+| Intermittent communication | Wiring, power or RF conditions | Check connections and installation |
+
+## Support
+
+**Documentation:** https://norvi.io/docs
+**Datasheet:** https://norvi.io/docs/norvi-x-lw-datasheet/
+**Technical support:** support@norvi.io
+
+For additional support or inquiries, contact the NORVI support team.
+
+Test Date: 2026-10-13
+Verified By: Kaveesha
+
+## License
+
+This example is provided for development and educational purposes.
 
 
 
