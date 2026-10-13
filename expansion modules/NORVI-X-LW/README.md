@@ -239,12 +239,15 @@ https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main
 ## Support
 
 **Documentation:** https://norvi.io/docs 
-**Datasheet:** https://norvi.io/docs/norvi-x-lw-datasheet/ 
+
+**Datasheet:** https://norvi.io/docs/norvi-x-lw-datasheet/
+
 **Technical support:** support@norvi.io 
 
 For additional support or inquiries, contact the NORVI support team.
 
 Test Date: 2026-10-13 
+
 Verified By: Kaveesha
 
 ## License
