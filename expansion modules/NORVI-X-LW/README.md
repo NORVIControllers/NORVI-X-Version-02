@@ -15,8 +15,8 @@ This example can be used as a starting point for developers building application
 ## Product Used
 
 **Product:** NORVI X-LW LoRaWAN Expansion Module  
-**Platform:** NORVI X CPU (ESP32-S3) 
-**Website:** https://norvi.io
+**Platform:** NORVI X CPU (ESP32-S3)  
+**Website:** https://norvi.io 
 
 ## Purpose of This Example
 
