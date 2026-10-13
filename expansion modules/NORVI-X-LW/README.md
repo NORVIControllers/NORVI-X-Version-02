@@ -26,3 +26,49 @@ The example consists of two sketches that work together:
 |---|---|---|
 | Master test code | NORVI X CPU (ESP32-S3) | ESP32 Arduino → ESP32S3 Dev Module |
 | Slave test code | NORVI X-LW (RAK4630) | RAKwireless RUI nRF Boards → WisBlock Core RAK4631 Board |
+
+**Master test code (NORVI X CPU)**
+
+- Initializes UART communication with the X-LW module
+- Generates two dummy values (`Analog1`, `Analog2`, 0–100)
+- Creates a JSON message and sends it to the X-LW module
+- Displays the transmitted data on the USB Serial Monitor
+- Checks for a response and repeats every 30 seconds
+
+**Slave test code (NORVI X-LW)**
+
+- Configures the RAK4630 for LoRaWAN (OTAA, Class A)
+- Joins the LoRaWAN network
+- Receives the JSON message from the NORVI X CPU over UART
+- Sends the message as a LoRaWAN uplink and reports the send status
+
+**Data path:**
+
+```
+NORVI X CPU → NORVI X-LW → LoRaWAN Gateway → LoRaWAN Network Server (ChirpStack) → Application
+```
+
+Example JSON message:
+
+```json
+{"Analog1":45,"Analog2":72}
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
