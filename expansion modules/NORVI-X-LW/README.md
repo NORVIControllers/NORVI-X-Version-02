@@ -53,7 +53,16 @@ Example JSON message:
 ```json
 {"Analog1":45,"Analog2":72}
 ```
+## Getting Started
 
+Follow the steps below to run the example.
+
+### 1. Hardware Connections
+
+1. Power off the system.
+2. Mount the X-LW on the DIN rail next to the NORVI X CPU (or an adjacent expansion module). The module connects through the 50-pin expansion bus and is powered by the CPU.
+3. **Connect the LoRa antenna** before powering the radio module. Never operate the module without an antenna.
+4. Power the system on with a regulated 24 V DC supply.
 
 
 
