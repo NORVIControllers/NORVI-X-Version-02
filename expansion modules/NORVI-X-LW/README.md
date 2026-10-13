@@ -64,7 +64,35 @@ Follow the steps below to run the example.
 3. **Connect the LoRa antenna** before powering the radio module. Never operate the module without an antenna.
 4. Power the system on with a regulated 24 V DC supply.
 
+UART connection between the CPU and the X-LW (made through the expansion bus):
 
+| ESP32-S3 | RAK Module |
+|---|---|
+| GPIO 40 (TX) | RX (P0.15) |
+| GPIO 14 (RX) | TX (P0.16) |
+| GND | GND |
+
+### 2. Configure the Program
+
+**Master code:** No additional configuration is required before upload.
+
+**Slave code:** Set the LoRaWAN region and OTAA credentials to match your LoRaWAN network server:
+
+```cpp
+#define OTAA_BAND   (RAK_REGION_EU868)
+#define OTAA_DEVEUI { /* Device EUI */ };
+#define OTAA_APPEUI { /* Application EUI / JoinEUI */ };
+#define OTAA_APPKEY { /* Application Key */ };
+```
+
+| Parameter | Description |
+|---|---|
+| `OTAA_BAND` | LoRaWAN frequency region (default: EU868). Uncomment the required region and comment out the others. |
+| `OTAA_DEVEUI` | Device EUI of the RAK4630 |
+| `OTAA_APPEUI` | Application EUI / JoinEUI |
+| `OTAA_APPKEY` | Application Key used for OTAA authentication. Keep it confidential. |
+
+The code has been tested with ChirpStack and can also be used with other compatible LoRaWAN network servers.
 
 
 
