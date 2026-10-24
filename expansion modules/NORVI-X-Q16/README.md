@@ -7,7 +7,7 @@ The purpose of this example is to show how to:
 - Integrate the Q16 Module into the NORVI X CPU
 - Read the status of 16 transistor outputs
 - Initialize the PCA9555 I/O Expander
-- Use the TFT_eSPI library to display real-time status updates
+- Use the LovyanGFX library to display real-time status updates
 - Implement a basic I2C scanner to detect connected peripherals
 
 This example can be used as a starting point for developers building applications with NORVI controllers.
@@ -109,11 +109,13 @@ Install the following libraries before compiling:
 - WiFi
 - SPI
 - PCA9555 Library
-- TFT_eSPI
+- LovyanGFX
 - CST816S
 - PCA9539
 - PCA9536D
 - RTClib
+
+The previous version utilized the TFT_eSPI library for TFT display control. In the updated version, LovyanGFX   has replaced TFT_eSPI as the TFT display library.   
 
 Download Libraries:  https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries 
 
