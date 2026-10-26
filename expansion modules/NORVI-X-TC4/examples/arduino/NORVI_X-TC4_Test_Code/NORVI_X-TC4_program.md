@@ -1,7 +1,7 @@
 ---
 type: Test_program
 function: thermocouple_temperature_read_i2c (4-channel thermocouple temperature read over I2C, master side)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1],[NORVI X-CPU-ESPS3-X2],[NORVI X-CPU-ESPS3-X3]
+compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1, NORVI X-CPU-ESPS3-X2, NORVI X-CPU-ESPS3-X3]
 compatible_modules: [NORVI X-TC4 (4-channel thermocouple input expansion, I2C slave co-processor reading the onboard thermocouple-to-digital converters)]
 status: completed
 last_updated: 2026-10-22
