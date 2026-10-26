@@ -59,25 +59,24 @@ The NORVI X-AV4 is a 4-channel analog input expansion module for the NORVI X mod
 ## Minimal Working Example
 ```cpp
 #include <Wire.h>
-#include <ADS1X15.h>
+#include <Adafruit_ADS1X15.h>
 
 #define SDA_PIN 8
 #define SCL_PIN 9
 #define ADS1115_ADDR 0x49  // change if DIP switches differ (0x49/0x4B/0x4A/0x48)
 #define DIVIDER_RATIO 3.2
 
-ADS1115 ADS(ADS1115_ADDR);
+Adafruit_ADS1115 ads1;
+#define VOLTAGE_DIVIDER_RATIO 0.2065
 
 void setup()
 {
   Serial.begin(115200);
   Wire.begin(SDA_PIN, SCL_PIN);
-  if (!ADS.begin())
-  {
-    Serial.println("ADS1115 NOT detected!");
-    while (1);
+if (!ads1.begin(ADS1115_ADDR)) {
+    Serial.println("Failed to initialize ADS 1 .");
+    // while (1);
   }
-  ADS.setGain(1);
   Serial.println("NORVI X-AV4 READY");
 }
 
@@ -85,18 +84,15 @@ void loop()
 {
   for (int ch = 0; ch < 4; ch++)
   {
-    int16_t raw = ADS.readADC(ch);
-    float adcVoltage = ADS.toVoltage(raw);
-    float inputVoltage = adcVoltage * 3.2;
+    int16_t raw = ads1.readADC_SingleEnded(ch);
+    float Voltage = raw* 0.125 / 1000.0 / VOLTAGE_DIVIDER_RATIO;
 
     Serial.print("AIN");
     Serial.print(ch + 1);
     Serial.print(" | Raw: ");
     Serial.print(raw);
-    Serial.print(" | ADC: ");
-    Serial.print(adcVoltage, 4);
-    Serial.print(" V | Input: ");
-    Serial.print(inputVoltage, 3);
+    Serial.print(" VOLTAGE: ");
+    Serial.print(Voltage, 3);
     Serial.println(" V");
   }
 
