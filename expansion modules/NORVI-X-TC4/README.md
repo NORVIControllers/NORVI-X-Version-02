@@ -259,19 +259,6 @@ Install the following libraries before compiling.
 3. Search for **LovyanGFX** and install version 1.2.25
 4. Install the ESP32 board package (3.x) from the Boards Manager. Wire and SPI are installed with it.
 
-## Troubleshooting
-
-| Symptom | Likely Cause | Fix |
-|---|---|---|
-| `I2C TX FAIL` / `I2C RX FAIL` on every read, TFT shows `NO RESPONSE` | `TC_SLAVE_ADDR` does not match the module's I²C address, or I²C wiring problem | Compare the address shown on the screen with the DIP switch setting and update `TC_SLAVE_ADDR`; check SDA / SCL wiring |
-| `CRC ERROR Channel n` repeatedly | Noisy or unstable I²C bus, or corrupted data | Check the I²C wiring quality and length; confirm the thermocouple of that channel is connected properly |
-| Fault value is non-zero for a channel | Thermocouple open-circuit, short-circuit or out-of-range reading | Check the thermocouple wiring and polarity on that channel |
-| Temperature readings are implausible | Wrong thermocouple type, or poor connection | Use a K-type thermocouple and check the connection |
-| Config mode does not accept input | Input is not terminated with a newline | Set the Serial Monitor line ending to **Newline** and press Enter after the input (e.g. `1-3`) |
-| TFT shows nothing / blank screen | SPI pins (MISO 13 / MOSI 11 / SCLK 12) or Display CS (GPIO 45) miswired, or `tft.init()` failing | Verify the SPI wiring and that the pin numbers in the `LGFX` class match the board pinout |
-| Display colors wrong or inverted | Panel invert / RGB order setting differs from the panel in use | Toggle `c.invert` or `c.rgb_order` in the `LGFX` class |
-| Upload fails / board not detected | Wrong Board / Tools settings | Match the settings listed in step 3 |
-
 ## Limitations
 
 - This example is provided for demonstration purposes
