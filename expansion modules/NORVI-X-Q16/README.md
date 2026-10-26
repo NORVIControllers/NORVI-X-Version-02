@@ -135,7 +135,7 @@ Download Libraries:  https://github.com/NORVIControllers/NORVI-X-Version-02/tree
 - Incorrect wiring may damage the controller
 
 ## Test Information
-Test Date: 2026-09-04 
+Test Date: 2026-09-04  
 Verified By: Kaveesha
 
 ## Support
