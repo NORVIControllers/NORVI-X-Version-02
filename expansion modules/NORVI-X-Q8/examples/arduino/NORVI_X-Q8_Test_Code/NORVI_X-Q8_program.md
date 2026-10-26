@@ -1,7 +1,7 @@
 ---
 type: Test_program
 function: transistor_output_test (8-channel transistor output test via PCA9538 with TFT display)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1],[NORVI X-CPU-ESPS3-X2],[NORVI X-CPU-ESPS3-X3]
+compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1, NORVI X-CPU-ESPS3-X2, NORVI X-CPU-ESPS3-X3]
 compatible_modules: [NORVI X-Q8 (8-channel transistor output expansion, PCA9538 I2C IO expander)]
 status: completed
 last_updated: 2026-10-22
