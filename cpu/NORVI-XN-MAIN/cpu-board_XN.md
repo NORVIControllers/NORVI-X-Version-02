@@ -225,4 +225,4 @@ NORVI XN-MAIN is the CPU module for NORVI's modular controller lineup, running o
 ## Related Files
 - Expansion modules compatible with X1: `expansion-module_X-DI4.md`,`expansion-module_X-R4.md`,`expansion-module_X-Q4.md`,`expansion-module_X-AI4.md`,`expansion-module_X-AV4.md`,`expansion-module_X-AQ4.md`,`expansion-module_X-DI8.md`,`expansion-module_X-DI16.md`,`expansion-module_X-R8.md`,`expansion-module_X-Q16.md`,`expansion-module_X-TC4.md`, `expansion-module_X-Q8.md`,`expansion-module_X-T4.md`,`expansion-module_X-UART-IO.md`,`expansion-module_X-RTD4.md`,`expansion-module_X-BKO.md`,`expansion-module_X-CAN1.md`,`expansion-module_X-DA8.md`(one file per module)
 - Master I2C address table: `i2c-address-master-table.md`
-- Example programs: `NORVI X-CPU-ESPS3-X1_program.md` (one file per function)
+- Example programs: `NORVI XN-MAIN_program.md` (one file per function)
