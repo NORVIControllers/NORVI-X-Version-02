@@ -2,6 +2,10 @@
 
 ## Overview
 
+The NORVI XN-MAIN is a high-performance programmable controller designed for IoT and industrial automation applications, featuring built-in WiFi, Ethernet, and Bluetooth connectivity.
+
+This controller functions as a central hub for automation systems, supporting RS-485 communication and large-scale expansion with up to 200 digital inputs and outputs through modular I/O expansion.
+
 This example demonstrates how to run a full board bring-up and diagnostics test on the NORVI XN-MAIN, the NORVI X modular controller built around the ESP32-S3-WROOM-1U-N16R2.
 
 The purpose of this example is to show how to:
@@ -84,6 +88,7 @@ The following settings are defined in the sketch and can be changed if needed:
 - Select the board **ESP32S3 Dev Module** and the correct port
 - Set **Flash Size** to 16MB and **PSRAM** to QSPI PSRAM (the XN-MAIN uses the N16R2 module)
 - Enable **USB CDC On Boot** to see the Serial output over the USB port
+- For remote login, set USB CDC On Boot to Disabled.
 - Upload the program to the NORVI controller
 
 If the upload does not start, hold the BOOT button, press RESET, then release BOOT to enter the programming mode.
