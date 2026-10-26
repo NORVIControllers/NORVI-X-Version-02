@@ -65,12 +65,13 @@ Typical use: HVAC, industrial temperature monitoring, refrigeration, and environ
 ## Minimal Working Example
 ```cpp
 #include <Wire.h>
-#include <ADS1X15.h>
+#include <Adafruit_ADS1X15.h>
 #include <math.h>
 
 #define SDA_PIN 8
 #define SCL_PIN 9
-ADS1115 ADS(0x48);  // change if DIP switches differ (0x49/0x4B/0x4A/0x48)
+#define ADS_ADDR 0x48
+Adafruit_ADS1115 ads1;  // change if DIP switches differ (0x49/0x4B/0x4A/0x48)
 
 // ---------- THERMISTOR / DIVIDER CONFIG ----------
 const float SUPPLY_VOLTAGE      = 3.3;    // voltage feeding the top of the divider
@@ -79,22 +80,39 @@ const float THERMISTOR_NOMINAL  = 10000.0; // NTC resistance at 25C
 const float TEMPERATURE_NOMINAL = 25.0;    // reference temp, deg C
 const float B_COEFFICIENT       = 3950.0;  // beta value from your NTC's datasheet -- CHECK/UPDATE THIS
 
-// Converts a voltage reading into temperature (deg C) via the Beta equation
-float voltageToTempC(float voltage)
-{
-  if (voltage <= 0.001 || voltage >= SUPPLY_VOLTAGE - 0.001)
-  {
-    return NAN; // open circuit / shorted / bad reading
+// Converts a raw ADS1115 single-ended reading into a temperature (deg C)
+// using the Beta-equation approximation of the Steinhart-Hart formula.
+float readThermistorC(int16_t adcRaw) {
+
+  // computeVolts() correctly applies the current gain setting (GAIN_ONE
+  // here = +/-4.096V range over 16 bits), so this stays correct even if
+  // you change the gain later.
+  float voltage = ads1.computeVolts(adcRaw);
+
+  // Guard against divide-by-zero / nonsense readings (e.g. open circuit)
+  if (voltage <= 0.001) {
+    return NAN;
+  }
+  if (voltage >= SUPPLY_VOLTAGE - 0.001) {
+    return NAN;
   }
 
+  // Solve the divider for NTC resistance.
+  // Topology: VCC -> NTC -> node -> 10K -> GND, ADC reads "node".
   float ntcResistance = SERIES_RESISTOR * (SUPPLY_VOLTAGE / voltage - 1.0);
 
-  float steinhart = ntcResistance / THERMISTOR_NOMINAL;
-  steinhart = log(steinhart);
-  steinhart /= B_COEFFICIENT;
-  steinhart += 1.0 / (TEMPERATURE_NOMINAL + 273.15);
-  steinhart = 1.0 / steinhart;
-  steinhart -= 273.15;
+  // *** If your wiring is reversed (NTC from node to GND, fixed resistor
+  // from VCC to node), replace the line above with:
+  //   float ntcResistance = SERIES_RESISTOR / (SUPPLY_VOLTAGE / voltage - 1.0);
+
+  // Beta equation
+  float steinhart;
+  steinhart = ntcResistance / THERMISTOR_NOMINAL;      // (R/Ro)
+  steinhart = log(steinhart);                          // ln(R/Ro)
+  steinhart /= B_COEFFICIENT;                           // 1/B * ln(R/Ro)
+  steinhart += 1.0 / (TEMPERATURE_NOMINAL + 273.15);    // + (1/To)
+  steinhart = 1.0 / steinhart;                          // invert
+  steinhart -= 273.15;                                  // convert to deg C
 
   return steinhart;
 }
@@ -105,13 +123,19 @@ void setup()
 
   Wire.begin(SDA_PIN, SCL_PIN);
 
-  if (!ADS.begin())
-  {
-    Serial.println("ADS1115 NOT detected!");
-    while (1);
+  if (!ads1.begin(ADS_ADDR)) {
+
+    Serial.println("Failed to initialize ADS 1.");
+
+  }
+  else {
+
+    adsFound = true;
+    Serial.println("ADS1115 OK");
+
   }
 
-  ADS.setGain(1);
+  ads1.setGain(GAIN_ONE);
 
   Serial.println("NORVI X-T4 READY");
 }
@@ -119,30 +143,25 @@ void setup()
 void loop()
 {
   int16_t raw;
-  float voltage;
   float tempC;
 
-  raw = ADS.readADC(0);
-  voltage = ADS.toVoltage(raw);
-  tempC = voltageToTempC(voltage);
+  raw = ads1.readADC_SingleEnded(0);
+  tempC = readThermistorC(raw);
   Serial.print("T1: ");
   Serial.println(tempC);
 
-  raw = ADS.readADC(1);
-  voltage = ADS.toVoltage(raw);
-  tempC = voltageToTempC(voltage);
+  raw = ads1.readADC_SingleEnded(1);
+  tempC = readThermistorC(raw);
   Serial.print("T2: ");
   Serial.println(tempC);
 
-  raw = ADS.readADC(2);
-  voltage = ADS.toVoltage(raw);
-  tempC = voltageToTempC(voltage);
+  raw = ads1.readADC_SingleEnded(2);
+  tempC = readThermistorC(raw);
   Serial.print("T3: ");
   Serial.println(tempC);
 
-  raw = ADS.readADC(3);
-  voltage = ADS.toVoltage(raw);
-  tempC = voltageToTempC(voltage);
+  raw = ads1.readADC_SingleEnded(3);
+  tempC = readThermistorC(raw);
   Serial.print("T4: ");
   Serial.println(tempC);
 
