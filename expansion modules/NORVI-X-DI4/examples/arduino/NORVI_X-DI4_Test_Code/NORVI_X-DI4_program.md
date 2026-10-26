@@ -1,7 +1,10 @@
 ---
 type: Test_program
 function: digital_input_read (4-channel digital input test with TFT display)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1 (N16R2, PSRAM-QSPI)],[NORVI X-CPU-ESPS3-X2 (N16R2, PSRAM-QSPI)],[NORVI X-CPU-ESPS3-X3 (N16R2, PSRAM-QSPI)]
+compatible_cpu_boards:
+  - "NORVI X-CPU-ESPS3-X1 (N16R2, PSRAM-QSPI)"
+  - "NORVI X-CPU-ESPS3-X2 (N16R2, PSRAM-QSPI)"
+  - "NORVI X-CPU-ESPS3-X3 (N16R2, PSRAM-QSPI)"
 compatible_modules: [NORVI X-DI4 (4-channel digital input expansion)]
 status: completed
 last_updated: 2026-10-21
