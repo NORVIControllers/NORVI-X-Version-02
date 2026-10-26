@@ -1,7 +1,10 @@
 ---
 type: Test_program
 function: uart_mode_switch_test (dual-UART RS485/RS232/UARTA/UARTB mode-select test with direct GPIO outputs)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1(ESP-N16R2 PSRAM-QSPI)],[NORVI X-CPU-ESPS3-X2(ESP-N16R2 PSRAM-QSPI)],[NORVI X-CPU-ESPS3-X3(ESP-N16R2 PSRAM-QSPI)]
+compatible_cpu_boards:
+  - "NORVI X-CPU-ESPS3-X1 (ESP-N16R2 PSRAM-QSPI)"
+  - "NORVI X-CPU-ESPS3-X2 (ESP-N16R2 PSRAM-QSPI)"
+  - "NORVI X-CPU-ESPS3-X3 (ESP-N16R2 PSRAM-QSPI)"
 compatible_modules: [NORVI X-UART-IO (dual-UART expansion with mode-select via PCA9539 I2C IO expander)]
 status: completed
 last_updated: 2026-08-17
