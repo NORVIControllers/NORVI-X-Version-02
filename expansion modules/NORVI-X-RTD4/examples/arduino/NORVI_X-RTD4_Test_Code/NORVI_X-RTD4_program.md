@@ -1,7 +1,7 @@
 ---
 type: Test_program
 function: rtd_temperature_read_i2c (4-channel PT100/PT1000 RTD temperature read over I2C, master side)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1],[NORVI X-CPU-ESPS3-X2],[NORVI X-CPU-ESPS3-X3]
+compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1, NORVI X-CPU-ESPS3-X2, NORVI X-CPU-ESPS3-X3]
 compatible_modules: [NORVI X-RTD4 (4-channel PT100/PT1000 RTD input expansion, STM32F103C8Tx I2C slave co-processor reading onboard RTD-to-digital converters)]
 status: completed
 last_updated: 2026-10-22
