@@ -41,7 +41,7 @@ The example demonstrates how to:
 
 The program runs the tests in the following order during `setup()`:
 
-| # | Test | Result shown on |
+| # | Test | Result shown on | 
 |---|------|-----------------|
 | 1 | I2C scan (touch, PCA9536, DS3231, PCA9539) | Serial Monitor |
 | 2 | Touch controller version | Serial Monitor |
