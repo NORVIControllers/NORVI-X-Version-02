@@ -59,11 +59,12 @@ The NORVI X-AI4 is a 4-channel analog input expansion module designed to interfa
 ## Minimal Working Example
 ```cpp
 #include <Wire.h>
-#include <ADS1X15.h>
+#include <Adafruit_ADS1X15.h>
 
 #define SDA_PIN 8
 #define SCL_PIN 9
-ADS1115 ADS(0x49);  // change if DIP switches differ (0x49/0x4B/0x4A/0x48)
+#define ADS_ADDR 0x49
+Adafruit_ADS1115 ads1; // change if DIP switches differ (0x49/0x4B/0x4A/0x48)
 
 void setup()
 {
@@ -71,13 +72,18 @@ void setup()
 
   Wire.begin(SDA_PIN, SCL_PIN);
 
-  if (!ADS.begin())
-  {
-    Serial.println("ADS1115 NOT detected!");
-    while (1);
+  if (!ads1.begin(ADS_ADDR)) {
+
+    Serial.println("Failed to initialize ADS 1.");
+
+  }
+  else {
+
+    Serial.println("ADS1115 OK");
+
   }
 
-  ADS.setGain(1);
+  ads1.setGain(GAIN_ONE);
 
   Serial.println("NORVI X-AI4 READY");
 }
@@ -86,19 +92,19 @@ void loop()
 {
   int16_t value;
 
-  value = ADS.readADC(0);
+  value = ads1.readADC_SingleEnded(0);
   Serial.print("AIN1: ");
   Serial.println(value);
 
-  value = ADS.readADC(1);
+  value = ads1.readADC_SingleEnded(1);
   Serial.print("AIN2: ");
   Serial.println(value);
 
-  value = ADS.readADC(2);
+  value = ads1.readADC_SingleEnded(2);
   Serial.print("AIN3: ");
   Serial.println(value);
 
-  value = ADS.readADC(3);
+  value = ads1.readADC_SingleEnded(3);
   Serial.print("AIN4: ");
   Serial.println(value);
 
