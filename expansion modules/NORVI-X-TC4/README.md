@@ -279,8 +279,8 @@ Install the following libraries before compiling.
 
 ## Test Information
 
-Test Date: 2026-10-22
-Verified By: <Kaveesha>
+Test Date: 2026-10-22  
+Verified By: Kaveesha
 
 ## Datasheet
 
