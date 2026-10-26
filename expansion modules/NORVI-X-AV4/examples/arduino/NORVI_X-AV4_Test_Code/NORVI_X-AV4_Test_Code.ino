@@ -100,7 +100,7 @@ if (!ads1.begin(0x49)) {
     Serial.println("Failed to initialize ADS 1 .");
     // while (1);
   }
- 
+ ads1.setGain(GAIN_ONE);
 
   SPI.begin(SCLK, MISO, MOSI); // Ensure these pin numbers are correct 
   delay(1000);
