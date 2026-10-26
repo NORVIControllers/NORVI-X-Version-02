@@ -4,7 +4,7 @@
 This example demonstrates how to use the **Analog Input Expansion Module (AV4)** on the **NORVI X CPU**.  
 
 The purpose of this example is to show how to: 
-- Initialize ADS1115: Set up 16-bit ADC via I2C at 0x48
+- Initialize ADS1115: Set up 16-bit ADC via I2C at 0x49
 - Read the status of 4 analog inputs
 - Setup Display: Initialize LovyanGFX and display pins
 
@@ -25,7 +25,7 @@ The example demonstrates how to:
 
 - Integrate the AV4 Module into the NORVI X CPU  
 - Read the status of analog inputs **AIN1 to AIN4**  
-- Initialize the **ADS1115** 16-bit ADC via I2C at address `0x48`  
+- Initialize the **ADS1115** 16-bit ADC via I2C at address `0x49`  
 - Convert raw ADC values into actual voltage readings using a defined voltage divider ratio  
 - Use the `LovyanGFX` library to display real-time status updates  
 - Implement a basic I2C scanner to detect connected peripherals  
