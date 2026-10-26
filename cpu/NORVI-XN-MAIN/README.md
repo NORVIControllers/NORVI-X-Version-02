@@ -261,7 +261,7 @@ Verified By: Kaveesha
 ## Support
 - Documentation: https://norvi.io/docs  
 - For additional support or inquiries, contact the NORVI support team.
-- Datasheet: 
+
 ---
 
 ## License

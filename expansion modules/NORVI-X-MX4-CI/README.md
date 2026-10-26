@@ -247,7 +247,7 @@ Installation:
 ## Support
 - Documentation: https://norvi.io/docs  
 - For additional support or inquiries, contact the NORVI support team.
-- Datasheet: 
+- Datasheet: https://norvi.io/docs/norvi-x-mx4-ci-datasheet/ 
 ---
 
 ## License
