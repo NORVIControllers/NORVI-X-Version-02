@@ -1,7 +1,7 @@
 ---
 type: Test_program
 function: analog_output_dac_write_0-10v_0-20ma (4-channel analog output control over I2C with touch screen and TFT display, master side)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1],[NORVI X-CPU-ESPS3-X2],[NORVI X-CPU-ESPS3-X3]
+compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1, NORVI X-CPU-ESPS3-X2, NORVI X-CPU-ESPS3-X3]
 compatible_modules: [NORVI X-AQ4 (4-channel analog output expansion: CH1/CH2 0-10V voltage outputs, CH3/CH4 0-20mA current outputs, I2C slave co-processor driving the onboard DAC)]
 status: completed
 last_updated: 2026-10-22
