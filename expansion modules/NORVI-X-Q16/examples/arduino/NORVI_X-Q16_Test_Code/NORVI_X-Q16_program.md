@@ -1,7 +1,7 @@
 ---
 type: Test_program
 function: transistor_output_test (16-channel transistor output test via PCA9555 with TFT display)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1],[NORVI X-CPU-ESPS3-X2],[NORVI X-CPU-ESPS3-X3]
+compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1, NORVI X-CPU-ESPS3-X2, NORVI X-CPU-ESPS3-X3]
 compatible_modules: [NORVI X-Q16 (16-channel transistor output expansion, PCA9555 I2C IO expander)]
 status: completed
 last_updated: 2026-10-22
