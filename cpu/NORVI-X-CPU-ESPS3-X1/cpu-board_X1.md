@@ -212,9 +212,8 @@ NORVI X1 is the CPU module for NORVI's modular controller lineup, running on an 
 | SPI.h | 2.0.0 | Arduino Library Manager | SPI Communication |
 | FS.h | 2.0.0 | Arduino Library Manager | File System Functions |
 | SD.h | 2.0.0 | Arduino Library Manager | SD Card |
-| TFT_eSPI.h | 2.5.0 | Arduino Library Manager/Available in Github Repo | Display |
+| LovyanGFX.h | 1.2.25 | Arduino Library Manager/Available in Github Repo | Display |
 | CST816S.h | 1.3.0 | Arduino Library Manager/Available in Github Repo | Display Touch Panel |
-| Free_Fonts.h |  | Attached to the test Firmware | Display Fonts |
 
 
 ## Board Package / Toolchain Setup

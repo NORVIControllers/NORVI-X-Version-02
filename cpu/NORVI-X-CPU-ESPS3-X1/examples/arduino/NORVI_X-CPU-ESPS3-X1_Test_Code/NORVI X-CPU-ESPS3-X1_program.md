@@ -2,15 +2,15 @@
 type: Test_program
 function: system_diagnostics_test (I2C scan, RTC, SD, Ethernet/NTP, WiFi AP, TFT+touch, RS485 loopback, IO expander test)
 compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1 (V2, N16R2)]
-compatible_modules: [PCA9539 (I2C 0x75, onboard IO expander), PCA9536 (I2C 0x41, onboard IO expander), DS3231 RTC, SD card (SPI), Ethernet controller (SPI), CST816S capacitive touch, TFT_eSPI display]
+compatible_modules: [PCA9539 (I2C 0x75, onboard IO expander), PCA9536 (I2C 0x41, onboard IO expander), DS3231 RTC, SD card (SPI), Ethernet controller (SPI), CST816S capacitive touch, TFT display]
 status: completed
-last_updated: 2026-08-17
+last_updated: 2026-10-22
 ---
 
 # Example: System Diagnostics / Board Bring-Up Test
 
 ## What this does
-On boot, scans the I2C bus, checks the RTC, SD card, and Ethernet (with an NTP time sync), brings up WiFi as a SoftAP, runs a TFT display + touch benchmark/test, exercises an RS485 loopback message, and cycles all digital outputs and the onboard IO-expander LEDs/buttons — then loops re-displaying touch data and re-toggling outputs.
+On boot, scans the I2C bus, checks the RTC, SD card, and Ethernet (with an NTP time sync), brings up WiFi as a SoftAP, runs a TFT display + touch benchmark/test (display driven by the **LovyanGFX** library), exercises an RS485 loopback message, and cycles all digital outputs and the onboard IO-expander LEDs/buttons — then loops re-displaying touch data and re-toggling outputs.
 
 > Note: this sketch is a multi-function factory test, not a single-purpose example. Per the template convention it should ideally be split into separate scoped files (e.g. `i2c_scan.ino`, `rtc_check.ino`, `sd_check.ino`, `ethernet_ntp.ino`, `wifi_softap.ino`, `tft_touch_test.ino`, `rs485_loopback.ino`, `io_output_test.ino`) — kept together here as it exists in the source firmware.
 
@@ -23,9 +23,11 @@ On boot, scans the I2C bus, checks the RTC, SD card, and Ethernet (with an NTP t
   - microSD card (SPI)
   - Ethernet controller (SPI)
   - CST816S capacitive touch controller (I2C)
-  - TFT display (via TFT_eSPI, SPI)
-  - RS485 transceiver (UART2 + flow-control pin)
-- Wiring / pin map (from firmware `#define`s):
+  - TFT display (via LovyanGFX, SPI)
+  - RS485 transceiver (UART2, automatic direction control — no dedicated flow-control/FC pin)
+- Wiring / pin map (from firmware `#define`s and the `LGFX` class):
+
+> RS485 note: the RS485 transceiver on this design uses **automatic direction control**. There is no dedicated flow-control (FC/DE-RE) pin, so no GPIO is assigned to it and the firmware does not toggle one — only RXD (GPIO 16) and TXD (GPIO 15) are used.
 
 | Signal | GPIO |
 |---|---|
@@ -33,12 +35,13 @@ On boot, scans the I2C bus, checks the RTC, SD card, and Ethernet (with an NTP t
 | I2C SCL | 9 |
 | RS485 RXD | 16 |
 | RS485 TXD | 15 |
-| RS485 Flow Control (FC) | 41 |
 | Ethernet CS | 1 |
 | SPI MISO | 13 |
 | SPI MOSI | 11 |
 | SPI SCLK | 12 |
 | TFT Display CS | 45 |
+| TFT Display DC | 46 |
+| TFT Display RST (shared with touch RST) | 47 |
 | SD Card CS | 42 |
 | IO Expander Reset (PORT_RST) | 38 |
 | OUTPUT5 / 6 / 7 / 10 / 14 / 21 / 39 / 40 | 5, 6, 7, 10, 14, 21, 39, 40 (direct GPIO) |
@@ -53,22 +56,21 @@ On boot, scans the I2C bus, checks the RTC, SD card, and Ethernet (with an NTP t
 ## Libraries required
 | Library | Version |
 |---|---|
-| Wire (ESP32 core) | 2.0.0 |
-| WiFi (ESP32 core) | 2.0.0 |
+| Wire (ESP32 core) | 3.x (bundled with core) |
+| WiFi (ESP32 core) | 3.x (bundled with core) |
 | Ethernet | 2.0.2 |
 | PCA9539-master | legacy (no version tag) |
 | Arduino-PCA9536-main | 2.0.1 |
 | RTClib | 2.1.1 |
 | Adafruit_BusIO | 1.17.1 |
-| SPI (ESP32 core) | 2.0.0 |
-| FS (ESP32 core) | 2.0.0 |
-| SD (ESP32 core) | 2.0.0 |
-| SPIFFS (ESP32 core) | 2.0.0 |
-| TFT_eSPI | 2.5.0 |
+| SPI (ESP32 core) | 3.x (bundled with core) |
+| FS (ESP32 core) | 3.x (bundled with core) |
+| SD (ESP32 core) | 3.x (bundled with core) |
+| SPIFFS (ESP32 core) | 3.x (bundled with core) |
+| LovyanGFX | 1.2.25 |
 | CST816S | 1.3.0 |
-| Free_Fonts.h | local header, bundled with sketch |
 
-**ESP32 Board Package version:** 2.0.12
+**ESP32 Board Package version:** any 3.x version (ESP32 Arduino core 3.x, IDF 5.x). The core-bundled libraries (Wire, WiFi, SPI, FS, SD, SPIFFS) use the version of the installed 3.x board package.
 
 **Arduino IDE Board/Tools settings:**
 | Setting | Value |
@@ -105,9 +107,66 @@ On boot, scans the I2C bus, checks the RTC, SD card, and Ethernet (with an NTP t
 #include <SPI.h>
 #include "FS.h"
 #include "SD.h"
-#include "TFT_eSPI.h"
 #include <CST816S.h>
-#include "Free_Fonts.h" // Include the header file attached to this sketch
+
+// ===================== LovyanGFX display setup =====================
+#define LGFX_USE_V1
+#include <LovyanGFX.hpp>
+
+class LGFX : public lgfx::LGFX_Device {
+  lgfx::Panel_ST7789 _panel;
+  lgfx::Bus_SPI      _bus;
+public:
+  LGFX(void) {
+    { // ---- Display shares the main SPI bus with SD + Ethernet ----
+      auto c = _bus.config();
+      c.spi_host    = SPI2_HOST;   // FSPI - same host the Arduino SPI object uses on the S3
+      c.spi_mode    = 0;
+      c.freq_write  = 27000000;    // keep modest on a shared bus (SD/W5500 present)
+      c.freq_read   = 16000000;
+      c.spi_3wire   = false;
+      c.use_lock    = true;
+      c.dma_channel = SPI_DMA_CH_AUTO;
+      c.pin_sclk    = 12;          // shared SCLK
+      c.pin_mosi    = 11;          // shared MOSI
+      c.pin_miso    = 13;          // shared MISO
+      c.pin_dc      = 46;          // TFT_DC (display-only)
+      _bus.config(c);
+      _panel.setBus(&_bus);
+    }
+    { auto c = _panel.config();
+      c.pin_cs   = 45;             // TFT_CS
+      c.pin_rst  = 47;             // TFT_RST (shared with touch RST)
+      c.pin_busy = -1;
+      c.panel_width  = 240;
+      c.panel_height = 320;        // set 240 if your panel is 240x240
+      c.offset_x = 0;
+      c.offset_y = 0;
+      c.offset_rotation = 0;
+      c.readable   = false;
+      c.invert     = true;         // panel inversion ON
+      c.rgb_order  = false;        // RGB order (red/blue were swapped on the panel with true)
+      c.dlen_16bit = false;
+      c.bus_shared = true;         // IMPORTANT: SD/Ethernet share this bus
+      _panel.config(c);
+    }
+    setPanel(&_panel);
+  }
+};
+LGFX tft;
+
+// LovyanGFX already defines these, but guard just in case
+#ifndef TFT_BLACK
+#define TFT_BLACK   0x0000
+#define TFT_WHITE   0xFFFF
+#define TFT_RED     0xF800
+#define TFT_GREEN   0x07E0
+#define TFT_BLUE    0x001F
+#define TFT_YELLOW  0xFFE0
+#define TFT_CYAN    0x07FF
+#define TFT_MAGENTA 0xF81F
+#endif
+// ==================================================================
 
 PCA9539 ioport(0x75);// Base address starts at 0x74 for A0 = H and A1 = L
 
@@ -116,7 +175,6 @@ PCA9539 ioport(0x75);// Base address starts at 0x74 for A0 = H and A1 = L
 
 #define RS485_RXD 16
 #define RS485_TXD 15
-#define RS485_FC  41
 
 #define ETH_CS 1
 
@@ -142,9 +200,9 @@ PCA9539 ioport(0x75);// Base address starts at 0x74 for A0 = H and A1 = L
 #define OUTPUT6  6
 #define OUTPUT7  7
 #define OUTPUT10 10
-#define OUTPUT11 35     
-#define OUTPUT12 36     
-#define OUTPUT13 37     
+#define OUTPUT11 35     //********
+#define OUTPUT12 36     // Not alowed with PSRAM
+#define OUTPUT13 37     //*******
 #define OUTPUT14 14
 #define OUTPUT21 21
 #define OUTPUT39 39
@@ -161,8 +219,6 @@ PCA9539 ioport(0x75);// Base address starts at 0x74 for A0 = H and A1 = L
 PCA9536 io;
 
 CST816S touch(8, 9, 47, 48);  // sda, scl, rst, irq
-
-TFT_eSPI tft = TFT_eSPI();
 
 // SD Paramerters
 #define SD_chipSelect 42
@@ -215,7 +271,6 @@ void setup() {
   Serial.println(touch.data.versionInfo[2]);
 
   pinMode(PORT_RST,OUTPUT);
-  pinMode(RS485_FC, OUTPUT); 
   digitalWrite(PORT_RST, HIGH);   // Enable PCA9539
   delay(100);
 
@@ -265,7 +320,7 @@ void setup() {
   delay(300);
   wifi_test();
 
-  Serial.println("TFT_eSPI library test!");
+  Serial.println("LovyanGFX library test!");
   tft.init();
 
   tn = micros();
@@ -334,12 +389,12 @@ void setup() {
 
   yield(); Serial.println(F("Done!")); yield();
 
-  tft.begin();
   tft.setRotation(0);
+  tft.setTextDatum(lgfx::textdatum_t::baseline_left);   // cursor Y = text baseline, same layout as before
 
   tft.fillScreen(TFT_BLACK);            // Clear screen
   tft.setTextColor(TFT_YELLOW);
-  tft.setFreeFont(FSB12);
+  tft.setFont(&fonts::FreeSerifBold12pt7b);
   
   tft.setCursor(60, 20);      //xpos, ypos
   tft.print("NORVI");
@@ -352,7 +407,7 @@ void loop() {
 
   tft.fillScreen(TFT_BLACK);            // Clear screen
   tft.setTextColor(TFT_YELLOW);
-  tft.setFreeFont(FSB12);
+  tft.setFont(&fonts::FreeSerifBold12pt7b);
   
   tft.setCursor(60, 20);      //xpos, ypos
   tft.print("NORVI");
@@ -362,7 +417,7 @@ void loop() {
 
   tft.setTextColor(TFT_RED);
   tft.setCursor(10, 70);      //xpos, ypos
-  tft.setFreeFont(FSB9);
+  tft.setFont(&fonts::FreeSansBold9pt7b);
   tft.print("Touch Test");
   
 
@@ -394,10 +449,8 @@ void loop() {
 
   }
   
-  digitalWrite(RS485_FC, HIGH);                  // Make FLOW CONTROL pin HIGH       
   Serial2.println("RS485 01 SUCCESS");     // Send RS485 SUCCESS serially
   delay(500);                              // Wait for transmission of data
-  digitalWrite(RS485_FC, LOW);                   // Receiving mode ON                                                 
   
   while (Serial2.available()) {  // Check if data is available
     char c = Serial2.read();     // Read data from RS485
@@ -689,6 +742,8 @@ unsigned long testFillScreen() {
 unsigned long testText() {
   tft.fillScreen(TFT_BLACK);
   unsigned long start = micros();
+  tft.setTextDatum(lgfx::textdatum_t::top_left);   // built-in font is positioned from its top-left
+  tft.setFont(&fonts::Font0);   // built-in GLCD-style font for the benchmark text
   tft.setCursor(0, 0);
   tft.setTextColor(TFT_WHITE);  tft.setTextSize(1);
   tft.println("Hello World!");
@@ -702,7 +757,6 @@ unsigned long testText() {
   tft.println("Groop");
   tft.setTextSize(2);
   tft.println("I implore thee,");
-  //tft.setTextColor(TFT_GREEN,TFT_BLACK);
   tft.setTextSize(1);
   tft.println("my foonting turlingdromes.");
   tft.println("And hooptiously drangle me");
@@ -962,7 +1016,7 @@ On the Serial Monitor (115200 baud):
 - SD card mount status, card type, and size in MB (or `NO SD card`)
 - Ethernet DHCP result; if successful, NTP query with `Seconds since Jan 1 1900`, `Unix time`, and formatted UTC time
 - WiFi SoftAP setup: MAC address (used as SSID), AP IP address, SSID confirmation
-- TFT_eSPI benchmark timings in microseconds for each graphics primitive
+- `LovyanGFX library test!` followed by benchmark timings in microseconds for each graphics primitive
 - In loop(): `RS485 01 SUCCESS` echoed back over RS485; `IO TEST`, PB1/PB3 read states; touch gesture/points/event/x/y when touched
 
 On the TFT display: "NORVI" / "CONTROLLERS" splash, then "Touch Test" with live touch coordinates.
@@ -974,6 +1028,7 @@ On the TFT display: "NORVI" / "CONTROLLERS" splash, then "Touch Test" with live 
 | `Couldn't find RTC` | DS3231 not wired/detected on I2C bus | Check I2C bus and RTC module connection |
 | `NO SD card` | No card inserted| Insert SD card; verify SPI wiring and CS pin 42 |
 | `Failed to configure Ethernet using DHCP` / `Ethernet shield was not found` |cable unplugged (`Ethernet cable is not connected.`) |check cable/link, verify DHCP availability |
+| Display colors wrong or inverted | Panel invert / RGB order setting differs from the panel in use | Toggle `c.invert` or `c.rgb_order` in the `LGFX` class |
 | Upload fails / board not detected | Wrong Board/Tools settings | Match settings exactly to the table above (ESP32S3 Dev Module, UART0/Hardware CDC, QSPI PSRAM, 16MB flash, Huge APP partition) |
 
 ## Related Files

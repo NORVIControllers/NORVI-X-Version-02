@@ -1,14 +1,72 @@
 /*
  * NPD-NORVI X-AI4 V2 (N16R2)
- * 2026.08.24
+ * 2026.10.22
 */
+
 
 #include <Wire.h>
 #include <WiFi.h>
 #include <SPI.h>
 #include <Adafruit_ADS1X15.h>
-#include "TFT_eSPI.h"
-#include "Free_Fonts.h"
+
+// ===================== LovyanGFX display setup =====================
+#define LGFX_USE_V1
+#include <LovyanGFX.hpp>
+
+class LGFX : public lgfx::LGFX_Device {
+  lgfx::Panel_ST7789 _panel;
+  lgfx::Bus_SPI      _bus;
+public:
+  LGFX(void) {
+    { // ---- Display shares the main SPI bus with SD + Ethernet ----
+      auto c = _bus.config();
+      c.spi_host    = SPI2_HOST;   // FSPI - same host the Arduino SPI object uses on the S3
+      c.spi_mode    = 0;
+      c.freq_write  = 27000000;    // keep modest on a shared bus (SD/W5500 present)
+      c.freq_read   = 16000000;
+      c.spi_3wire   = false;
+      c.use_lock    = true;
+      c.dma_channel = SPI_DMA_CH_AUTO;
+      c.pin_sclk    = 12;          // shared SCLK
+      c.pin_mosi    = 11;          // shared MOSI
+      c.pin_miso    = 13;          // shared MISO
+      c.pin_dc      = 46;          // TFT_DC (display-only)
+      _bus.config(c);
+      _panel.setBus(&_bus);
+    }
+    { auto c = _panel.config();
+      c.pin_cs   = 45;             // TFT_CS
+      c.pin_rst  = 47;             // TFT_RST (shared with touch RST)
+      c.pin_busy = -1;
+      c.panel_width  = 240;
+      c.panel_height = 320;        // set 240 if your panel is 240x240
+      c.offset_x = 0;
+      c.offset_y = 0;
+      c.offset_rotation = 0;
+      c.readable   = false;
+      c.invert     = true;         // panel inversion ON
+      c.rgb_order  = true;         // BGR order
+      c.dlen_16bit = false;
+      c.bus_shared = true;         // IMPORTANT: SD/Ethernet share this bus
+      _panel.config(c);
+    }
+    setPanel(&_panel);
+  }
+};
+LGFX tft;
+
+// LovyanGFX already defines these, but guard just in case
+#ifndef TFT_BLACK
+#define TFT_BLACK   0x0000
+#define TFT_WHITE   0xFFFF
+#define TFT_RED     0xF800
+#define TFT_GREEN   0x07E0
+#define TFT_BLUE    0x001F
+#define TFT_YELLOW  0xFFE0
+#define TFT_CYAN    0x07FF
+#define TFT_MAGENTA 0xF81F
+#endif
+// ==================================================================
 
 #define SDA   8
 #define SCL   9
@@ -17,7 +75,7 @@
 #define MOSI  11
 #define SCLK  12
 
-#define DSP_CS 47
+#define DSP_CS 45
 
 /*
  ADS1115 ADDRESS
@@ -31,8 +89,6 @@
 Adafruit_ADS1115 ads1;
 
 const float mA_Factor = 4.096 / 3269.826;
-
-TFT_eSPI tft = TFT_eSPI();
 
 
 unsigned long lastDisplayUpdate = 0;
@@ -91,17 +147,14 @@ void setup() {
 
   // TFT
   tft.init();
-  tft.begin();
   tft.setRotation(0);
-  
-  LOGO_PRINT();
-  
+
   tft.fillScreen(TFT_BLACK);
 
 
   // TITLE
   tft.setTextColor(TFT_GREEN);
-  tft.setFreeFont(FSB12);
+  tft.setFont(&fonts::FreeSerifBold12pt7b);
   
   tft.setCursor(60, 20);
   tft.print("NORVI");
@@ -110,7 +163,7 @@ void setup() {
   tft.print("X-AI4 TEST");
 
   // CURRENT LABELS
-  tft.setFreeFont(FSB9);
+  tft.setFont(&fonts::FreeSerifBold9pt7b);
   tft.setTextColor(TFT_YELLOW, TFT_BLACK);
   tft.setCursor(10, 85);
   tft.print("CURRENT 1 :");
@@ -296,24 +349,4 @@ void I2C_SCAN() {
     Serial.println("Scanning complete");
 
   }
-}
-
-
-//logo
-void LOGO_PRINT() {
-  tft.setSwapBytes(true);
-
-  // BLACK BACKGROUND
-  tft.fillScreen(TFT_WHITE);
-
-  // DISPLAY IMAGE
-  tft.pushImage(
-    0,
-    0,
-    IMAGE_WIDTH,
-    IMAGE_HEIGHT,
-    image_data
-  );
-delay(2000);
-  tft.fillScreen(TFT_BLACK);
 }

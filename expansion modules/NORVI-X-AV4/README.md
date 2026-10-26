@@ -6,7 +6,7 @@ This example demonstrates how to use the **Analog Input Expansion Module (AV4)**
 The purpose of this example is to show how to: 
 - Initialize ADS1115: Set up 16-bit ADC via I2C at 0x48
 - Read the status of 4 analog inputs
-- Setup Display: Initialize TFT_eSPI and display pins
+- Setup Display: Initialize LovyanGFX and display pins
 
 This example can be used as a starting point for developers building applications with NORVI controllers. 
 
@@ -27,7 +27,7 @@ The example demonstrates how to:
 - Read the status of analog inputs **AIN1 to AIN4**  
 - Initialize the **ADS1115** 16-bit ADC via I2C at address `0x48`  
 - Convert raw ADC values into actual voltage readings using a defined voltage divider ratio  
-- Use the `TFT_eSPI` library to display real-time status updates  
+- Use the `LovyanGFX` library to display real-time status updates  
 - Implement a basic I2C scanner to detect connected peripherals  
 
 The current input states are displayed on the built-in TFT display and printed to the Serial Monitor.
@@ -155,8 +155,10 @@ Install the following libraries before compiling:
 
 - Wire  
 - Adafruit_ADS1X15  
-- TFT_eSPI  
+- LovyanGFX 
 - CST816S  
+
+The previous version utilized the TFT_eSPI library for TFT display control. In the updated version, LovyanGFX   has replaced TFT_eSPI as the TFT display library.   
 
 **Download Libraries:**  https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries 
 

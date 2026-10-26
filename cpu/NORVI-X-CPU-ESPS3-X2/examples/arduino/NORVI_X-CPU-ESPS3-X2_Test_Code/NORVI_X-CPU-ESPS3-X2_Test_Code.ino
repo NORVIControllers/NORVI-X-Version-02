@@ -11,9 +11,66 @@
 #include <SPI.h>
 #include "FS.h"
 #include "SD.h"
-#include "TFT_eSPI.h"
 #include <CST816S.h>
-#include "Free_Fonts.h" // Include the header file attached to this sketch
+
+// ===================== LovyanGFX display setup =====================
+#define LGFX_USE_V1
+#include <LovyanGFX.hpp>
+
+class LGFX : public lgfx::LGFX_Device {
+  lgfx::Panel_ST7789 _panel;
+  lgfx::Bus_SPI      _bus;
+public:
+  LGFX(void) {
+    { // ---- Display shares the main SPI bus with SD + Ethernet ----
+      auto c = _bus.config();
+      c.spi_host    = SPI2_HOST;   // FSPI - same host the Arduino SPI object uses on the S3
+      c.spi_mode    = 0;
+      c.freq_write  = 27000000;    // keep modest on a shared bus (SD/W5500 present)
+      c.freq_read   = 16000000;
+      c.spi_3wire   = false;
+      c.use_lock    = true;
+      c.dma_channel = SPI_DMA_CH_AUTO;
+      c.pin_sclk    = 12;          // shared SCLK
+      c.pin_mosi    = 11;          // shared MOSI
+      c.pin_miso    = 13;          // shared MISO
+      c.pin_dc      = 46;          // TFT_DC (display-only)
+      _bus.config(c);
+      _panel.setBus(&_bus);
+    }
+    { auto c = _panel.config();
+      c.pin_cs   = 45;             // TFT_CS
+      c.pin_rst  = 47;             // TFT_RST (shared with touch RST)
+      c.pin_busy = -1;
+      c.panel_width  = 240;
+      c.panel_height = 320;        // set 240 if your panel is 240x240
+      c.offset_x = 0;
+      c.offset_y = 0;
+      c.offset_rotation = 0;
+      c.readable   = false;
+      c.invert     = true;         // panel inversion ON
+      c.rgb_order  = false;        // RGB order (red/blue were swapped on the panel with true)
+      c.dlen_16bit = false;
+      c.bus_shared = true;         // IMPORTANT: SD/Ethernet share this bus
+      _panel.config(c);
+    }
+    setPanel(&_panel);
+  }
+};
+LGFX tft;
+
+// LovyanGFX already defines these, but guard just in case
+#ifndef TFT_BLACK
+#define TFT_BLACK   0x0000
+#define TFT_WHITE   0xFFFF
+#define TFT_RED     0xF800
+#define TFT_GREEN   0x07E0
+#define TFT_BLUE    0x001F
+#define TFT_YELLOW  0xFFE0
+#define TFT_CYAN    0x07FF
+#define TFT_MAGENTA 0xF81F
+#endif
+// ==================================================================
 
 PCA9539 ioport(0x75);// Base address starts at 0x74 for A0 = L and A1 = L
 
@@ -22,7 +79,6 @@ PCA9539 ioport(0x75);// Base address starts at 0x74 for A0 = L and A1 = L
 
 #define RS485_RXD 16
 #define RS485_TXD 15
-#define RS485_FC  41
 
 #define ETH_CS 1
 
@@ -68,8 +124,6 @@ PCA9536 io;
 
 CST816S touch(8, 9, 47, 48);  // sda, scl, rst, irq
 
-TFT_eSPI tft = TFT_eSPI();
-
 // SD Paramerters
 #define SD_chipSelect 42
 
@@ -103,14 +157,14 @@ void setup() {
   delay(1000);
   Serial2.begin(115200, SERIAL_8N1,RS485_RXD,RS485_TXD); 
 
-  Serial.println("NPD-NORVI X CPU-EC25");
+  Serial.println("NPD-NORVI X CPU-A7672G");
   delay(1000);
 
   pinMode(GSM_RST, OUTPUT); 
 
   digitalWrite(GSM_RST, LOW);
   delay(200);
-  //digitalWrite(GSM_RST, HIGH);
+  digitalWrite(GSM_RST, HIGH);
   delay(2000);
 
   Wire.begin(SDA, SCL);
@@ -130,7 +184,6 @@ void setup() {
   Serial.println(touch.data.versionInfo[2]);
 
   pinMode(PORT_RST,OUTPUT);
-  pinMode(RS485_FC, OUTPUT); 
   digitalWrite(PORT_RST, HIGH);   // Enable PCA9539
   delay(100);
 
@@ -179,7 +232,7 @@ void setup() {
   delay(300);
   wifi_test();
 
-  Serial.println("TFT_eSPI library test!");
+  Serial.println("LovyanGFX library test!");
   tft.init();
 
   tn = micros();
@@ -248,12 +301,12 @@ void setup() {
 
   yield(); Serial.println(F("Done!")); yield();
 
-  tft.begin();
   tft.setRotation(0);
+  tft.setTextDatum(lgfx::textdatum_t::baseline_left);   // cursor Y = text baseline, same layout as before
 
   tft.fillScreen(TFT_BLACK);            // Clear screen
   tft.setTextColor(TFT_YELLOW);
-  tft.setFreeFont(FSB12);
+  tft.setFont(&fonts::FreeSerifBold12pt7b);
   
   tft.setCursor(60, 20);      //xpos, ypos
   tft.print("NORVI");
@@ -266,7 +319,7 @@ void loop() {
 
   tft.fillScreen(TFT_BLACK);            // Clear screen
   tft.setTextColor(TFT_YELLOW);
-  tft.setFreeFont(FSB12);
+  tft.setFont(&fonts::FreeSerifBold12pt7b);
   
   tft.setCursor(60, 20);      //xpos, ypos
   tft.print("NORVI");
@@ -276,7 +329,7 @@ void loop() {
 
   tft.setTextColor(TFT_RED);
   tft.setCursor(10, 70);      //xpos, ypos
-  tft.setFreeFont(FSB9);
+  tft.setFont(&fonts::FreeSansBold9pt7b);
   tft.print("Touch Test");
   
 
@@ -318,10 +371,8 @@ void loop() {
     Serial.write(inByte);
   }
 
-  digitalWrite(RS485_FC, HIGH);                  // Make FLOW CONTROL pin HIGH       
   Serial2.println("RS485 01 SUCCESS");     // Send RS485 SUCCESS serially
   delay(500);                              // Wait for transmission of data
-  digitalWrite(RS485_FC, LOW);                   // Receiving mode ON                                                 
   
   while (Serial2.available()) {  // Check if data is available
     char c = Serial2.read();     // Read data from RS485
@@ -611,6 +662,8 @@ unsigned long testFillScreen() {
 unsigned long testText() {
   tft.fillScreen(TFT_BLACK);
   unsigned long start = micros();
+  tft.setTextDatum(lgfx::textdatum_t::top_left);   // built-in font is positioned from its top-left
+  tft.setFont(&fonts::Font0);   // built-in GLCD-style font for the benchmark text
   tft.setCursor(0, 0);
   tft.setTextColor(TFT_WHITE);  tft.setTextSize(1);
   tft.println("Hello World!");

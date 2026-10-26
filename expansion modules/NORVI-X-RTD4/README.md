@@ -9,7 +9,7 @@ The purpose of this example is to show how to:
 - Integrate the RTD4 Module into the NORVI X CPU.
 - Read temperature values from up to 4 independent RTD sensors (PT100 or PT1000).
 - Display the measured temperature for each channel on the Serial Monitor.
-- Setup Display: Initialize TFT_eSPI and display pins.
+- Setup Display: Initialize LovyanGFX and display pins.
 
 This example can be used as a starting point for developers building applications with NORVI controllers.
 
@@ -175,9 +175,10 @@ Install the following libraries before compiling.
 
 - `Wire` (I2C communication)
 - `SPI`
-- `TFT_eSPI` (TFT display driver)
-- `Free_Fonts.h` (font definitions used with TFT_eSPI)
+- `LovyanGFX` (TFT display driver)
 - `CST816S` (capacitive touch controller driver)
+
+The previous version utilized the TFT_eSPI library for TFT display control. In the updated version, LovyanGFX   has replaced TFT_eSPI as the TFT display library.   
 
 **Download Libraries:**
 https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries

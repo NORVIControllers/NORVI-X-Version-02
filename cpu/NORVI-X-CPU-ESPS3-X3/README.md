@@ -94,8 +94,10 @@ Install the following libraries before compiling:
 - Wire, WiFi, Ethernet, SD, SPI (standard libraries)  
 - PCA9539  
 - RTClib (for DS3231)  
-- TFT_eSPI  
+- LovyanGFX 
 - CST816S  
+
+The previous version utilized the TFT_eSPI library for TFT display control. In the updated version, LovyanGFX   has replaced TFT_eSPI as the TFT display library.  
 
 **Download Libraries:** https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries
 

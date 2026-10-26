@@ -8,11 +8,68 @@
 #include <WiFi.h>
 #include <SPI.h>
 #include "clsPCA9555.h"
-#include "TFT_eSPI.h"
 #include <CST816S.h>
-#include "Free_Fonts.h" // Include the header file attached to this sketch
 
-PCA9555 ioport(0x27); // Base address starts at 0x74 for A0 = L and A1 = L
+// ===================== LovyanGFX display setup =====================
+#define LGFX_USE_V1
+#include <LovyanGFX.hpp>
+
+class LGFX : public lgfx::LGFX_Device {
+  lgfx::Panel_ST7789 _panel;
+  lgfx::Bus_SPI      _bus;
+public:
+  LGFX(void) {
+    { // ---- Display shares the main SPI bus with SD + Ethernet ----
+      auto c = _bus.config();
+      c.spi_host    = SPI2_HOST;   // FSPI - same host the Arduino SPI object uses on the S3
+      c.spi_mode    = 0;
+      c.freq_write  = 27000000;    // keep modest on a shared bus (SD/W5500 present)
+      c.freq_read   = 16000000;
+      c.spi_3wire   = false;
+      c.use_lock    = true;
+      c.dma_channel = SPI_DMA_CH_AUTO;
+      c.pin_sclk    = 12;          // shared SCLK
+      c.pin_mosi    = 11;          // shared MOSI
+      c.pin_miso    = 13;          // shared MISO
+      c.pin_dc      = 46;          // TFT_DC (display-only)
+      _bus.config(c);
+      _panel.setBus(&_bus);
+    }
+    { auto c = _panel.config();
+      c.pin_cs   = 45;             // TFT_CS
+      c.pin_rst  = 47;             // TFT_RST (shared with touch RST)
+      c.pin_busy = -1;
+      c.panel_width  = 240;
+      c.panel_height = 320;        // set 240 if your panel is 240x240
+      c.offset_x = 0;
+      c.offset_y = 0;
+      c.offset_rotation = 0;
+      c.readable   = false;
+      c.invert     = true;         // panel inversion ON
+      c.rgb_order  = false;        // RGB order (red/blue were swapped on the panel with true)
+      c.dlen_16bit = false;
+      c.bus_shared = true;         // IMPORTANT: SD/Ethernet share this bus
+      _panel.config(c);
+    }
+    setPanel(&_panel);
+  }
+};
+LGFX tft;
+
+// LovyanGFX already defines these, but guard just in case
+#ifndef TFT_BLACK
+#define TFT_BLACK   0x0000
+#define TFT_WHITE   0xFFFF
+#define TFT_RED     0xF800
+#define TFT_GREEN   0x07E0
+#define TFT_BLUE    0x001F
+#define TFT_YELLOW  0xFFE0
+#define TFT_CYAN    0x07FF
+#define TFT_MAGENTA 0xF81F
+#endif
+// ==================================================================
+
+PCA9555 ioport(0x27); // I2C address 0x27 (A0 = A1 = A2 = HIGH); range 0x20 - 0x27
 
 #define SDA   8
 #define SCL   9
@@ -43,8 +100,6 @@ PCA9555 ioport(0x27); // Base address starts at 0x74 for A0 = L and A1 = L
 
 
 CST816S touch(8, 9, 47, 48);  // sda, scl, rst, irq
-
-TFT_eSPI tft = TFT_eSPI();
 
 int oldState[16] =
 {
@@ -91,8 +146,8 @@ void setup() {
   delay(1000);
 
   tft.init();
-  tft.begin();
   tft.setRotation(0);
+  tft.setTextDatum(lgfx::textdatum_t::baseline_left);   // cursor Y = text baseline, same layout as before
   drawLabel();
 
 
@@ -165,26 +220,26 @@ void drawLabel()
   tft.fillScreen(TFT_BLACK);
 
   tft.setTextColor(TFT_YELLOW, TFT_BLACK);
-  tft.setFreeFont(FSB12);
+  tft.setFont(&fonts::FreeSerifBold12pt7b);
 
-  tft.setCursor(50,20);
-  tft.print("  NORVI");
+  tft.setCursor(62,20);
+  tft.print("NORVI");
 
   tft.setCursor(10,45);
   tft.print("X-DI16 INPUT TEST");
 
-  tft.setFreeFont(FSB9);
+  tft.setFont(&fonts::FreeSansBold9pt7b);
   tft.setTextColor(TFT_WHITE, TFT_BLACK);
 
   // Left side
-  tft.setCursor(0,80);   tft.print("DI1:");
-  tft.setCursor(0,110);  tft.print("DI2:");
-  tft.setCursor(0,140);  tft.print("DI3:");
-  tft.setCursor(0,170);  tft.print("DI4:");
-  tft.setCursor(0,200);  tft.print("DI5:");
-  tft.setCursor(0,230);  tft.print("DI6:");
-  tft.setCursor(0,260);  tft.print("DI7:");
-  tft.setCursor(0,290);  tft.print("DI8:");
+  tft.setCursor(10,80);   tft.print("DI1:");
+  tft.setCursor(10,110);  tft.print("DI2:");
+  tft.setCursor(10,140);  tft.print("DI3:");
+  tft.setCursor(10,170);  tft.print("DI4:");
+  tft.setCursor(10,200);  tft.print("DI5:");
+  tft.setCursor(10,230);  tft.print("DI6:");
+  tft.setCursor(10,260);  tft.print("DI7:");
+  tft.setCursor(10,290);  tft.print("DI8:");
 
   // Right side
   tft.setCursor(120,80);   tft.print("DI9:");

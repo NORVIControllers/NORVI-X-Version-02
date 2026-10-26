@@ -6,7 +6,6 @@ This example demonstrates how to use the **Analog Output Expansion Module (AQ4)*
 The purpose of this example is to show how to:  
 - Integrate the **AQ4 Module** into the NORVI X CPU  
 - Read the status of 4 analog outputs using a 12-bit Digital-to-Analog Converter (DAC)  
-- Setup the display: Initialize **TFT_eSPI** and display pins  
 
 This example can be used as a starting point for developers building applications with NORVI controllers.  
 
@@ -27,14 +26,12 @@ The example demonstrates how to:
 - Configure and control 4 channels of analog outputs
   
 - Convert raw DAC values into actual voltage/current readings using a defined ratio
-  
-- Use the **TFT_eSPI** library to display real-time status updates
-  
+   
 - Implement a basic I2C scanner to detect connected peripherals  
 
 The program continuously reads: **AOUT 1 to AOUT 4**  
 
-The current output states are shown on the built‑in TFT display and Serial Monitor.
+The current output states are shown on the built‑in Serial Monitor.
 
 ---
 
@@ -123,7 +120,6 @@ For CH3:
 ### 5. Observe the Display
 When the program runs successfully:
 - The controller initializes the display  
-- The TFT display will show: `"NORVI EXPE-AQ4 TEST"`  
 - The status of each output is displayed  
 - Values update continuously as outputs change  
 - The Serial Monitor displays the confirmation of the command, requested value, and corresponding 12-bit DAC code (0–4095)  
@@ -154,9 +150,9 @@ CH1 = 5.00 V | DAC Code = 2047
 
 ## How to Validate the Example
 1. Apply a valid output signal to one of the analog channels.  
-2. Observe the output on the TFT screen or Serial Monitor to see the voltage/current change.  
+2. Observe the output on the Serial Monitor to see the voltage/current change.  
 3. Increase or decrease the signal and confirm the displayed value updates accordingly.  
-4. Confirm that changing the output state reflects correctly in both TFT and Serial Monitor.
+4. Confirm that changing the output state reflects correctly in both Serial Monitor.
 
 ---
 
@@ -178,6 +174,10 @@ Analog Output Voltage: 0–10 V / 4–20 mA
 ## Required Libraries
 Install the following libraries before compiling:  
 - Wire  
+- SPI
+- LovyanGFX 
+
+The previous version utilized the TFT_eSPI library for TFT display control. In the updated version, LovyanGFX   has replaced TFT_eSPI as the TFT display library. 
 
 **Download Libraries:**  https://github.com/NORVIControllers/NORVI-X-Version-01/tree/main/libraries
 

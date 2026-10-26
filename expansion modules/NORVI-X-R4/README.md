@@ -189,8 +189,10 @@ Install the following libraries before compiling:
 - WiFi  
 - SPI  
 - PCA9538 Library  
-- TFT_eSPI  
 - CST816S  
+- LovyanGFX
+
+The previous version utilized the TFT_eSPI library for TFT display control. In the updated version, LovyanGFX   has replaced TFT_eSPI as the TFT display library. 
 
 Download Libraries:  
 https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries 

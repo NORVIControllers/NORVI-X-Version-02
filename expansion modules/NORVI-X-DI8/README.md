@@ -192,9 +192,10 @@ Install the following libraries before compiling:
 - Wire
 - WiFi
 - SPI
-- TFT_eSPI
+- LovyanGFX   
 - CST816S
-- Free_Fonts.h
+
+The previous version utilized the TFT_eSPI library for TFT display control. In the updated version, LovyanGFX   has replaced TFT_eSPI as the TFT display library. 
 
 Library Download:  
 https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries 

@@ -6,7 +6,7 @@ This example demonstrates how to use the **Transistor Outputs (Fast Transistor O
 The purpose of this example is to show how to:
 
 - Integrate and control the output modules on the **NORVI X CPU**
-- Initialize and use the integrated **TFT display** using the **TFT_eSPI library**
+- Initialize and use the integrated **TFT display** using the **LovyanGFX library**
 - Manage the Direct GPIO digital outputs (TR1–TR4) on the NORVI X CPU.
 
 This example can be used as a starting point for developers building applications with **NORVI controllers**.
@@ -154,14 +154,14 @@ Example:
 
 Install the following libraries before compiling:
 
-```
-Wire
-WiFi
-SPI
-TFT_eSPI
-CST816S
-```
+- Wire
+- WiFi
+- SPI
+- CST816S
+- LovyanGFX
 
+The previous version utilized the TFT_eSPI library for TFT display control. In the updated version, LovyanGFX   has replaced TFT_eSPI as the TFT display library.   
+ 
 Library Download:  https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries  
 
 ### Installation

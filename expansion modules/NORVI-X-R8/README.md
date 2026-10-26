@@ -15,7 +15,7 @@ This example shows how to:
 - Integrate the R8 Module into the NORVI X CPU  
 - Control and monitor the status of 8 relay outputs  
 - Initialize the PCA9538 I/O Expander at address `0x73`  
-- Use the `TFT_eSPI` library to display real-time status updates  
+- Use the `LovyanGFX` library to display real-time status updates  
 - Implement a basic I2C scanner to detect connected peripherals  
 
 The program continuously reads 
@@ -178,8 +178,10 @@ Install the following libraries before compiling:
 - WiFi  
 - SPI  
 - PCA9538 Library  
-- TFT_eSPI  
-- CST816S  
+- CST816S
+- LovyanGFX
+
+The previous version utilized the TFT_eSPI library for TFT display control. In the updated version, LovyanGFX   has replaced TFT_eSPI as the TFT display library.   
 
 **Download Libraries:**  
 https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries 

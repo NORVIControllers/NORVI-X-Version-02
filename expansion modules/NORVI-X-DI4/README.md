@@ -67,10 +67,8 @@ No additional user configuration is required before uploading this example.
 ### 3. Upload the Program
 
 1. Open the example program in **Arduino IDE / PlatformIO**
-2. Download the Free_Fonts.h file from the NORVI X Version 02 GitHub repository and place it in the same folder as the Arduino sketch.
-   Repository : https://github.com/NORVIControllers/NORVI-X-Version-02 
-4. Select the correct **board** and **port**
-5. Upload the program to the **NORVI controller**
+2. Select the correct **board** and **port**
+3. Upload the program to the **NORVI controller**
 
 ---
 
@@ -129,8 +127,10 @@ Install the following libraries before compiling:
 - Wire  
 - WiFi  
 - SPI  
-- TFT_eSPI  
+- LovyanGFX   
 - CST816S  
+
+The previous version utilized the TFT_eSPI library for TFT display control. In the updated version, LovyanGFX   has replaced TFT_eSPI as the TFT display library. 
 
 Library Download:  
 https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries

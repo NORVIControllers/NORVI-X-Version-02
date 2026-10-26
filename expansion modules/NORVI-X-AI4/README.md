@@ -8,7 +8,7 @@ The purpose of this example is to show how to:
 
 - **Initialize ADS1115** — Set up the 16-bit ADC via I2C
 - **Read the status of 4 analog inputs**
-- **Setup Display** — Initialize TFT_eSPI and display pins
+- **Setup Display** — Initialize LovyanGFX and display pins
 
 This example can be used as a starting point for developers building applications with NORVI controllers.
 
@@ -31,7 +31,7 @@ The example demonstrates how to:
 - Integrate the AI4 Module into the NORVI X CPU
 - Control and monitor the status of Analog Inputs
 - Convert raw ADC values into actual voltage readings using a defined voltage divider ratio
-- Use the TFT_eSPI library to display real-time status updates
+- Use the LovyanGFX library to display real-time status updates
 - Implement a basic I2C scanner to detect connected peripherals
 
 The program continuously reads:
@@ -141,8 +141,10 @@ Install the following libraries before compiling:
 - `Wire`
 - `SPI`
 - `Adafruit_ADS1X15`
-- `TFT_eSPI`
+- `LovyanGFX`
 - `CST816S`
+
+The previous version utilized the TFT_eSPI library for TFT display control. In the updated version, LovyanGFX   has replaced TFT_eSPI as the TFT display library.   
 
 **Download Libraries:**
 [https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries](https://github.com/NORVIControllers/NORVI-X-Version-02/tree/main/libraries)
@@ -181,8 +183,8 @@ Verified By: Kaveesha
 
 ## Support
 
-- Documentation: [https://norvi.io/](https://norvi.io/)
-- Datasheet: [https://norvi.io/docs/norvi-x-ai4-datasheet/](https://norvi.io/docs/norvi-x-ai4-datasheet/)
+- Documentation: https://norvi.io/
+- Datasheet: https://norvi.io/docs/norvi-x-ai4-datasheet/ 
 - For additional support or inquiries, contact the NORVI support team.
 
 ---

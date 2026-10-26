@@ -7,9 +7,66 @@
 #include <WiFi.h>
 #include <SPI.h>
 #include <Adafruit_ADS1X15.h>
-#include "TFT_eSPI.h"
-#include "Free_Fonts.h"
 #include <math.h>
+
+// ===================== LovyanGFX display setup =====================
+#define LGFX_USE_V1
+#include <LovyanGFX.hpp>
+
+class LGFX : public lgfx::LGFX_Device {
+  lgfx::Panel_ST7789 _panel;
+  lgfx::Bus_SPI      _bus;
+public:
+  LGFX(void) {
+    { // ---- Display shares the main SPI bus with SD + Ethernet ----
+      auto c = _bus.config();
+      c.spi_host    = SPI2_HOST;   // FSPI - same host the Arduino SPI object uses on the S3
+      c.spi_mode    = 0;
+      c.freq_write  = 27000000;    // keep modest on a shared bus (SD/W5500 present)
+      c.freq_read   = 16000000;
+      c.spi_3wire   = false;
+      c.use_lock    = true;
+      c.dma_channel = SPI_DMA_CH_AUTO;
+      c.pin_sclk    = 12;          // shared SCLK
+      c.pin_mosi    = 11;          // shared MOSI
+      c.pin_miso    = 13;          // shared MISO
+      c.pin_dc      = 46;          // TFT_DC (display-only)
+      _bus.config(c);
+      _panel.setBus(&_bus);
+    }
+    { auto c = _panel.config();
+      c.pin_cs   = 45;             // TFT_CS
+      c.pin_rst  = 47;             // TFT_RST (shared with touch RST)
+      c.pin_busy = -1;
+      c.panel_width  = 240;
+      c.panel_height = 320;        // set 240 if your panel is 240x240
+      c.offset_x = 0;
+      c.offset_y = 0;
+      c.offset_rotation = 0;
+      c.readable   = false;
+      c.invert     = true;         // panel inversion ON
+      c.rgb_order  = false;        // RGB order (red/blue were swapped on the panel with true)
+      c.dlen_16bit = false;
+      c.bus_shared = true;         // IMPORTANT: SD/Ethernet share this bus
+      _panel.config(c);
+    }
+    setPanel(&_panel);
+  }
+};
+LGFX tft;
+
+// LovyanGFX already defines these, but guard just in case
+#ifndef TFT_BLACK
+#define TFT_BLACK   0x0000
+#define TFT_WHITE   0xFFFF
+#define TFT_RED     0xF800
+#define TFT_GREEN   0x07E0
+#define TFT_BLUE    0x001F
+#define TFT_YELLOW  0xFFE0
+#define TFT_CYAN    0x07FF
+#define TFT_MAGENTA 0xF81F
+#endif
+// ==================================================================
 
 #define SDA   8
 #define SCL   9
@@ -18,7 +75,7 @@
 #define MOSI  11
 #define SCLK  12
 
-#define DSP_CS 47
+#define DSP_CS 45
 
 /*
  ADS1115 ADDRESS
@@ -41,9 +98,6 @@ const float THERMISTOR_NOMINAL   = 10000.0;  // NTC resistance at 25C
 const float TEMPERATURE_NOMINAL  = 25.0;     // reference temp, deg C
 const float B_COEFFICIENT        = 3950.0;   // beta value from your NTC's datasheet -- CHECK/UPDATE THIS
 
-TFT_eSPI tft = TFT_eSPI();
-
-
 unsigned long lastDisplayUpdate = 0;
 
 const unsigned long DISPLAY_INTERVAL = 100;
@@ -54,6 +108,11 @@ float lastDisplay1 = -999.0;
 float lastDisplay2 = -999.0;
 float lastDisplay3 = -999.0;
 
+unsigned long lastSerialPrint = 0;
+const unsigned long SERIAL_INTERVAL = 500;   // print temperatures to Serial twice a second
+
+bool adsFound = false;                       // set in setup(), shown on the TFT if false
+
 
 void setup() {
 
@@ -61,7 +120,7 @@ void setup() {
   delay(200);
 
   Serial.println();
-  Serial.println("NPD-NORVI X-AI4 NTC TEMPERATURE TEST");
+  Serial.println("NPD-NORVI X-T4 NTC TEMPERATURE TEST");
   
   // i2c
   Wire.begin(SDA, SCL);
@@ -73,6 +132,7 @@ void setup() {
   }
   else {
 
+    adsFound = true;
     Serial.println("ADS1115 OK");
 
   }
@@ -100,17 +160,15 @@ void setup() {
 
   // TFT
   tft.init();
-  tft.begin();
   tft.setRotation(0);
-  
-  LOGO_PRINT();
-  
+  tft.setTextDatum(lgfx::textdatum_t::baseline_left);   // cursor Y = text baseline, same layout as before
+
   tft.fillScreen(TFT_BLACK);
 
 
   // TITLE
   tft.setTextColor(TFT_GREEN);
-  tft.setFreeFont(FSB12);
+  tft.setFont(&fonts::FreeSerifBold12pt7b);
   
   tft.setCursor(40, 20);
   tft.print("NORVI X-T4");
@@ -118,7 +176,7 @@ void setup() {
 
 
   // TEMPERATURE LABELS
-  tft.setFreeFont(FSB9);
+  tft.setFont(&fonts::FreeSansBold9pt7b);
   tft.setTextColor(TFT_YELLOW, TFT_BLACK);
   tft.setCursor(10, 85);
   tft.print("TEMP 1 :");
@@ -160,7 +218,22 @@ void setup() {
 
   tft.print(ADS_ADDR, HEX);
 
+  // ADS1115 NOT FOUND WARNING
+  if (!adsFound) {
+    tft.setTextColor(TFT_RED, TFT_BLACK);
+    tft.setCursor(10, 245);
+    tft.print("ADS1115 NOT FOUND");
+  }
+
   Serial.println("TEST START");
+}
+
+
+// True when a displayed value must be redrawn. NAN never equals NAN, so it is compared separately
+// (otherwise a missing sensor would be redrawn on every update and flicker).
+bool tempChanged(float now, float shown) {
+  if (isnan(now) || isnan(shown)) return isnan(now) != isnan(shown);
+  return now != shown;
 }
 
 
@@ -221,16 +294,21 @@ void loop() {
   float temp3 = readThermistorC(adc3);
 
   // SERIAL MONITOR
-  Serial.printf(
-    "T1: %.2f C  "
-    "T2: %.2f C  "
-    "T3: %.2f C  "
-    "T4: %.2f C\n",
-    temp0,
-    temp1,
-    temp2,
-    temp3
-  );
+  if (millis() - lastSerialPrint >= SERIAL_INTERVAL) {
+
+    lastSerialPrint = millis();
+
+    Serial.printf(
+      "T1: %.2f C  "
+      "T2: %.2f C  "
+      "T3: %.2f C  "
+      "T4: %.2f C\n",
+      temp0,
+      temp1,
+      temp2,
+      temp3
+    );
+  }
 
   // TFT UPDATE
   if (millis() - lastDisplayUpdate >= DISPLAY_INTERVAL) {
@@ -243,7 +321,7 @@ void loop() {
 
 
     // TEMP 1
-    if (temp0 != lastDisplay0) {
+    if (tempChanged(temp0, lastDisplay0)) {
 
       tft.fillRect(140, 68, 100, 25, TFT_BLACK);
       if (isnan(temp0)) {
@@ -259,7 +337,7 @@ void loop() {
     }
     
     // TEMP 2
-    if (temp1 != lastDisplay1) {
+    if (tempChanged(temp1, lastDisplay1)) {
       tft.fillRect(140, 98, 100, 25, TFT_BLACK);
       if (isnan(temp1)) {
         tft.setCursor(145, 115);
@@ -274,7 +352,7 @@ void loop() {
     }
 
     // TEMP 3
-    if (temp2 != lastDisplay2) {
+    if (tempChanged(temp2, lastDisplay2)) {
       tft.fillRect(140, 128, 100, 25, TFT_BLACK);
       if (isnan(temp2)) {
         tft.setCursor(145, 145);
@@ -289,7 +367,7 @@ void loop() {
     }
 
     // TEMP 4
-    if (temp3 != lastDisplay3) {
+    if (tempChanged(temp3, lastDisplay3)) {
       tft.fillRect(140, 158, 100, 25, TFT_BLACK);
       if (isnan(temp3)) {
         tft.setCursor(145, 175);
@@ -362,24 +440,4 @@ void I2C_SCAN() {
     Serial.println("Scanning complete");
 
   }
-}
-
-
-//logo
-void LOGO_PRINT() {
-  tft.setSwapBytes(true);
-
-  // BLACK BACKGROUND
-  tft.fillScreen(TFT_WHITE);
-
-  // DISPLAY IMAGE
-  tft.pushImage(
-    0,
-    0,
-    IMAGE_WIDTH,
-    IMAGE_HEIGHT,
-    image_data
-  );
-delay(2000);
-  tft.fillScreen(TFT_BLACK);
 }

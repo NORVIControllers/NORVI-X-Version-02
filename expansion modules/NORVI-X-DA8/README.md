@@ -176,9 +176,7 @@ Install the following libraries before compiling:
 - Wire
 - WiFi
 - SPI
-- TFT_eSPI
-- CST816S
-- Free_Fonts
+- LovyanGFX
 
 Library Download:  https://github.com/NORVIControllers/NORVI-X-Version-01/tree/main/libraries 
 
