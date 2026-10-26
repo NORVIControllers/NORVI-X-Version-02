@@ -25,7 +25,7 @@ The example demonstrates how to:
 
 - Integrate the AV4 Module into the NORVI X CPU  
 - Read the status of analog inputs **AIN1 to AIN4**  
-- Initialize the **ADS1115** 16-bit ADC via I2C at address `0x48`  
+- Initialize the **ADS1115** 16-bit ADC via I2C at address `0x49`  
 - Convert raw ADC values into actual voltage readings using a defined voltage divider ratio  
 - Use the `LovyanGFX` library to display real-time status updates  
 - Implement a basic I2C scanner to detect connected peripherals  
