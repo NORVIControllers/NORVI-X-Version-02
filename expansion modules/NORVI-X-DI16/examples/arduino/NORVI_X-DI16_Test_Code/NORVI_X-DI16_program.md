@@ -1,7 +1,10 @@
 ---
 type: Test_program
 function: digital_input_read (16-channel digital input test via PCA9555 with TFT display)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1 (N16R2, PSRAM-QSPI)],[NORVI X-CPU-ESPS3-X2 (N16R2, PSRAM-QSPI)],[NORVI X-CPU-ESPS3-X3 (N16R2, PSRAM-QSPI)]
+compatible_cpu_boards:
+  - "NORVI X-CPU-ESPS3-X1 (N16R2, PSRAM-QSPI)"
+  - "NORVI X-CPU-ESPS3-X2 (N16R2, PSRAM-QSPI)"
+  - "NORVI X-CPU-ESPS3-X3 (N16R2, PSRAM-QSPI)"
 compatible_modules: [NORVI X-DI16 (16-channel digital input expansion, PCA9555 I2C IO expander)]
 status: completed
 last_updated: 2026-10-21
