@@ -1,7 +1,9 @@
 ---
 type: Test_program
 function: system_diagnostics_test (I2C scan, RTC, SD, Ethernet/NTP, WiFi AP, TFT+touch, GSM passthrough, RS485 loopback, IO expander test)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X2],[NORVI X-CPU-ESPS3-X3]
+compatible_cpu_boards:
+  - "NORVI X-CPU-ESPS3-X2"
+  - "NORVI X-CPU-ESPS3-X3"
 compatible_modules: [PCA9539 (I2C 0x75, onboard IO expander), PCA9536 (I2C 0x41, onboard IO expander), DS3231 RTC, SD card (SPI), Ethernet controller (SPI), SIMCom A7672G GSM/LTE modem (UART) in X2 and Quectel EC25 4G modem in X3 , CST816S capacitive touch, TFT display]
 status: completed
 last_updated: 2026-10-22
