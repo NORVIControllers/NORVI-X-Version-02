@@ -77,6 +77,7 @@ if (!ads1.begin(ADS1115_ADDR)) {
     Serial.println("Failed to initialize ADS 1 .");
     // while (1);
   }
+ ads1.setGain(GAIN_ONE);
   Serial.println("NORVI X-AV4 READY");
 }
 
