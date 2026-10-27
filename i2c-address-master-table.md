@@ -37,7 +37,11 @@ for collisions in one lookup instead of cross-referencing individual datasheets.
 | X-RTD4 4-Ch RTD Input | 0x3F | 0x30-0x3F | DIP |  |
 | X-DA8 8-Ch Digital AC Input | 0x73 | 0x70-0x73 | DIP |  |
 | X-T4 4-Ch Thermistor Input | 0x48 | 0x48,0x49,0x4A,0x4B | DIP |  |
-| X-MX4 — 4-Channel Digital Input, 4-Channel Analog Input, 4-Channel Transistor Output | 0X4A, 0X71 | 0x48,0x49,0x4A,0x4B, 0x70,0x71,0x72,0x73 | DIP | Has two DIP switches|
+| X-MX4-CI — 4-Channel Digital Input, 4-Channel Analog Input, 4-Channel Transistor Output | 0X4A, 0X71 | 0x48,0x49,0x4A,0x4B, 0x70,0x71,0x72,0x73 | DIP | Has two DIP switches|
+| X-DI4 | none | none | - | Direct GPIO 5, 6, 7, 10. Not with X-UART-IO |
+| X-UART-IO | none | none | - | Direct GPIO 5, 6, 7, 10. Not with X-DI4 |
+| X-Q4 | none | none | - | Direct GPIO 14, 35, 41 and 13 or 37. Max one per CPU |
+| X-LW | none | none | - | UART (Serial1), no I2C |
 
 
 ## Known Conflict Pairs
