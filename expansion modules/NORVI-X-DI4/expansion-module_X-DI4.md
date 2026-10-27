@@ -46,6 +46,15 @@ The NORVI X-DI4 adds four optically isolated 24V DC digital inputs to a NORVI X 
 > the module's primary I2C device), document that chip the same way as the CPU board's
 > IO Expander subsection — address, direction register, and a local pin mapping table.
 
+## GPIO Usage
+Direct GPIO, no I2C address. Cannot be used together with X-UART-IO.
+| Function | CPU GPIO |
+|---|---|
+| Digital Input 1 | 5 |
+| Digital Input 2 | 6 |
+| Digital Input 3 | 7 |
+| Digital Input 4 | 10 |
+
 ## Register Map (if applicable)
 | Register | Address | R/W | Description |
 |---|---|---|---|
