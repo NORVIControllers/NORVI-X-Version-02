@@ -247,6 +247,6 @@ All modules below work with this CPU. Choose by chip family and I2C address limi
 | NORVI X-LW | NORVI-X-LW | LoRaWAN node (RAK4630): sends JSON text from Serial1 as LoRaWAN uplinks | [details](../../expansion%20modules/NORVI-X-LW/expansion-module_X-LW.md) |
 
 ## Related Files
-- Expansion modules compatible with X1: `expansion-module_X-DI4.md`,`expansion-module_X-R4.md`,`expansion-module_X-Q4.md`,`expansion-module_X-AI4.md`,`expansion-module_X-AV4.md`,`expansion-module_X-AQ4.md`,`expansion-module_X-DI8.md`,`expansion-module_X-DI16.md`,`expansion-module_X-R8.md`,`expansion-module_X-Q16.md`,`expansion-module_X-TC4.md`, `expansion-module_X-Q8.md`,`expansion-module_X-T4.md`,`expansion-module_X-UART-IO.md`,`expansion-module_X-RTD4.md`,`expansion-module_X-BKO.md`,`expansion-module_X-CAN1.md`,`expansion-module_X-DA8.md`(one file per module)
+- Expansion modules compatible with XN: `expansion-module_X-DI4.md`,`expansion-module_X-R4.md`,`expansion-module_X-Q4.md`,`expansion-module_X-AI4.md`,`expansion-module_X-AV4.md`,`expansion-module_X-AQ4.md`,`expansion-module_X-DI8.md`,`expansion-module_X-DI16.md`,`expansion-module_X-R8.md`,`expansion-module_X-Q16.md`,`expansion-module_X-TC4.md`, `expansion-module_X-Q8.md`,`expansion-module_X-T4.md`,`expansion-module_X-UART-IO.md`,`expansion-module_X-RTD4.md`,`expansion-module_X-BKO.md`,`expansion-module_X-CAN1.md`,`expansion-module_X-DA8.md`(one file per module)
 - Master I2C address table: `i2c-address-master-table.md`
 - Example programs: `NORVI XN-MAIN_program.md` (one file per function)
