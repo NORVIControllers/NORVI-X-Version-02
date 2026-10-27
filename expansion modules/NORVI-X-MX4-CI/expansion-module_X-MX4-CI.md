@@ -3,7 +3,7 @@ type: expansion_module
 product: NORVI X-MX4-CI — 4-Channel Digital Input, 4-Channel Analog Input, 4-Channel Transistor Output Expansion
 compatible_cpu_boards: [X1, X2, X3, XN]
 bus: I2C
-use_summary: Mixed I/O: 4 digital inputs, 4 transistor outputs and 4 analog current inputs in one module
+use_summary: Mixed I/O with 4 digital inputs, 4 transistor outputs and 4 analog current inputs in one module
 keywords: [mixed IO, combo module, digital input, analog input, transistor output]
 status: released
 last_updated: 2026-09-04
