@@ -1,8 +1,10 @@
 ---
 type: expansion_module
 product: NORVI X-AI4 — 4-Channel 4-20mA Current Input Expansion
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
 bus: I2C
+use_summary: Reads four 4–20 mA current-loop sensors (pressure, flow, level)
+keywords: [4-20mA, current loop, analog input]
 status: Released
 last_updated: 2026-08-25
 ---
