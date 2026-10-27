@@ -5,7 +5,7 @@ compatible_cpu_boards: [X1, X2, X3, XN]
 bus: I2C
 use_summary: Reads four K-type thermocouples (furnaces, ovens, exhaust)
 keywords: [thermocouple, K type, high temperature]
-status: Released
+status: released
 last_updated: 2026-08-25
 ---
 
