@@ -1,8 +1,10 @@
 ---
 type: expansion_module
 product: NORVI X-T4 — 4-Channel Thermistor Input Expansion
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
 bus: I2C
+use_summary: Reads four NTC thermistor temperature sensors (HVAC, refrigeration)
+ keywords: [thermistor, NTC, temperature]
 status: Released
 last_updated: 2026-09-04
 ---
