@@ -5,7 +5,7 @@ compatible_cpu_boards: [X1, X2, X3, XN]
 bus: I2C
 use_summary: Outputs four analog signals, 0–10 V or 4–20 mA, for actuators and process control
 keywords: [analog output, DAC, 0-10V output, 4-20mA output]
-status: Released
+status: released
 last_updated: 2026-08-25
 ---
 
