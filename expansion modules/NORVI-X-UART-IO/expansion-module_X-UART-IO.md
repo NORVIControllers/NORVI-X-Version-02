@@ -50,6 +50,15 @@ The NORVI X-UARTIO is a serial communication expansion module for the NORVI X in
 > the module's primary I2C device), document that chip the same way as the CPU board's
 > IO Expander subsection — address, direction register, and a local pin mapping table.
 
+## GPIO Usage
+Direct GPIO, no I2C address. Can be used with X-DI4 or X-UART-IO, but not with both together.
+| Function | CPU GPIO |
+|---|---|
+| Transistor 1 | 14 |
+| Transistor 2 | 35 |
+| Transistor 3 | 41 |
+| Transistor 4 | 37 |
+
 ## Register Map (if applicable)
 | Register | Address | R/W | Description |
 |---|---|---|---|
