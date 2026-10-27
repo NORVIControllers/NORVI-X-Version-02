@@ -5,7 +5,7 @@ compatible_cpu_boards: [X1, X2, X3, XN]
 bus: I2C
 use_summary: Reads four NTC thermistor temperature sensors (HVAC, refrigeration)
 keywords: [thermistor, NTC, temperature]
-status: Released
+status: released
 last_updated: 2026-09-04
 ---
 
