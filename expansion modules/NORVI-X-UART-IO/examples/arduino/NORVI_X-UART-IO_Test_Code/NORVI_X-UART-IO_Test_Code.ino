@@ -11,8 +11,6 @@ uint8_t lastMode = 0;
 
 // ================= PINS =================
 #define PORT_RST 38
-#define OUTPUT1 10
-#define OUTPUT2 14
 #define UARTA_RXD 5
 #define UARTA_TXD 6
 #define UARTA_SEL PCA_B3
@@ -37,8 +35,6 @@ void setup() {
 
   ioport.pinMode(UARTA_SEL, OUTPUT);
   ioport.pinMode(UARTB_SEL, OUTPUT);
-  pinMode(OUTPUT1, OUTPUT);
-  pinMode(OUTPUT2, OUTPUT);
   printCommands();
   I2C_SCAN();
 }
@@ -73,11 +69,6 @@ void loop() {
     case 1: firstCode(); break;
     case 2: secondCode(); break;
   }
-   digitalWrite(OUTPUT1, HIGH);
-  digitalWrite(OUTPUT2, HIGH);
-    delay(200);
-  digitalWrite(OUTPUT1, LOW);
-  digitalWrite(OUTPUT2, LOW);
 }
 
 // ================= MODE 1 =================
