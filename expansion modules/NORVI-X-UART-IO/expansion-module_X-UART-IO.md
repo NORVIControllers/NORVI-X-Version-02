@@ -5,7 +5,7 @@ compatible_cpu_boards: [X1, X2, X3, XN]
 bus: Direct GPIO
 use_summary: Adds RS485, RS232 and extra UART ports (Modbus RTU, serial devices); direct GPIO
 keywords: [RS485, RS232, UART, serial, Modbus RTU]
-status: relaesed
+status: released
 last_updated: 2026-08-25
 ---
 
