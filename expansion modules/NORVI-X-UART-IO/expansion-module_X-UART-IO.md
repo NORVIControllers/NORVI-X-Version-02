@@ -69,8 +69,6 @@ PCA9539 ioport(0x75);
 uint8_t mode = 1, lastMode = 0;
 
 #define PORT_RST   38
-#define OUTPUT1    10
-#define OUTPUT2    14
 
 #define UARTA_RXD  5
 #define UARTA_TXD  6
@@ -96,9 +94,6 @@ void setup()
 
   ioport.pinMode(UARTA_SEL, OUTPUT);
   ioport.pinMode(UARTB_SEL, OUTPUT);
-
-  pinMode(OUTPUT1, OUTPUT);
-  pinMode(OUTPUT2, OUTPUT);
 
   Serial.println("1 -> RS485 / RS232   2 -> UART1 / UART2");
 }
@@ -131,13 +126,6 @@ void loop()
     test(UARTA_SEL, HIGH, Serial1, "UARTA SUCCESS", 50, 0);
     test(UARTB_SEL, HIGH, Serial2, "UARTB SUCCESS", 50, 0);
   }
-
-  digitalWrite(OUTPUT1, HIGH);
-  digitalWrite(OUTPUT2, HIGH);
-  delay(200);
-  digitalWrite(OUTPUT1, LOW);
-  digitalWrite(OUTPUT2, LOW);
-
   delay(1000);
 }
 
