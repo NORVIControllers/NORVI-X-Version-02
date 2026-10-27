@@ -5,7 +5,7 @@ compatible_cpu_boards: [X1, X2, X3 XN]
 bus: I2C
 use_summary: Switches four loads with relay outputs (pumps, valves, contactors)
 keywords: [relay, relay output, switch load]
-status: Released
+status: released
 last_updated: 2026-08-25
 ---
 
