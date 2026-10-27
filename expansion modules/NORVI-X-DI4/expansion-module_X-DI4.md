@@ -5,7 +5,7 @@ compatible_cpu_boards: [X1, X2, X3, XN]
 bus: Direct GPIO
 use_summary: Reads four fast 24 V DC digital inputs (pulse, PWM, encoder); direct GPIO, no I2C
 keywords: [digital input, pulse counter, encoder, PWM input]
-status: relaesed
+status: released
 last_updated: 2026-08-24
 ---
 
