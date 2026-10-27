@@ -29,7 +29,7 @@ The NORVI X-DI4 adds four optically isolated 24V DC digital inputs to a NORVI X 
 | Default address | NA |
 | Address selectable? | No, fixed |
 | Address range if selectable | NA |
-| Conflicts with | Only one DI4/UART-IO module per system |
+| Conflicts with | X-DI4 and X-UART-IO cannot be used together (shared GPIO 5, 6, 7, 10). |
 
 > This address also gets added to `i2c-address-master-table.md` — that table is the conflict-check reference across the whole product line.
 
