@@ -5,7 +5,7 @@ compatible_cpu_boards: [X1, X2, X3, XN]
 bus: I2C
 use_summary: Reads four PT100 / PT1000 RTD temperature sensors (precise temperature)
 keywords: [RTD, PT100, PT1000, precision temperature]
-status: Released
+status: released
 last_updated: 2026-08-26
 ---
 
