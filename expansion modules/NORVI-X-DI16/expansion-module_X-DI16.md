@@ -1,7 +1,9 @@
 ---
 type: expansion_module
 product: NORVI X-DI16 — 16-Channel Digital Input Expansion
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
+use_summary: Reads sixteen isolated 24 V DC digital inputs
+keywords: [digital input, switch input]
 bus: I2C
 status: released
 last_updated: 2026-08-24
