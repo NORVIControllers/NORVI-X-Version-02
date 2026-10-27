@@ -1,8 +1,10 @@
 ---
 type: expansion_module
 product: NORVI X-LW — LoraWan Expansion
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
 bus: UART
+use_summary: LoRaWAN node (RAK4630): sends JSON text from Serial1 as LoRaWAN uplinks
+keywords: [LoRa, LoRaWAN, wireless, radio]
 status: released
 last_updated: 2026-08-25
 ---
