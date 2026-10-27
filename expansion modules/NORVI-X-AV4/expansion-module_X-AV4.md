@@ -1,7 +1,9 @@
 ---
 type: expansion_module
 product: NORVI X-AV4 — 4-Channel 0-10V Voltage Input Expansion
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
+use_summary: Reads four 0–10 V analog voltage signals
+keywords: [0-10V, voltage input, analog input]
 bus: I2C
 status: Released
 last_updated: 2026-08-25
