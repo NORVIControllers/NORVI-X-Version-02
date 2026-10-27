@@ -19,7 +19,7 @@ Typical use: HVAC, industrial temperature monitoring, refrigeration, and environ
 | Spec | Value |
 |---|---|
 | Channels | 4 |
-| Signal type | dry contact |
+| Signal type | wet contact |
 | Resolution | 16bit |
 | Input protection | NA |
 | Power draw | 40mA |
