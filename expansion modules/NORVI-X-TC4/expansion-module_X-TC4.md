@@ -18,7 +18,7 @@ The NORVI X-TC4 is a 4-channel thermocouple input module for the NORVI X industr
 | Spec | Value |
 |---|---|
 | Channels | 4 |
-| Signal type | wet contact  |
+| Signal type | dry contact  |
 | Resolution | 12bit |
 | Input protection | NA |
 | Power draw | 80mA |
