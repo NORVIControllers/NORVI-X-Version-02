@@ -1,7 +1,9 @@
 ---
 type: expansion_module
 product: NORVI X-DI4 — 4-Channel Digital Input Expansion
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
+use_summary: Reads four fast 24 V DC digital inputs (pulse, PWM, encoder); direct GPIO, no I2C
+keywords: [digital input, pulse counter, encoder, PWM input]
 bus: Direct GPIO
 status: relaesed
 last_updated: 2026-08-24
