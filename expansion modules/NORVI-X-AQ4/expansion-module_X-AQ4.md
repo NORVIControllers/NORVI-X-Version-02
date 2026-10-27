@@ -1,7 +1,9 @@
 ---
 type: expansion_module
 product: NORVI X-AQ4 — 4-Channel Analog Output(0-10V or 4-20mA) Expansion]
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
+use_summary: Outputs four analog signals, 0–10 V or 4–20 mA, for actuators and process control
+keywords: [analog output, DAC, 0-10V output, 4-20mA output]
 bus: I2C
 status: Released
 last_updated: 2026-08-25
