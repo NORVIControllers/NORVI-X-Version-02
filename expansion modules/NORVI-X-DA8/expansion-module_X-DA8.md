@@ -2,9 +2,9 @@
 type: expansion_module
 product: NORVI X-DA8 — 8-Channel AC Digital Input Expansion
 compatible_cpu_boards: [X1, X2, X3, XN]
+bus: I2C
 use_summary: Reads eight 110/230 V AC digital inputs (optically isolated)
 keywords: [AC input, mains input, 230V input, 110V input]
-bus: I2C
 status: released
 last_updated: 2026-08-25
 ---
