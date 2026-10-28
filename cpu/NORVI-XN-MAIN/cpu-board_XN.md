@@ -208,7 +208,7 @@ NORVI XN-MAIN is the CPU module for NORVI's modular controller lineup, running o
 | EthernetUdp.h |  | Comes with ESP32 core | Send and receive UDP packets through the Ethernet |
 | PCA9539.h |  | Available in Github Repo | GPIO Expander |
 | PCA9536D.h | 2.0.1 | Arduino Library Manager/Available in Github Repo | GPIO Expander |
-| RTClib.h | 2.1.4 | Arduino Library Manager/Available in Github Repo | RTC |
+| RTClib.h | 2.1.1 | Arduino Library Manager/Available in Github Repo | RTC |
 | SPI.h | 2.0.0 | Arduino Library Manager | SPI Communication |
 | FS.h | 2.0.0 | Arduino Library Manager | File System Functions |
 | SD.h | 2.0.0 | Arduino Library Manager | SD Card |
