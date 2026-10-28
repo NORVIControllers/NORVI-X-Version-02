@@ -81,7 +81,7 @@ NORVI X2 is the CPU module for NORVI's modular controller lineup, running on an 
 > Availability is per-interface, not blanket — see each subsection.
 
 ### Ethernet
-**Availability:** Standard on all NORVI X CPU boards (X1/X2/X3)
+**Availability:** Standard on all NORVI X CPU boards (X1/X2/X3/XN)
 | Property | Value |
 |---|---|
 | PHY chip | W5500 |
@@ -90,7 +90,7 @@ NORVI X2 is the CPU module for NORVI's modular controller lineup, running on an 
 | Connector | RJ45 |
 
 ### RS-485
-**Availability:** Standard on all NORVI X CPU boards (X1/X2/X3)
+**Availability:** Standard on all NORVI X CPU boards (X1/X2/X3XN)
 | Property | Value |
 |---|---|
 | UART tied to | TX-IO15 RX-IO16 |
@@ -251,7 +251,7 @@ All modules below work with this CPU. Choose by chip family and I2C address limi
 | NORVI X-DI16 | NORVI-X-DI16 | Reads sixteen isolated 24 V DC digital inputs | [details](../../expansion%20modules/NORVI-X-DI16/expansion-module_X-DI16.md) |
 | NORVI X-DA8 | NORVI-X-DA8 | Reads eight 110/230 V AC digital inputs (optically isolated) | [details](../../expansion%20modules/NORVI-X-DA8/expansion-module_X-DA8.md) |
 | NORVI X-MX4-CI | NORVI-X-MX4-CI | Mixed I/O: 4 digital inputs, 4 transistor outputs and 4 analog current inputs in one module | [details](../../expansion%20modules/NORVI-X-MX4-CI/expansion-module_X-MX4-CI.md) |
-| NORVI X-UART-IO | NORVI-X-UART-IO | Adds RS485, RS232 and extra UART ports (Modbus RTU, serial devices); direct GPIO | [details](../../expansion%20modules/NORVI-X-UART-IO/expansion-module_X-UART-IO.md) |
+| NORVI X-UART-IO | NORVI-X-UART-IO | Adds RS232, a second RS485 channel and extra UART ports on top of the CPU's built-in RS485; direct GPIO | [details](../../expansion%20modules/NORVI-X-UART-IO/expansion-module_X-UART-IO.md) |
 | NORVI X-LW | NORVI-X-LW | LoRaWAN node (RAK4630): sends JSON text from Serial1 as LoRaWAN uplinks | [details](../../expansion%20modules/NORVI-X-LW/expansion-module_X-LW.md) |
 
 ## Related Files
