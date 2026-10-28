@@ -2,7 +2,7 @@
 type: cpu_board
 product: NORVI  XN-MAIN
 mcu: ESP32-S3
-status: draft
+status: released
 last_updated: 2026-10-23
 ---
 
