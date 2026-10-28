@@ -3,8 +3,8 @@ type: expansion_module
 product: NORVI X-UART-IO — Communication/IO Expansion
 compatible_cpu_boards: [X1, X2, X3, XN]
 bus: Direct GPIO
-use_summary: Adds RS485, RS232 and extra UART ports (Modbus RTU, serial devices); direct GPIO
-keywords: [RS485, RS232, UART, serial, Modbus RTU]
+use_summary: Adds RS232, a second RS485 channel and extra UART ports on top of the CPU's built-in RS485; direct GPIO
+keywords:  [RS232, second RS485, additional RS485, two RS485, extra UART, extra serial port]
 status: released
 last_updated: 2026-08-25
 ---
