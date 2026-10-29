@@ -1,8 +1,10 @@
 ---
 type: expansion_module
 product: NORVI X-Q8 — 8-Channel Transistor Output Expansion
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
 bus: I2C
+use_summary: Drives eight 24 V DC transistor outputs (0.5 A each)
+keywords: [transistor output, solenoid, 24V output]
 status: released
 last_updated: 2026-08-25
 ---

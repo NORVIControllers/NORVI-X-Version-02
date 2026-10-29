@@ -1,9 +1,11 @@
 ---
 type: expansion_module
 product: NORVI X-R8 — 8-Channel Relay Output Expansion
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
 bus: I2C
-status: Released
+use_summary: Switches eight loads with relay outputs
+keywords: [relay, relay output, switch load]
+status: released
 last_updated: 2026-08-25
 ---
 

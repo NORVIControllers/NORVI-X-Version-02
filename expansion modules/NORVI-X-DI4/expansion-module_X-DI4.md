@@ -1,9 +1,11 @@
 ---
 type: expansion_module
 product: NORVI X-DI4 — 4-Channel Digital Input Expansion
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
 bus: Direct GPIO
-status: relaesed
+use_summary: Reads four fast 24 V DC digital inputs (pulse, PWM, encoder); direct GPIO, no I2C
+keywords: [digital input, pulse counter, encoder, PWM input]
+status: released
 last_updated: 2026-08-24
 ---
 
@@ -27,7 +29,7 @@ The NORVI X-DI4 adds four optically isolated 24V DC digital inputs to a NORVI X 
 | Default address | NA |
 | Address selectable? | No, fixed |
 | Address range if selectable | NA |
-| Conflicts with | Only one DI4/UART-IO module per system |
+| Conflicts with | X-DI4 and X-UART-IO cannot be used together (shared GPIO 5, 6, 7, 10). |
 
 > This address also gets added to `i2c-address-master-table.md` — that table is the conflict-check reference across the whole product line.
 
@@ -43,6 +45,15 @@ The NORVI X-DI4 adds four optically isolated 24V DC digital inputs to a NORVI X 
 > If any terminal is routed through its own IO expander chip on this module (separate from
 > the module's primary I2C device), document that chip the same way as the CPU board's
 > IO Expander subsection — address, direction register, and a local pin mapping table.
+
+## GPIO Usage
+Direct GPIO, no I2C address. Cannot be used together with X-UART-IO.
+| Function | CPU GPIO |
+|---|---|
+| Digital Input 1 | 5 |
+| Digital Input 2 | 6 |
+| Digital Input 3 | 7 |
+| Digital Input 4 | 10 |
 
 ## Register Map (if applicable)
 | Register | Address | R/W | Description |

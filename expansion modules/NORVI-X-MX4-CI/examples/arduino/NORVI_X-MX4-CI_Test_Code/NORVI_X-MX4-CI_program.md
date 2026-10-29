@@ -1,7 +1,7 @@
 ---
 type: Test_program
 function: mixed_io_test (4-channel analog current input via ADS1115, 4 digital inputs and 4 digital outputs via PCA9538, with TFT display)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1],[NORVI X-CPU-ESPS3-X2],[NORVI X-CPU-ESPS3-X3]
+compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1, NORVI X-CPU-ESPS3-X2, NORVI X-CPU-ESPS3-X3]
 compatible_modules: [NORVI X-MX4 (mixed I/O expansion: 4 analog current inputs via ADS1115 I2C 16-bit ADC, 4 digital inputs and 4 digital outputs via PCA9538 I2C IO expander)]
 status: completed
 last_updated: 2026-10-22

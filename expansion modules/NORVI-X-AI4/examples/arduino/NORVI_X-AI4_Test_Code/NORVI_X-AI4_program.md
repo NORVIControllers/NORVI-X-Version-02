@@ -1,7 +1,7 @@
 ---
 type: Test_program
 function: analog_current_read_4-20ma (4-channel ADS1115 analog current input test with TFT display)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1],[NORVI X-CPU-ESPS3-X2],[NORVI X-CPU-ESPS3-X3]
+compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1, NORVI X-CPU-ESPS3-X2, NORVI X-CPU-ESPS3-X3]
 compatible_modules: [NORVI X-AI4 (4-channel analog current input expansion, ADS1115 I2C 16-bit ADC)]
 status: completed
 last_updated: 2026-10-21

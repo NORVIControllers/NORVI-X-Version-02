@@ -1,9 +1,11 @@
 ---
 type: expansion_module
 product: NORVI X-RTD4 — 4-Channel RTD Input Expansion
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
 bus: I2C
-status: Released
+use_summary: Reads four PT100 / PT1000 RTD temperature sensors (precise temperature)
+keywords: [RTD, PT100, PT1000, precision temperature, temperature]
+status: released
 last_updated: 2026-08-26
 ---
 

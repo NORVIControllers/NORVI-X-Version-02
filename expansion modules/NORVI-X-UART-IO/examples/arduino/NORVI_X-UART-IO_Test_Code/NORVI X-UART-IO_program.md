@@ -1,7 +1,10 @@
 ---
 type: Test_program
 function: uart_mode_switch_test (dual-UART RS485/RS232/UARTA/UARTB mode-select test with direct GPIO outputs)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1(ESP-N16R2 PSRAM-QSPI)],[NORVI X-CPU-ESPS3-X2(ESP-N16R2 PSRAM-QSPI)],[NORVI X-CPU-ESPS3-X3(ESP-N16R2 PSRAM-QSPI)]
+compatible_cpu_boards:
+  - "NORVI X-CPU-ESPS3-X1 (ESP-N16R2 PSRAM-QSPI)"
+  - "NORVI X-CPU-ESPS3-X2 (ESP-N16R2 PSRAM-QSPI)"
+  - "NORVI X-CPU-ESPS3-X3 (ESP-N16R2 PSRAM-QSPI)"
 compatible_modules: [NORVI X-UART-IO (dual-UART expansion with mode-select via PCA9539 I2C IO expander)]
 status: completed
 last_updated: 2026-08-17
@@ -22,16 +25,12 @@ Provides a Serial command menu (`1` or `2`) to switch the module between two ope
 | I2C SDA | 8 |
 | I2C SCL | 9 |
 | IO Expander Reset (PORT_RST) | 38 |
-| OUTPUT1 | 10 |
-| OUTPUT2 | 14 |
 | UARTA RXD | 5 |
 | UARTA TXD | 6 |
 | UARTB RXD | 7 |
-| UARTB TXD | 10 (shared with OUTPUT1 — see note below) |
+| UARTB TXD | 10|
 | UARTA Select (UARTA_SEL) | via PCA9539 pin PCA_B3 (not direct GPIO) |
 | UARTB Select (UARTB_SEL) | via PCA9539 pin PCA_B4 (not direct GPIO) |
-
-Note: UARTB_TXD and OUTPUT1 share GPIO 10. This is by design — the module operates in one selected mode at a time (1 = RS485/RS232, 2 = UARTA/UARTB), so GPIO 10 is never used as OUTPUT1 and UARTB TXD simultaneously. Select Mode 2 when UARTB is needed; use Mode 1 (RS485/RS232) otherwise.
 
 ## Libraries required
 | Library | Version |
@@ -77,8 +76,6 @@ uint8_t lastMode = 0;
 
 // ================= PINS =================
 #define PORT_RST 38
-#define OUTPUT1 10
-#define OUTPUT2 14
 #define UARTA_RXD 5
 #define UARTA_TXD 6
 #define UARTA_SEL PCA_B3
@@ -103,8 +100,6 @@ void setup() {
 
   ioport.pinMode(UARTA_SEL, OUTPUT);
   ioport.pinMode(UARTB_SEL, OUTPUT);
-  pinMode(OUTPUT1, OUTPUT);
-  pinMode(OUTPUT2, OUTPUT);
   printCommands();
   I2C_SCAN();
 }
@@ -139,11 +134,6 @@ void loop() {
     case 1: firstCode(); break;
     case 2: secondCode(); break;
   }
-   digitalWrite(OUTPUT1, HIGH);
-  digitalWrite(OUTPUT2, HIGH);
-    delay(200);
-  digitalWrite(OUTPUT1, LOW);
-  digitalWrite(OUTPUT2, LOW);
 }
 
 // ================= MODE 1 =================

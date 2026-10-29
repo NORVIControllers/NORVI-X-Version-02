@@ -1,7 +1,7 @@
 ---
 type: Test_program
 function: lorawan_otaa_serial_bridge (LoRaWAN OTAA uplink of newline-terminated JSON received on Serial1, with LED status indication)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1],[NORVI X-CPU-ESPS3-X2],[NORVI X-CPU-ESPS3-X3]
+compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1, NORVI X-CPU-ESPS3-X2, NORVI X-CPU-ESPS3-X3]
 compatible_modules: [NORVI X-LW-915]
 status: completed
 last_updated: 2026-10-26

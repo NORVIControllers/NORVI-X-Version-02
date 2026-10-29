@@ -1,7 +1,7 @@
 ---
 type: Test_program
 function: relay_output_test (4-channel relay output test with pattern cycling and TFT display)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1],[NORVI X-CPU-ESPS3-X2],[NORVI X-CPU-ESPS3-X3]
+compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1, NORVI X-CPU-ESPS3-X2, NORVI X-CPU-ESPS3-X3]
 compatible_modules: [NORVI X-R4 (4-channel relay output expansion, PCA9538 I2C IO expander)]
 status: completed
 last_updated: 2026-10-22

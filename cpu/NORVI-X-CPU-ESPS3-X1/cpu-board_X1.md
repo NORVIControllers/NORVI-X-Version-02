@@ -2,7 +2,7 @@
 type: cpu_board
 product: NORVI X1
 mcu: ESP32-S3
-status: draft
+status: released
 last_updated: 2026-08-21
 ---
 
@@ -81,7 +81,7 @@ NORVI X1 is the CPU module for NORVI's modular controller lineup, running on an 
 > Availability is per-interface, not blanket — see each subsection.
 
 ### Ethernet
-**Availability:** Standard on all NORVI X CPU boards (X1/X2/X3)
+**Availability:** Standard on all NORVI X CPU boards (X1/X2/X3/XN)
 | Property | Value |
 |---|---|
 | PHY chip | W5500 |
@@ -90,7 +90,7 @@ NORVI X1 is the CPU module for NORVI's modular controller lineup, running on an 
 | Connector | RJ45 |
 
 ### RS-485
-**Availability:** Standard on all NORVI X CPU boards (X1/X2/X3)
+**Availability:** Standard on all NORVI X CPU boards (X1/X2/X3/XN)
 | Property | Value |
 |---|---|
 | UART tied to | TX-IO15 RX-IO16 |
@@ -208,7 +208,7 @@ NORVI X1 is the CPU module for NORVI's modular controller lineup, running on an 
 | EthernetUdp.h |  | Comes with ESP32 core | Send and receive UDP packets through the Ethernet |
 | PCA9539.h |  | Available in Github Repo | GPIO Expander |
 | PCA9536D.h | 2.0.1 | Arduino Library Manager/Available in Github Repo | GPIO Expander |
-| RTClib.h | 2.1.4 | Arduino Library Manager/Available in Github Repo | RTC |
+| RTClib.h | 2.1.1 | Arduino Library Manager/Available in Github Repo | RTC |
 | SPI.h | 2.0.0 | Arduino Library Manager | SPI Communication |
 | FS.h | 2.0.0 | Arduino Library Manager | File System Functions |
 | SD.h | 2.0.0 | Arduino Library Manager | SD Card |
@@ -222,6 +222,30 @@ NORVI X1 is the CPU module for NORVI's modular controller lineup, running on an 
 3. USB CDC On Boot: Enabled
    Flash Size: 16MB(128Mb)
    PSRAM: QSPI PSRAM
+
+## Compatible Expansion Modules
+All modules below work with this CPU. Choose by chip family and I2C address limits: https://norvi.io/docs/choosing-expansion-modules/
+
+| Module | Key | Use | Page |
+|---|---|---|---|
+| NORVI X-AI4 | NORVI-X-AI4 | Reads four 4–20 mA current-loop sensors (pressure, flow, level) | [details](../../expansion%20modules/NORVI-X-AI4/expansion-module_X-AI4.md) |
+| NORVI X-AV4 | NORVI-X-AV4 | Reads four 0–10 V analog voltage signals | [details](../../expansion%20modules/NORVI-X-AV4/expansion-module_X-AV4.md) |
+| NORVI X-AQ4 | NORVI-X-AQ4 | Outputs four analog signals, 0–10 V or 4–20 mA, for actuators and process control | [details](../../expansion%20modules/NORVI-X-AQ4/expansion-module_X-AQ4.md) |
+| NORVI X-TC4 | NORVI-X-TC4 | Reads four K-type thermocouples (furnaces, ovens, exhaust) | [details](../../expansion%20modules/NORVI-X-TC4/expansion-module_X-TC4.md) |
+| NORVI X-RTD4 | NORVI-X-RTD4 | Reads four PT100 / PT1000 RTD temperature sensors (precise temperature) | [details](../../expansion%20modules/NORVI-X-RTD4/expansion-module_X-RTD4.md) |
+| NORVI X-T4 | NORVI-X-T4 | Reads four NTC thermistor temperature sensors (HVAC, refrigeration) | [details](../../expansion%20modules/NORVI-X-T4/expansion-module_X-T4.md) |
+| NORVI X-R4 | NORVI-X-R4 | Switches four loads with relay outputs (pumps, valves, contactors) | [details](../../expansion%20modules/NORVI-X-R4/expansion-module_X-R4.md) |
+| NORVI X-R8 | NORVI-X-R8 | Switches eight loads with relay outputs | [details](../../expansion%20modules/NORVI-X-R8/expansion-module_X-R8.md) |
+| NORVI X-Q4 | NORVI-X-Q4 | Drives four 24 V DC transistor outputs (solenoids, valves, tower lights); direct GPIO, no I2C | [details](../../expansion%20modules/NORVI-X-Q4/expansion-module_X-Q4.md) |
+| NORVI X-Q8 | NORVI-X-Q8 | Drives eight 24 V DC transistor outputs (0.5 A each) | [details](../../expansion%20modules/NORVI-X-Q8/expansion-module_X-Q8.md) |
+| NORVI X-Q16 | NORVI-X-Q16 | Drives sixteen 24 V DC transistor outputs (0.5 A each) | [details](../../expansion%20modules/NORVI-X-Q16/expansion-module_X-Q16.md) |
+| NORVI X-DI4 | NORVI-X-DI4 | Reads four fast 24 V DC digital inputs (pulse, PWM, encoder); direct GPIO, no I2C | [details](../../expansion%20modules/NORVI-X-DI4/expansion-module_X-DI4.md) |
+| NORVI X-DI8 | NORVI-X-DI8 | Reads eight isolated 24 V DC digital inputs (switches, sensors) | [details](../../expansion%20modules/NORVI-X-DI8/expansion-module_X-DI8.md) |
+| NORVI X-DI16 | NORVI-X-DI16 | Reads sixteen isolated 24 V DC digital inputs | [details](../../expansion%20modules/NORVI-X-DI16/expansion-module_X-DI16.md) |
+| NORVI X-DA8 | NORVI-X-DA8 | Reads eight 110/230 V AC digital inputs (optically isolated) | [details](../../expansion%20modules/NORVI-X-DA8/expansion-module_X-DA8.md) |
+| NORVI X-MX4-CI | NORVI-X-MX4-CI | Mixed I/O: 4 digital inputs, 4 transistor outputs and 4 analog current inputs in one module | [details](../../expansion%20modules/NORVI-X-MX4-CI/expansion-module_X-MX4-CI.md) |
+| NORVI X-UART-IO | NORVI-X-UART-IO |Adds RS232, a second RS485 channel and extra UART ports on top of the CPU's built-in RS485; direct GPIO | [details](../../expansion%20modules/NORVI-X-UART-IO/expansion-module_X-UART-IO.md) |
+| NORVI X-LW | NORVI-X-LW | LoRaWAN node (RAK4630): sends JSON text from Serial1 as LoRaWAN uplinks | [details](../../expansion%20modules/NORVI-X-LW/expansion-module_X-LW.md) |
 
 ## Related Files
 - Expansion modules compatible with X1: `expansion-module_X-DI4.md`,`expansion-module_X-R4.md`,`expansion-module_X-Q4.md`,`expansion-module_X-AI4.md`,`expansion-module_X-AV4.md`,`expansion-module_X-AQ4.md`,`expansion-module_X-DI8.md`,`expansion-module_X-DI16.md`,`expansion-module_X-R8.md`,`expansion-module_X-Q16.md`,`expansion-module_X-TC4.md`, `expansion-module_X-Q8.md`,`expansion-module_X-T4.md`,`expansion-module_X-UART-IO.md`,`expansion-module_X-RTD4.md`,`expansion-module_X-BKO.md`,`expansion-module_X-CAN1.md`,`expansion-module_X-DA8.md`(one file per module)

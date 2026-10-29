@@ -1,9 +1,11 @@
 ---
 type: expansion_module
 product: NORVI X-TC4 — 4-Channel Thermocouple Input Expansion
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
 bus: I2C
-status: Released
+use_summary: Reads four K-type thermocouples (furnaces, ovens, exhaust)
+keywords: [thermocouple, K type, high temperature, temperature, furnace temperature]
+status: released
 last_updated: 2026-08-25
 ---
 

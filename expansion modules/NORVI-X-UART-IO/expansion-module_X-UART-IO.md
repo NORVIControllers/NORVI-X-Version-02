@@ -1,9 +1,11 @@
 ---
 type: expansion_module
 product: NORVI X-UART-IO — Communication/IO Expansion
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
 bus: Direct GPIO
-status: relaesed
+use_summary: Adds RS232, a second RS485 channel and extra UART ports on top of the CPU's built-in RS485; direct GPIO
+keywords:  [RS232, second RS485, additional RS485, two RS485, extra UART, extra serial port]
+status: released
 last_updated: 2026-08-25
 ---
 
@@ -27,7 +29,7 @@ The NORVI X-UARTIO is a serial communication expansion module for the NORVI X in
 | Default address | NA |
 | Address selectable? | No, fixed |
 | Address range if selectable | NA |
-| Conflicts with | Only one DI4/UART-IO module per system |
+| Conflicts with | X-DI4 and X-UART-IO cannot be used together (shared GPIO 5, 6, 7, 10).|
 
 > This address also gets added to `i2c-address-master-table.md` — that table is the conflict-check reference across the whole product line.
 
@@ -47,6 +49,15 @@ The NORVI X-UARTIO is a serial communication expansion module for the NORVI X in
 > If any terminal is routed through its own IO expander chip on this module (separate from
 > the module's primary I2C device), document that chip the same way as the CPU board's
 > IO Expander subsection — address, direction register, and a local pin mapping table.
+
+## GPIO Usage
+Direct GPIO, no I2C address. Can be used with X-DI4 or X-UART-IO, but not with both together.
+| Function | CPU GPIO |
+|---|---|
+| Transistor 1 | 14 |
+| Transistor 2 | 35 |
+| Transistor 3 | 41 |
+| Transistor 4 | 37 |
 
 ## Register Map (if applicable)
 | Register | Address | R/W | Description |
@@ -69,8 +80,6 @@ PCA9539 ioport(0x75);
 uint8_t mode = 1, lastMode = 0;
 
 #define PORT_RST   38
-#define OUTPUT1    10
-#define OUTPUT2    14
 
 #define UARTA_RXD  5
 #define UARTA_TXD  6
@@ -96,9 +105,6 @@ void setup()
 
   ioport.pinMode(UARTA_SEL, OUTPUT);
   ioport.pinMode(UARTB_SEL, OUTPUT);
-
-  pinMode(OUTPUT1, OUTPUT);
-  pinMode(OUTPUT2, OUTPUT);
 
   Serial.println("1 -> RS485 / RS232   2 -> UART1 / UART2");
 }
@@ -131,13 +137,6 @@ void loop()
     test(UARTA_SEL, HIGH, Serial1, "UARTA SUCCESS", 50, 0);
     test(UARTB_SEL, HIGH, Serial2, "UARTB SUCCESS", 50, 0);
   }
-
-  digitalWrite(OUTPUT1, HIGH);
-  digitalWrite(OUTPUT2, HIGH);
-  delay(200);
-  digitalWrite(OUTPUT1, LOW);
-  digitalWrite(OUTPUT2, LOW);
-
   delay(1000);
 }
 

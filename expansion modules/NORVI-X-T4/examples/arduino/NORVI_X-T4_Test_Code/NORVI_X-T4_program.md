@@ -1,7 +1,7 @@
 ---
 type: Test_program
 function: ntc_temperature_read (4-channel NTC thermistor temperature input test via ADS1115 with TFT display)
-compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1],[NORVI X-CPU-ESPS3-X2],[NORVI X-CPU-ESPS3-X3]
+compatible_cpu_boards: [NORVI X-CPU-ESPS3-X1, NORVI X-CPU-ESPS3-X2, NORVI X-CPU-ESPS3-X3]
 compatible_modules: [NORVI X-T4 (4-channel NTC thermistor temperature input expansion, ADS1115 I2C 16-bit ADC)]
 status: completed
 last_updated: 2026-10-22

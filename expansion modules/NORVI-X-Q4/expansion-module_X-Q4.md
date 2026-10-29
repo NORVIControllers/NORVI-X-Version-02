@@ -1,9 +1,11 @@
 ---
 type: expansion_module
 product: NORVI X-Q4 — 4-Channel Transistor Output Expansion
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
 bus: Direct GPIO
-status: Released
+use_summary: Drives four 24 V DC transistor outputs (solenoids, valves, tower lights); direct GPIO, no I2C
+keywords: [transistor output, solenoid, 24V output]
+status: released
 last_updated: 2026-08-25
 ---
 

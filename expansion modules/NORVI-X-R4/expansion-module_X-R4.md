@@ -1,9 +1,11 @@
 ---
 type: expansion_module
 product: NORVI X-R4 — 4-Channel Relay Output Expansion
-compatible_cpu_boards: [X1, X2, X3]
+compatible_cpu_boards: [X1, X2, X3, XN]
 bus: I2C
-status: Released
+use_summary: Switches four loads with relay outputs (pumps, valves, contactors)
+keywords: [relay, relay output, switch load]
+status: released
 last_updated: 2026-08-25
 ---
 
