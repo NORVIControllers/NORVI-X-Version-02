@@ -43,6 +43,8 @@ The sketch reads the thermistor through the on-board ADS1115 16-bit ADC, convert
 | OFF | OFF | ON | OFF | 0x4A |
 | OFF | ON | OFF | OFF | 0x4B |
 
+On the device, set the DIP switches for address 0x48 (DIP 1 OFF, DIP 2 OFF, DIP 3 OFF, DIP 4 ON), because the code is also configured to use I2C address 0x48.
+
 ### CPU Pin Map (used by this sketch)
 
 | Signal | GPIO |
@@ -188,14 +190,18 @@ A. Adjust the small compensation term inside `readThermistorC()` or calibrate ag
 **Q5. What is the maximum cable length for the NTC?**  
 A. Keep runs as short as practical. For longer distances use shielded twisted-pair cable and ground the shield at one end only to minimise noise.
 
-**Q6. Does the X-T4 need its own power supply?**  
-A. No. It is powered from the CPU through the 50-pin expansion port (24 V DC).
-
-**Q7. Why is the TFT blank or flickering?**  
+**Q6. Why is the TFT blank or flickering?**  
 A. Confirm the board is the V2 N16R2 variant (QSPI PSRAM), that LovyanGFX is installed, and that SPI CS lines of any Ethernet/SD devices are held high if those peripherals are present.
 
-**Q8. Can I change the over-temperature limit?**  
-A. Yes. Edit `MAX_SAFE_TEMP` (and optionally `WARN_TEMP` / `RATE_OF_RISE_LIMIT`) at the top of the sketch and re-upload.
+**Q7. Can I measure temperatures over 300 °C using the NORVI X-T4 module?**  
+A. No. Standard NTC thermistors supported by the X-T4 are restricted to lower ranges (typically below 150 °C to 200 °C). Attempting to measure over 300 °C with an NTC thermistor will cause the sensor material to degrade, lose calibration, or fail permanently.
+
+**Q8. What alternative NORVI X expansions and sensors should I use for temperatures over 300 °C?**  
+A. For high-temperature industrial processes exceeding 300 °C, use one of the following specialized expansion modules:
+
+- NORVI-X-RTD4: Interfaces with PT100 or PT1000 RTD sensors. It provides high precision (±0.1 °C) and laboratory-grade stability up to +850 °C, making it ideal for high-precision industrial ovens and heating   chambers.
+
+- NORVI-X-TC4: Interfaces with K-type thermocouples. It covers an extensive range from 0 °C up to 1093 °C, making it the standard choice for heavy industrial furnaces, kilns, and high-heat exhaust systems operating well over 300 °C.
 
 ---
 
