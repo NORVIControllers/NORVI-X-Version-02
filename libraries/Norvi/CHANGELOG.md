@@ -2,3 +2,4 @@
 
 - Initial release of the `Norvi.publish()` overloads.
 - Added MIT license.
+- README updated for NORVI-XN.

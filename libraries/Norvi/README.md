@@ -1,64 +1,63 @@
-# Norvi Arduino Library
+# Norvi Library for NORVI-XN
 
-Norvi is the NORVI Controllers Arduino library for publishing named readings from ESP32 firmware. The v1.0.0 API is `Norvi.publish()` and writes newline-terminated `NI:` records to `Serial` for the device communication path.
+Norvi is the Arduino library for sending readings from your NORVI-XN sketch to your own cloud. You call `Norvi.publish()` with a name and a value, and the OTA & Communication Manager handles the connection underneath.
 
-Data path: your code -> Serial line -> OTA & Communication Manager -> your cloud.
+Your code -> OTA & Communication Manager -> your cloud
 
-## Install
+This library works with the NORVI-XN only.
 
-Copy the `Norvi` folder into your Arduino `libraries` directory, or install the ZIP through the Arduino IDE library manager's **Add .ZIP Library** command. Restart the IDE after installing if the header is not immediately found.
+## Use in Neural Studio
+
+The Norvi library is already included in Neural Studio. There is nothing to install. Add `#include <Norvi.h>` to your sketch and call `Norvi.publish()`.
+
+## Install in the Arduino IDE
+
+1. Copy the `Norvi` folder into your Arduino `libraries` folder, or choose Sketch > Include Library > Add .ZIP Library and select the ZIP file.
+2. Restart the Arduino IDE.
+3. Select your NORVI-XN board, then open File > Examples > Norvi.
 
 ## Quick start
 
 ```cpp
 #include <Norvi.h>
-void setup() {
-  Serial.begin(115200);
-}
+void setup() { Serial.begin(115200); }
 void loop() {
-  Norvi.publish("temperature", 23.5f);
-  delay(1000);
+  Norvi.publish("tank_level", 72.5f); delay(1000);
 }
 ```
 
-## API
+`tank_level` is an example. Use any field name you like.
 
-All `publish()` overloads return `bool`.
+## Functions
 
-| Form | Value type |
+All `publish()` functions return `true` when the reading was accepted and `false` when it was not.
+
+| Function | Value |
 | --- | --- |
-| `Norvi.publish(const char* name, int value)` | Integer |
-| `Norvi.publish(const char* name, float value)` | Floating-point |
-| `Norvi.publish(const char* name, bool value)` | Boolean |
-| `Norvi.publish(const char* name, const String& value)` | Arduino `String` |
-| `Norvi.publish(const String& jsonObject)` | JSON object batch |
+| `Norvi.publish(name, int)` | Whole number |
+| `Norvi.publish(name, float)` | Decimal number |
+| `Norvi.publish(name, bool)` | True or false |
+| `Norvi.publish(name, String)` | Text |
+| `Norvi.publish(String json)` | Several fields in one JSON object |
 
-A named value produces `NI:<field>=<JSON value>`. A JSON batch produces `NI:JSON=<JSON object>`.
+## Sending several values at once
+
+```cpp
+Norvi.publish(String("{\"pressure\":1012,\"alarm\":false}"));
+```
 
 ## Field names and limits
 
-- Field names are 1–64 characters.
-- A field name starts with a letter, followed by letters, digits, or `_`.
-- Reserved prefixes are `ni`, `fw`, `rst`, `cmd`, `log`, and `ota` (case-insensitive).
-- Each encoded line is limited to 1024 bytes.
-- The client accepts 10 publishes per second. Excess publishes are dropped; a `_dropped` count is added to a later JSON record.
+- 1 to 64 characters. Start with a letter, then use letters, digits or `_`.
+- Names must not start with `ni`, `fw`, `rst`, `cmd`, `log` or `ota` (any case).
+- Up to 10 publishes per second. A message can be up to 1024 bytes.
 
-## JSON batch
+## Examples
 
-```cpp
-Norvi.publish(String("{\"temperature\":23.5,\"running\":true}"));
-```
+`PublishExample` and `PublishJson` are included under File > Examples > Norvi.
 
-## Supported boards
+## Version and license
 
-The library targets ESP32 boards (`architectures=esp32`), including the NORVI-XN main CPU based on ESP32-S3.
-
-## Version
-
-Version 1.0.0 is the initial release.
-
-## License
-
-MIT License. See the LICENSE file. Copyright (c) 2026 Norvi Controllers.
+Version 1.0.0. MIT License. See the LICENSE file. Copyright (c) 2026 Norvi Controllers.
 
 More functions will be added in future versions.
