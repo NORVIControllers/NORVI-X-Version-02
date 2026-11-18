@@ -17,10 +17,7 @@ The tutorial covers the wiring, the programming of the ATV320 parameters for thi
 
 The system forms a short signal chain from the operator’s finger to the motor shaft. The blocks and the data-processing logic are shown below.
 
-```text
-NORVI X1 I²C NORVI X-AQ4 0–10 V ATV320U11M2C U/V/W Motor
-ESP32-S3, touch TFT ─────────────── AOUT1 ───────────────── AI1 = speed reference ───────── Y2A-6324
-```
+<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/figure1_Signal%20path.png" width="300" alt="My image">
 
 **Figure 1:** *_Signal path from the X1 touch display to the motor_*
 
