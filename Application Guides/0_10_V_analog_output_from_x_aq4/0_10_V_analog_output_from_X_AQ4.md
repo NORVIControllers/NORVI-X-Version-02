@@ -133,7 +133,7 @@ The motor terminal box carries two terminal rows joined by three brass links. Fi
 *Figure 2: Wiring: X-AQ4 AOUT1 and AGND to AI1 and COM of the ATV320, 24 V links, mains and motor.*
 
 ![figure3_motor_terminal_box](https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/figure3_motor_terminal_box.jpg)
-
+<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/figure3_motor_terminal_box.jpg" width="400" alt="My image">
 *Figure 3: Motor terminal box: three links in line (delta), grey, black and brown cable wires.*
 
 Terminal naming on the motor follows IEC 60034-8 [7]. Each wire sits on one link, and a link joins two terminals, so go by the link the wire is on and not by the “2” name alone: the black wire on the U2 terminal belongs to the V link and goes to V. Swapping any two of U, V and W reverses the direction of rotation.
