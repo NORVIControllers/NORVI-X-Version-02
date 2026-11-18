@@ -302,8 +302,7 @@ Channel 1 (AOUT1) receives the configuration value 0, which is the setting of th
 
 In short: the X1 shows what it sends, the ATV shows what it monitors. Match the monitor to `AI1` or `FRD` and the two displays will agree within the drive’s 10-bit AI1 resolution.
 
-
-![figure4_working_setup](docs/Images/figure4_working_setup.png)
+<img src= https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/figure4_working_setup.jpg" width="300" alt="My image">
 
 *Figure 4: Working setup: NORVI X1 with X-AQ4 (left), ATV320 and the motor (right). The X1 shows AOUT1 at 5.80 V.*
 
