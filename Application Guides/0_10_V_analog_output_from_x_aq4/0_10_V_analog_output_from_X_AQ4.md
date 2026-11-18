@@ -17,7 +17,7 @@ The tutorial covers the wiring, the programming of the ATV320 parameters for thi
 
 The system forms a short signal chain from the operator’s finger to the motor shaft. The blocks and the data-processing logic are shown below.
 
-<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/figure1_Signal%20path.png" width="500" alt="My image">
+<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/figure1_Signal%20path.png" width="1000" alt="My image">
 
 **Figure 1:** *_Signal path from the X1 touch display to the motor_*
 
