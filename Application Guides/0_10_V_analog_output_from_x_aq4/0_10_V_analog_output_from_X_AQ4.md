@@ -132,7 +132,7 @@ The motor terminal box carries two terminal rows joined by three brass links. Fi
 
 *Figure 2: Wiring: X-AQ4 AOUT1 and AGND to AI1 and COM of the ATV320, 24 V links, mains and motor.*
 
-![figure3_motor_terminal_box]([docs/Images/figure3_motor_terminal_box.png](https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/figure3_motor_terminal_box.jpg)
+![figure3_motor_terminal_box](https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/figure3_motor_terminal_box.jpg)
 
 *Figure 3: Motor terminal box: three links in line (delta), grey, black and brown cable wires.*
 
