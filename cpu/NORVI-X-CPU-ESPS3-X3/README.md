@@ -145,7 +145,8 @@ These models share the same ESP32-S3 hardware platform and firmware architecture
 ## Support
 - Documentation: https://norvi.io/docs  
 - For additional support or inquiries, contact the NORVI support team.
-- Datasheet: https://norvi.io/docs/norvi-x-cpu-esps3-x1-datasheet/
+- Datasheet: https://norvi.io/docs/norvi-x-cpu-esps3-x1-datasheet/ 
+- Purchasing products : https://shop.norvi.lk/products/norvi-x-cpu-modules  
 ---
 
 ## License

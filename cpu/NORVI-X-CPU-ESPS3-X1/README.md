@@ -178,7 +178,7 @@ For additional support or inquiries, contact the **NORVI support team**.
 
 Datasheet:  https://norvi.io/docs/norvi-x-cpu-esps3-x1-datasheet/
 
-
+Purchasing products : https://shop.norvi.lk/products/norvi-x-cpu-modules 
 ---
 
 # License

@@ -151,7 +151,8 @@ The previous version utilized the TFT_eSPI library for TFT display control. In t
 ## Support
 - Documentation: https://norvi.io/docs  
 - For additional support or inquiries, contact the NORVI support team.
-- Datasheet: https://norvi.io/docs/norvi-cpu-esps3-x2-datasheet/ 
+- Datasheet: https://norvi.io/docs/norvi-cpu-esps3-x2-datasheet/  
+- Purchasing products : https://shop.norvi.lk/products/norvi-x-cpu-modules  
 ---
 
 ## License
