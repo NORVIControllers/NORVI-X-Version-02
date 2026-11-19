@@ -243,7 +243,6 @@ A. The X1 shows the voltage it commands on AOUT1. The ATV320 shows whichever mon
 
 - [NORVI X-AQ4](https://shop.norvi.lk/products/norvi-x-aq4)
 - [NORVI-X-Version-02 GitHub](https://github.com/NORVIControllers/NORVI-X-Version-02)
-- Application guide: [0_10_V_analog_output_from_X_AQ4.md](0_10_V_analog_output_from_X_AQ4.md)
 - Schneider Electric, Altivar Machine ATV320 Programming Manual, NVE41295.06
 - [LovyanGFX](https://github.com/lovyan03/LovyanGFX)
 - [CST816S](https://github.com/fbiego/CST816S)
