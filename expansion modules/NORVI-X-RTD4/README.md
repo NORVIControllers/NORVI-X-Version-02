@@ -215,6 +215,8 @@ For additional support or inquiries, contact the NORVI support team.
 
 **Datasheet:** https://norvi.io/docs/norvi-x-rtd4-datasheet/
 
+Purchasing products : https://shop.norvi.lk/products/norvi-x-rtd4 
+
 ## License
 
 This example is provided for development and educational purposes.

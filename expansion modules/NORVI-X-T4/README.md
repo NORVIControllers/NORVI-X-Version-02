@@ -210,10 +210,6 @@ Test Date: 2026-08-31
 
 Verified By: Kaveesha
 
-Datasheet: https://norvi.io/docs/norvi-x-t4-datasheet/
-
-User Guide: https://norvi.io/docs/norvi-x-t4-user-guide/
-
 ## Support
 
 Documentation: https://norvi.io/docs
@@ -224,7 +220,9 @@ Technical support: support@norvi.io
 
 For additional support or inquiries, contact the NORVI support team.
 
-Datasheet: https://norvi.io/docs/norvi-x-t4-datasheet/
+Datasheet: https://norvi.io/docs/norvi-x-t4-datasheet/ 
+
+Purchasing products : https://shop.norvi.lk/products/norvi-x-t4
 
 ## License
 

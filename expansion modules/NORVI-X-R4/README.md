@@ -226,7 +226,9 @@ Documentation: https://norvi.io/docs
 
 Datasheet: http://norvi.io/docs/norvi-x-r4-datasheet/ 
 
-For additional support or inquiries, contact the **NORVI support team**.
+For additional support or inquiries, contact the **NORVI support team**. 
+
+Purchasing products : https://shop.norvi.lk/products/norvi-x-r4 
 
 ## License
 

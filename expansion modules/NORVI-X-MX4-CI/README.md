@@ -248,6 +248,7 @@ Installation:
 - Documentation: https://norvi.io/docs  
 - For additional support or inquiries, contact the NORVI support team.
 - Datasheet: https://norvi.io/docs/norvi-x-mx4-ci-datasheet/ 
+- Purchasing products : https://shop.norvi.lk/products/norvi-x-mx4-ci
 ---
 
 ## License

@@ -226,7 +226,7 @@ NORVI Documentation:  https://norvi.io/docs/norvi-x-r8-datasheeet/
 
 Datasheet:   https://norvi.io/docs/norvi-x-q8-datasheet/ 
 
-
+Purchasing products : https://shop.norvi.lk/products/norvi-x-q8 
 ---
 
 ## Support

@@ -186,6 +186,7 @@ Verified By: Kaveesha
 - Documentation: https://norvi.io/
 - Datasheet: https://norvi.io/docs/norvi-x-ai4-datasheet/ 
 - For additional support or inquiries, contact the NORVI support team.
+- Purchasing products : https://shop.norvi.lk/products/norvi-x-ai4 
 
 ---
 

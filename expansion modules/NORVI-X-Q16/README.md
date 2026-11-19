@@ -143,7 +143,9 @@ Documentation: https://norvi.io/docs
 
 Datasheet: https://norvi.io/docs/norvi-x-q16-datasheet/ 
 
-For additional support or inquiries, contact the NORVI support team.
+For additional support or inquiries, contact the NORVI support team. 
+
+Purchasing products : https://shop.norvi.lk/products/norvi-x-q16 
 
 ## License
 This example is provided for development and educational purposes.

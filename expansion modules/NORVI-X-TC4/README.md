@@ -292,7 +292,9 @@ Documentation: https://norvi.io/docs
 
 Technical Support: support@norvi.io
 
-For additional support or inquiries, contact the NORVI support team.
+For additional support or inquiries, contact the NORVI support team. 
+
+Purchasing products : https://shop.norvi.lk/products/norvi-x-tc4 
 
 ## License
 

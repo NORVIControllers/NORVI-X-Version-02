@@ -224,6 +224,8 @@ Datasheet: https://norvi.io/docs/norvi-x-r8-datasheeet/
 
 For additional support, contact the NORVI support team.  
 
+Purchasing products : https://shop.norvi.lk/products/norvi-x-r8 
+
 ---
 
 ## License

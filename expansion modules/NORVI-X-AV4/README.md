@@ -201,6 +201,8 @@ Datasheet: https://norvi.io/docs/norvi-x-av4-datasheet/
   
 For additional support, contact the NORVI support team  
 
+Purchasing products : https://shop.norvi.lk/products/norvi-x-av4  
+
 ---
 
 ## License

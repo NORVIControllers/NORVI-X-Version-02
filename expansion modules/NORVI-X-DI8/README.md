@@ -241,6 +241,7 @@ https://norvi.io/docs/norvi-x-di8-datasheet/
 
 For additional support or inquiries, contact the **NORVI support team**.
 
+Purchasing products : https://shop.norvi.lk/products/norvi-x-di8 
 ---
 
 ## License

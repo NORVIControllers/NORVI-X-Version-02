@@ -201,6 +201,8 @@ NORVI Documentation:  https://norvi.io/docs
 
 Datasheet:  https://norvi.io/docs/norvi-x-q4-datasheet/  
 
+Purchasing products : https://shop.norvi.lk/products/norvi-x-q4 
+
 ---
 
 ## Support

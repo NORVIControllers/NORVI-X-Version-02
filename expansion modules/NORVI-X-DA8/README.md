@@ -217,7 +217,9 @@ Library Download:  https://github.com/NORVIControllers/NORVI-X-Version-01/tree/m
 NORVI Documentation:  
 https://norvi.io/docs
 
-Datasheet: https://norvi.io/docs/norvi-x-da8-datasheet/  
+Datasheet: https://norvi.io/docs/norvi-x-da8-datasheet/   
+
+Purchasing products : https://shop.norvi.lk/products/norvi-x-da8 
 
 ---
 

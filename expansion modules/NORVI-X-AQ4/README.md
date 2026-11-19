@@ -215,6 +215,8 @@ For additional support or inquiries, contact the NORVI support team
 
 Datasheet: https://norvi.io/docs/norvi-x-aq4-datasheet/
 
+Purchasing products : https://shop.norvi.lk/products/norvi-x-aq4
+
 ---
 
 ## License
