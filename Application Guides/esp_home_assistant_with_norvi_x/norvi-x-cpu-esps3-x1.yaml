@@ -1,0 +1,83 @@
+# NORVI X (CPU-ESPS3-X1) - on-board I/O example for ESPHome
+# Covers: 2 front buttons, RUN and ERROR LEDs (via the PCA9536 at 0x41)
+# Tested on: ESPHome 2026.8.0 / 2026-11-16
+
+substitutions:
+  name: norvi-x
+  friendly_name: "NORVI X"
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+
+esp32:
+  board: esp32-s3-devkitc-1
+  variant: esp32s3
+  flash_size: 16MB
+  framework:
+    type: esp-idf
+
+psram:
+  mode: quad               # N16R2 = 2 MB quad PSRAM
+
+logger:
+  hardware_uart: USB_SERIAL_JTAG   # logs over the USB port
+
+api:
+  encryption:
+    key: !secret api_encryption_key
+
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+# I2C bus (SDA = IO8, SCL = IO9). Expected devices in the scan:
+# 0x15 touch, 0x41 PCA9536 (buttons/LEDs), 0x68 DS3231 RTC, 0x75 PCA9539
+i2c:
+  sda: GPIO8
+  scl: GPIO9
+  scan: true
+
+# The PCA9536 has the same register layout as the PCA9554, so this component drives it.
+# Only pins 0-3 exist on the PCA9536.
+pca9554:
+  - id: pca9536_io
+    address: 0x41
+
+binary_sensor:
+  - platform: gpio
+    name: "Button 1"
+    pin:
+      pca9554: pca9536_io
+      number: 0            # PCA9536 P0
+      mode: INPUT
+      inverted: true       # reads low when pressed
+  - platform: gpio
+    name: "Button 2"
+    pin:
+      pca9554: pca9536_io
+      number: 3            # PCA9536 P3
+      mode: INPUT
+      inverted: true
+
+switch:
+  # LEDs are active-low (the pin must be driven low to light them), hence inverted: true
+  - platform: gpio
+    name: "RUN LED"
+    restore_mode: ALWAYS_OFF
+    pin:
+      pca9554: pca9536_io
+      number: 2            # PCA9536 P2
+      mode: OUTPUT
+      inverted: true
+  - platform: gpio
+    name: "ERROR LED"
+    restore_mode: ALWAYS_OFF
+    pin:
+      pca9554: pca9536_io
+      number: 1            # PCA9536 P1
+      mode: OUTPUT
+      inverted: true

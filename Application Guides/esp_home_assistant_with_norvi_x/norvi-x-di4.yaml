@@ -1,0 +1,83 @@
+# NORVI X + X-DI4 (4 isolated 24 V digital inputs) - ESPHome example
+# The DI4 wires its inputs straight to ESP32-S3 GPIO (no I2C expander): IN1=IO5, IN2=IO6, IN3=IO7, IN4=IO10
+# NOTE: the X-DI4 and the X-UART-IO module share these GPIOs, so they cannot be used together.
+# Tested on: ESPHome 2026.8.0 / 2026-11-16
+
+substitutions:
+  name: norvi-x-di4
+  friendly_name: "NORVI X DI4"
+  di_inverted: "true"      # TO VERIFY ON HARDWARE. The opto output is likely low when the input is ON.
+                           # Apply 24 V to IN1: if Home Assistant shows OFF, change this to "false".
+  debounce: 20ms           # contact-bounce filter. Remove the filters for fast signals (up to 5 kHz).
+
+esphome:
+  name: ${name}
+  friendly_name: ${friendly_name}
+
+esp32:
+  board: esp32-s3-devkitc-1
+  variant: esp32s3
+  flash_size: 16MB
+  framework:
+    type: esp-idf
+
+psram:
+  mode: quad
+
+logger:
+  hardware_uart: USB_SERIAL_JTAG
+
+api:
+  encryption:
+    key: !secret api_encryption_key
+
+ota:
+  - platform: esphome
+
+wifi:
+  ssid: !secret wifi_ssid
+  password: !secret wifi_password
+
+# No bus or expander is needed: the DI4 uses direct GPIO.
+
+binary_sensor:
+  # Wiring: 24 V -> switch -> INx, and 24 V negative -> DCOM (shared common).
+  - platform: gpio
+    name: "DI4 Input 1"
+    pin:
+      number: GPIO5
+      mode: INPUT
+      inverted: ${di_inverted}
+    filters:
+      - delayed_on: ${debounce}
+      - delayed_off: ${debounce}
+
+  - platform: gpio
+    name: "DI4 Input 2"
+    pin:
+      number: GPIO6
+      mode: INPUT
+      inverted: ${di_inverted}
+    filters:
+      - delayed_on: ${debounce}
+      - delayed_off: ${debounce}
+
+  - platform: gpio
+    name: "DI4 Input 3"
+    pin:
+      number: GPIO7
+      mode: INPUT
+      inverted: ${di_inverted}
+    filters:
+      - delayed_on: ${debounce}
+      - delayed_off: ${debounce}
+
+  - platform: gpio
+    name: "DI4 Input 4"
+    pin:
+      number: GPIO10
+      mode: INPUT
+      inverted: ${di_inverted}
+    filters:
+      - delayed_on: ${debounce}
+      - delayed_off: ${debounce}

@@ -1,0 +1,15 @@
+# NORVI X - full example: on-board I/O + X-DI4 + X-R4 + X-AI4
+# Combines the four example files with ESPHome packages. Keep all files in the same folder:
+#   norvi-x-cpu-esps3-x1.yaml, norvi-x-di4.yaml, norvi-x-r4.yaml, norvi-x-ai4.yaml
+# Settings here override the same settings in the included files.
+# Tested on: ESPHome 2026.8.0 / 2026-11-16
+
+substitutions:
+  name: norvi-x-full
+  friendly_name: "NORVI X Full"
+
+packages:
+  onboard: !include norvi-x-cpu-esps3-x1.yaml   # buttons and LEDs
+  di4: !include norvi-x-di4.yaml              # 4 digital inputs
+  r4: !include norvi-x-r4.yaml                # 4 relays
+  ai4: !include norvi-x-ai4.yaml              # 4 x 4-20 mA inputs
