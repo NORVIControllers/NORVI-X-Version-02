@@ -1,295 +1,225 @@
 /*
- * 2026.06.09
- * NORVI-AT01-BM6-LTE
- * 3 - DIGITAL INPUT
- * 3 - 0-10 ANALOG INPUT
- * RS485
- * GSM
- * RGB
- * PUSH BUTTON-1
- */
+ * 2026/10/22
+ * NPD-NORVI EXPE AV4 
+ * N16R2 
+ * 
+*/
 
- 
 #include <Wire.h>
 #include <WiFi.h>
-#include <Adafruit_NeoPixel.h>
+#include <SPI.h>
 #include <Adafruit_ADS1X15.h>
+#include <CST816S.h>
+
+// ===================== LovyanGFX display setup =====================
+#define LGFX_USE_V1
+#include <LovyanGFX.hpp>
+
+class LGFX : public lgfx::LGFX_Device {
+  lgfx::Panel_ST7789 _panel;
+  lgfx::Bus_SPI      _bus;
+public:
+  LGFX(void) {
+    { // ---- Display shares the main SPI bus with SD + Ethernet ----
+      auto c = _bus.config();
+      c.spi_host    = SPI2_HOST;   // FSPI - same host the Arduino SPI object uses on the S3
+      c.spi_mode    = 0;
+      c.freq_write  = 27000000;    // keep modest on a shared bus (SD/W5500 present)
+      c.freq_read   = 16000000;
+      c.spi_3wire   = false;
+      c.use_lock    = true;
+      c.dma_channel = SPI_DMA_CH_AUTO;
+      c.pin_sclk    = 12;          // shared SCLK
+      c.pin_mosi    = 11;          // shared MOSI
+      c.pin_miso    = 13;          // shared MISO
+      c.pin_dc      = 46;          // TFT_DC (display-only)
+      _bus.config(c);
+      _panel.setBus(&_bus);
+    }
+    { auto c = _panel.config();
+      c.pin_cs   = 45;             // TFT_CS
+      c.pin_rst  = 47;             // TFT_RST (shared with touch RST)
+      c.pin_busy = -1;
+      c.panel_width  = 240;
+      c.panel_height = 320;        // set 240 if your panel is 240x240
+      c.offset_x = 0;
+      c.offset_y = 0;
+      c.offset_rotation = 0;
+      c.readable   = false;
+      c.invert     = true;         // panel inversion ON
+      c.rgb_order  = true;         // BGR order
+      c.dlen_16bit = false;
+      c.bus_shared = true;         // IMPORTANT: SD/Ethernet share this bus
+      _panel.config(c);
+    }
+    setPanel(&_panel);
+  }
+};
+LGFX tft;
+
+// LovyanGFX already defines these, but guard just in case
+#ifndef TFT_BLACK
+#define TFT_BLACK   0x0000
+#define TFT_WHITE   0xFFFF
+#define TFT_RED     0xF800
+#define TFT_GREEN   0x07E0
+#define TFT_BLUE    0x001F
+#define TFT_YELLOW  0xFFE0
+#define TFT_CYAN    0x07FF
+#define TFT_MAGENTA 0xF81F
+#endif
+// ==================================================================
+
+#define SDA   8     
+#define SCL   9     
+
+#define MISO 13
+#define MOSI 11
+#define SCLK 12
+
+#define DSP_CS 45
 
 Adafruit_ADS1115 ads1;
-
 #define VOLTAGE_DIVIDER_RATIO 0.2065
 
-#define BUTTON_PIN   35    
-
-#define LED_PIN 25     
-#define NUM_LEDS 1    
-
-#define RXD 23 // 485 DEFINE
-#define TXD 13
-#define FC  32
-
-#define GSM_RX 4
-#define GSM_TX 5
-#define GSM_RESET 19
-
-Adafruit_NeoPixel pixel(1, LED_PIN, NEO_GRB + NEO_KHZ800);
-bool lastState = LOW;
-int colorIndex = 0;
-
-unsigned long int timer1 = 0;
+CST816S touch(8, 9, 47, 48);  // sda, scl, rst, irq
 
 void setup() {
- 
   Serial.begin(115200);
-
-  Wire.begin(21,22); //I2C
- 
-  Serial1.begin(9600, SERIAL_8N1,RXD,TXD);
-  Serial2.begin(115200, SERIAL_8N1, GSM_RX, GSM_TX); 
+  delay(2000);
   
-  pinMode(BUTTON_PIN, INPUT);
+  Serial.println("NPD-NORVI EXPE-AIX TEST");
+  delay(1000);
 
-  pinMode(FC, OUTPUT); 
-  digitalWrite(FC, HIGH);
-  
-  //GSM ON
-  pinMode(GSM_RESET, OUTPUT); 
-  digitalWrite(GSM_RESET, HIGH);
-  delay(500);
 
-  pinMode(18, INPUT);
-  pinMode(26, INPUT);
-  pinMode(27, INPUT);
-
-  if (!ads1.begin(0x48)) {
-    Serial.println("Failed to initialize ADS1.");
-    while (1);
-  }
-
-  
-  pixel.begin();
-  pixel.clear();
-  pixel.show();
-  
-  delay(300);
-  WiFi.mode(WIFI_MODE_APSTA);
-  delay(300);
-  wifi_test();
+  Wire.begin(SDA, SCL);
   delay(100);
-  GSM_TEST();
-  delay(500);
-  TEST_LED();
-  delay(500);
 
- digitalWrite(FC, HIGH);   // RS-485 
+
+if (!ads1.begin(0x49)) {
+    Serial.println("Failed to initialize ADS 1 .");
+    // while (1);
+  }
+ ads1.setGain(GAIN_ONE);
+
+  SPI.begin(SCLK, MISO, MOSI); // Ensure these pin numbers are correct 
+  delay(1000);
+
+  tft.init();
+  tft.setRotation(0);
+
+  tft.fillScreen(TFT_BLACK);            // Clear screen
+  tft.setTextColor(TFT_YELLOW);
+  tft.setFont(&fonts::FreeSerifBold12pt7b);
+  
+  tft.setCursor(60, 20);      //xpos, ypos
+  tft.print("NORVI");
+
+  tft.setCursor(20, 40);      //xpos, ypos
+  tft.print("EXPE-AV4 TEST");
 }
-
 
 void loop() {
   
+  int16_t adc0, adc1, adc2, adc3;
 
-  Serial.println("");  
+  adc0 = ads1.readADC_SingleEnded(0);
+  adc1 = ads1.readADC_SingleEnded(1);
+  adc2 = ads1.readADC_SingleEnded(2);
+  adc3 = ads1.readADC_SingleEnded(3);
 
- while (Serial.available()) {
-    int inByte = Serial.read();
-    Serial2.write(inByte);
-  }
+  float Voltage0 = adc0 * 0.125 / 1000.0 / VOLTAGE_DIVIDER_RATIO;
+  float Voltage1 = adc1 * 0.125 / 1000.0 / VOLTAGE_DIVIDER_RATIO;
+  float Voltage2 = adc2 * 0.125 / 1000.0 / VOLTAGE_DIVIDER_RATIO;
+  float Voltage3 = adc3 * 0.125 / 1000.0 / VOLTAGE_DIVIDER_RATIO;
 
-  while (Serial2.available()) {
-    int inByte = Serial2.read();
-    Serial.write(inByte);
-  }
   
-  Serial.print("BUTTON: ");Serial.println(digitalRead(BUTTON_PIN));
+  tft.fillScreen(TFT_BLACK);            // Clear screen
+  tft.setTextColor(TFT_GREEN);
+  tft.setFont(&fonts::FreeSerifBold12pt7b);
+  
+  tft.setCursor(60, 20);      //xpos, ypos
+  tft.print("NORVI");
 
-  Serial.print("I1: ");Serial.println(digitalRead(18));
-  Serial.print("I2: ");Serial.println(digitalRead(26));
-  Serial.print("I3: ");Serial.println(digitalRead(27));
-  delay(200);
-  
-   for (int i = 0; i < 3; i++) {
-    int16_t adc = ads1.readADC_SingleEnded(i);
-    float voltage = adc * 0.125 / 1000.0 / VOLTAGE_DIVIDER_RATIO;
-    Serial.printf("V %d: %.2f V\n", i, voltage);
-  }
-  
-  delay(100);
-  RGB_TEST();
-  delay(100);
-  
-  digitalWrite(FC, HIGH);                   
-  delay(100);
-  Serial1.println(F("RS485 01 SUCCESS"));    
-  delay(100);                               
-  digitalWrite(FC, LOW) ;                 
+  tft.setCursor(20, 40);      //xpos, ypos
+  tft.print("EXPE-AV4 TEST");
 
-                                             
-  delay(100);     
+  tft.setTextColor(TFT_YELLOW);
+  tft.setCursor(10, 100);      //xpos, ypos
+  tft.setFont(&fonts::FreeSerifBold9pt7b);
+  tft.print("VOLTAGE 1 :");
+
+  tft.setCursor(10, 130);      //xpos, ypos
+  tft.print("VOLTAGE 2 :");
   
-  while (Serial1.available()) { 
-    char c = Serial1.read();     
-    Serial.write(c);             
-  }
- delay(100); 
- 
- Serial.println("-------------------");  
+  tft.setCursor(10, 160);      //xpos, ypos
+  tft.print("VOLTAGE 3 :");
+  
+  tft.setCursor(10, 190);      //xpos, ypos
+  tft.print("VOLTAGE 4 :");
+  
+//----------------------------------
+  tft.setTextColor(TFT_WHITE);
+  
+  tft.setCursor(170, 100);      //xpos, ypos
+  tft.print(String(Voltage0, 2) + " V");
+  Serial.println(String("VOLTAGE 1 : ") + String(Voltage0, 2) + " V");
+  delay(500);
+  
+  tft.setCursor(170, 130);      //xpos, ypos
+  tft.print(String(Voltage1, 2) + " V");
+  Serial.println(String("VOLTAGE 2 : ") + String(Voltage1, 2) + " V");
+  delay(500);
+  
+
+  tft.setCursor(170, 160);      //xpos, ypos
+  tft.print(String(Voltage2, 2) + " V");
+  Serial.println(String("VOLTAGE 3 : ") + String(Voltage2, 2) + " V");
+  delay(500);
+  
+
+  tft.setCursor(170, 190);
+  tft.print(String(Voltage3, 2) + " V");
+  Serial.println(String("VOLTAGE 4 : ") + String(Voltage3, 2) + " V");
+  delay(500);
+
+
 }
 
+void I2C_SCAN() {
+  byte error, address;
+  int deviceCount = 0;
 
-void wifi_test(){
-    Serial.println("");
-String str_macAddress;
-byte mac[6];
+  Serial.println("Scanning...");
 
-WiFi.macAddress(mac);
+  for (address = 1; address < 127; address++) {
+    Wire.beginTransmission(address);
+    error = Wire.endTransmission();
 
-   str_macAddress = (String(mac[0] >> 4,  HEX) + String(mac[0] & 0x0F, HEX)) + (":") +
-                   (String(mac[1] >> 4,  HEX) + String(mac[1] & 0x0F, HEX)) + (":") +
-                   (String(mac[2] >> 4,  HEX) + String(mac[2] & 0x0F, HEX)) + (":") +
-                   (String(mac[3] >> 4,  HEX) + String(mac[3] & 0x0F, HEX)) + (":") +
-                   (String(mac[4] >> 4,  HEX) + String(mac[4] & 0x0F, HEX)) + (":") +
-                   (String(mac[5] >> 4,  HEX) + String(mac[5] & 0x0F, HEX));
-  str_macAddress.toUpperCase();
-  
-  Serial.println("MAC Address: " + str_macAddress);
+    if (error == 0) {
+      Serial.print("I2C device found at address 0x");
+      if (address < 16) {
+        Serial.print("0");
+      }
+      Serial.print(address, HEX);
+      Serial.println("  !");
 
-  String ssid =  str_macAddress; 
-  const char* password = "12345678";   
-
-  Serial.println("Setting up the Wi-Fi Access Point...");
-  WiFi.softAP(ssid.c_str(), password);
-
-  IPAddress IP = WiFi.softAPIP();
-  Serial.print("Access Point IP address: ");
-  Serial.println(IP);
-
-  Serial.print("Access Point SSID: ");
-  Serial.println(ssid);
-
-  Serial.println("Wi-Fi Access Point is active!");
-  Serial.println("");
-}
-
-
-void RGB_TEST() {
-
-  bool currentState = digitalRead(BUTTON_PIN);
-
-  // Rising edge: LOW -> HIGH
-  if (currentState == HIGH && lastState == LOW) {
-
-    colorIndex++;
-
-    if (colorIndex > 2) colorIndex = 0;
-
-    switch (colorIndex) {
-      case 0:
-        pixel.setPixelColor(0, pixel.Color(255, 0, 0));   // Red
-        break;
-
-      case 1:
-        pixel.setPixelColor(0, pixel.Color(0, 255, 0));   // Green
-        break;
-
-      case 2:
-        pixel.setPixelColor(0, pixel.Color(0, 0, 255));   // Blue
-        break;
+      deviceCount++;
+      delay(1);  // Wait for a moment to avoid overloading the I2C bus
     }
-
-    pixel.show();
-  }
-
-  // Input LOW = OFF
-  if (currentState == LOW) {
-    pixel.clear();
-    pixel.show();
-  }
-
-  lastState = currentState;
-}
-
-
-void GSM_TEST() {
-  
- Serial.println("GSM TEST ");
-  delay(1000);  
-
-  timer1 = millis();
-  Serial2.println("AT");
-  while(millis()<timer1+2000){
-    while (Serial2.available()) {
-    int inByte = Serial2.read();
-    Serial.write(inByte);
-    }
-  }
-  timer1 = millis();
-  Serial2.println("AT+CPIN?");
-  while(millis()<timer1+1000){
-    while (Serial2.available()) {
-    int inByte = Serial2.read();
-    Serial.write(inByte);
+    else if (error == 4) {
+      Serial.print("Unknown error at address 0x");
+      if (address < 16) {
+        Serial.print("0");
+      }
+      Serial.println(address, HEX);
     }
   }
 
-   timer1 = millis();
-  Serial2.println("AT+CSQ");
-  while(millis()<timer1+1000){
-    while (Serial2.available()) {
-    int inByte = Serial2.read();
-    Serial.write(inByte);
-    }
+  if (deviceCount == 0) {
+    Serial.println("No I2C devices found\n");
   }
-  timer1 = millis();
-  Serial2.println("AT+GSN");
-  while(millis()<timer1+1000){
-    while (Serial2.available()) {
-    int inByte = Serial2.read();
-    Serial.write(inByte);
-    }
+  else {
+    Serial.println("Scanning complete\n");
   }
-  timer1 = millis();
-  Serial2.println("ATD776836382;");
-  while(millis()<timer1+1000){
-    while (Serial2.available()) {
-    int inByte = Serial2.read();
-    Serial.write(inByte);
-    }
-  }
-
- Serial.println("GSM TEST DONE");
- }
-
- void TEST_LED() {
-  // Cycle through colors
-  strip.setPixelColor(0, strip.Color(255, 0, 0)); // Red
-  strip.show();
-  delay(100); // Wait for 1 second
-
-  strip.setPixelColor(0, strip.Color(0, 255, 0)); // Green
-  strip.show();
-  delay(100); // Wait for 1 second
-
-  strip.setPixelColor(0, strip.Color(0, 0, 255)); // Blue
-  strip.show();
-  delay(100); // Wait for 1 second
-
-  strip.setPixelColor(0, strip.Color(255, 255, 0)); // Yellow
-  strip.show();
-  delay(100); // Wait for 1 second
-
-  strip.setPixelColor(0, strip.Color(0, 255, 255)); // Cyan
-  strip.show();
-  delay(100); // Wait for 1 second
-
-  strip.setPixelColor(0, strip.Color(255, 0, 255)); // Magenta
-  strip.show();
-  delay(100); // Wait for 1 second
-
-  strip.setPixelColor(0, strip.Color(255, 255, 255)); // White
-  strip.show();
-  delay(100); // Wait for 1 second
-
-  strip.setPixelColor(0, strip.Color(0, 0, 0)); // Off
-  strip.show();
-  delay(100); // Wait for 1 second
 }
