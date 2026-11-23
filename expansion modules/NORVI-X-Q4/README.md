@@ -40,6 +40,18 @@ The current output states are shown on the **built-in TFT display** and **Serial
 
 ---
 
+## Q4 Output Performance Specifications
+
+The Q4 variant features four high-side transistor output channels designed for reliable switching of DC loads, including industrial actuators, relays, and solenoids. Each channel uses a high-side MOSFET switch with optical isolation and integrated fuse protection, providing reliable load control and enhanced protection for industrial applications.
+
+| Parameter | Specification |
+|---|---|
+| Maximum Frequency | Up to 2 MHz |
+| Minimum ON/OFF Pulse Width (Software GPIO) | 1 µs |
+| Minimum ON/OFF Pulse Width (Hardware PWM) | 250 ns |
+
+---
+
 ## Running the Example
 
 Follow the steps below to run the example.

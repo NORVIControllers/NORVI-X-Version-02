@@ -41,6 +41,18 @@ The current input states are shown on the **built-in TFT display**.
 
 ---
 
+## DI4 Input Performance Specifications
+
+The DI4 variant provides four digital input channels connected to the host CPU’s GPIO, enabling **high-speed signal capture for PWM**, pulse-train, and encoder applications. It supports both sourcing (PNP) and sinking (NPN) sensors, with noise immunity and galvanic isolation for reliable industrial operation.
+
+| Parameter | Specification |
+| ------------------------------------------- | ------------ |
+| Maximum Frequency | Up to 40 MHz |
+| Minimum Input Pulse Width (Polling Mode) | 1 ms |
+| Minimum Input Pulse Width (Interrupt Mode) | 5 µs |
+
+---
+
 ## Running the Example
 
 Follow the steps below to run the example.
