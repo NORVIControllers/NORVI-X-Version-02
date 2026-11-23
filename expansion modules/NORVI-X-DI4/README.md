@@ -48,7 +48,6 @@ The DI4 variant provides four digital input channels connected to the host CPUâ€
 | Parameter | Specification |
 | ------------------------------------------- | ------------ |
 | Maximum Frequency | Up to 40 MHz |
-| Minimum Input Pulse Width (Polling Mode) | 1 ms |
 | Minimum Input Pulse Width (Interrupt Mode) | 5 Âµs |
 
 ---
