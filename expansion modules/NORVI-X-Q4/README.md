@@ -46,8 +46,7 @@ The Q4 variant features four high-side transistor output channels designed for r
 
 | Parameter | Specification |
 |---|---|
-| Maximum Frequency | Up to 2 MHz |
-| Minimum ON/OFF Pulse Width (Hardware PWM) | 250 ns |
+| Maximum output pulse frequency | Up to 3 kHz |
 
 ---
 
