@@ -14,7 +14,6 @@ This tutorial covers the X-BK0 wiring, Arduino IDE configuration, firmware archi
 The system bridges the ESP32-S3 native USB host controller through the X-BK0 expansion bus to an external Type-A female USB receptacle, while driving the SPI TFT display and I<sup>2</sup> C capacitive touchscreen on the NORVI X1 front panel. 
 
 
-
 <!-- Start of picture text -->
 USB Flash Drive  Type-A NORVI X-BK0 Exp.  NORVI X1  SPI / I 2 C ST7789 TFT and<br>FAT32 MSC Type-A Female ESP32-S3 CST816S Touch<br>/norvi_log.txt USBP/N, 5V, GND USB Host 240  ×  320<br><!-- End of picture text -->
 
@@ -34,9 +33,6 @@ Figure 1: Signal and power path from the USB flash drive through the X-BK0 expan
 
 5. **Safe Unmount and Touch Inspection.** After closing both files, USBMSCFS.end() unmounts 
 
-
-NORVI X1 & X-BK0 USB Host 
-
 the volume cleanly so the drive can be removed without file-allocation-table corruption. The operator can drag vertically across the text pane to review long files. 
 
 ##### **2.2 Hardware Components** 
@@ -53,7 +49,7 @@ Table 1: Hardware components required for NORVI X and X-BK0 USB host-mode operat
 
 ##### **2.3 Pin Allocation and Shared Bus Management** 
 
-**Table 2: **GPIO and expansion interface allocation on the NORVI X
+Table 2: GPIO and expansion interface allocation on the NORVI X
 
 |**Function**|**GPIO /**<br>**Terminal**|**Notes**|
 |---|---|---|
