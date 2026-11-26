@@ -8,7 +8,7 @@ data to ThingsBoard over Wi-Fi (MQTT).
 **Tested on:** ThingsBoard CE **v4.3.1.8** (self-hosted, Docker), clean install, 24 Nov 2026.
 The alarm rules use the Alarm Rules 2.0 format, so ThingsBoard **4.3 or newer** is required.
 
-![NORVI X1 dashboard](dashboard-screenshot.png)
+<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/dashboard-screenshot.png" width="1000" alt="My image">
 
 ## What's in this folder
 
