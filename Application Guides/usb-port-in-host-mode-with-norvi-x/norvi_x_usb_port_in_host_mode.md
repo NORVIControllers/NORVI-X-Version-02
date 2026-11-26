@@ -21,7 +21,7 @@ USB Flash Drive  Type-A NORVI X-BK0 Exp.  NORVI X1  SPI / I 2 C ST7789 TFT and<b
 
 <img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/signal-path.png" width="1000" alt="My image">
 
-**Figure 1: ** Signal and power path from the USB flash drive through the X-BK0 expander to the NORVI_X1
+Figure 1: Signal and power path from the USB flash drive through the X-BK0 expander to the NORVI_X1
 
 ##### **2.1 Operational Sequence** 
 
@@ -115,7 +115,7 @@ NORVI X1 & X-BK0 USB Host
 3 niaoeges 2GOiep|o}olo|o}o} Gt<br>iif)me oxexexe f exerore oi 4S ae CI |<br>+) | PEB6SS3 68SSeie Cll!<br>d<br>‘| | Mgerosooo COOSOIED lolojlolo<br>]<br>A hq eases sees a<br>rn eer GND P|<br>7 |a ~ R882behbd —<br>; “f a<br>, dian,<br>STN eg<br>@ | ~~ NORUIT X-BKO ®<br>> 5475<br><!-- End of picture text -->
 
 <img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/xbk0_usb_wiring.png" width="500" alt="My image">
-**Figure 2: ** Complete wiring from NORVI X-BK0 terminals ( 5V , USBN , USBP , GND ) to the Type-A female connector
+Figure 2: Complete wiring from NORVI X-BK0 terminals ( 5V , USBN , USBP , GND ) to the Type-A female connector
 
 ### **4. Arduino IDE Configuration and Libraries** 
 
@@ -243,12 +243,12 @@ Format a USB flash drive as **FAT32** (allocation unit size: Default) on a PC an
 NORVI X1 & X-BK0 USB Host 
 
 
-<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/tft_before_usb.png" width="500" alt="My image"> 
-**Figure 3:** NORVI X1 display before inserting the USB flash drive: status card reads PLUG PENDRIVE.. with a blinking yellow header indicator
+<img src="https://github.com/NORVIControllers/EC-M12-BC-C6-C-Version-02/raw/main/docs/Images/tft_before_usb.png" width="1000" alt="Dashboard screenshot">
+Figure 3: NORVI X1 display before inserting the USB flash drive: status card reads PLUG PENDRIVE.. with a blinking yellow header indicator
 
 
-<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/tft_rw_complete.png" width="500" alt="My image">
-**Figure 4: **  NORVI X1 display after completing the USB read/write cycle and displaying file contents
+<img src="https://github.com/NORVIControllers/EC-M12-BC-C6-C-Version-02/raw/main/docs/Images/tft_rw_complete.png" width="1000" alt="Dashboard screenshot">
+Figure 4: NORVI X1 display after completing the USB read/write cycle and displaying file contents
 
 
 NORVI X1 & X-BK0 USB Host 
