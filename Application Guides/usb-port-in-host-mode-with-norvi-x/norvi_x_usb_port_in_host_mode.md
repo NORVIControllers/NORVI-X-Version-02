@@ -243,11 +243,11 @@ Format a USB flash drive as **FAT32** (allocation unit size: Default) on a PC an
 NORVI X1 & X-BK0 USB Host 
 
 
-<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/tft_before_usb.png" width="1000" alt="Dashboard screenshot">
+<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/tft_before_usb.png" width="500" alt="Dashboard screenshot">
 Figure 3: NORVI X1 display before inserting the USB flash drive: status card reads PLUG PENDRIVE.. with a blinking yellow header indicator
 
 
-<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/tft_rw_complete.png" width="1000" alt="Dashboard screenshot">
+<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/tft_rw_complete.png" width="500" alt="Dashboard screenshot">
 Figure 4: NORVI X1 display after completing the USB read/write cycle and displaying file contents
 
 
