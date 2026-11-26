@@ -66,8 +66,6 @@ or by sending the same payload from any MQTT client.
 
 ## Firmware
 
-Sketch: [`firmware/norvi_x1_xy_md02_thingsboard/norvi_x1_xy_md02_thingsboard.ino`](firmware/norvi_x1_xy_md02_thingsboard/norvi_x1_xy_md02_thingsboard.ino)
-
 - Arduino IDE board: **ESP32S3 Dev Module**, Upload Speed 115200, USB Mode **Hardware CDC and JTAG**, USB CDC On Boot **Enabled**, Flash 16 MB, Partition **Huge APP**, PSRAM enabled.
 - Libraries: ModbusMaster, PubSubClient.
 - Edit `WIFI_SSID`, `WIFI_PASSWORD` and `TB_TOKEN` in your own copy. Never commit them.
@@ -82,4 +80,3 @@ TODO: confirm licence with the reviewer (e.g. MIT).
 ## Links
 
 - [NORVI X CPU modules](https://shop.norvi.lk/products/norvi-x-cpu-modules) (confirm this is the preferred X1 link)
-- [ThingsBoard](https://thingsboard.io)
