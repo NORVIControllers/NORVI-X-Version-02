@@ -1,4 +1,3 @@
-NORVI X1 & X-BK0 USB Host 
 
 # **NORVI X: USB Host Mode, With X-BK0** 
 
