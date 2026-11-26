@@ -1,7 +1,6 @@
-::: center
-**PT100 on X-RTD4: Motor-Winding and Transformer Temperature with 3-Wire
-Compensation**\
-:::
+
+PT100 on X-RTD4: Motor-Winding and Transformer Temperature with 3-Wire
+
 
 # Introduction
 
