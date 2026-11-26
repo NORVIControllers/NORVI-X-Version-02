@@ -42,6 +42,8 @@ the volume cleanly so the drive can be removed without file-allocation-table cor
 
 ##### **2.2 Hardware Components** 
 
+Table 1: Hardware components required for NORVI X and X-BK0 USB host-mode operation
+
 |**Component**|**Role**|**Key details**|
 |---|---|---|
 |NORVI X1 (CPU-S3)|Host<br>controller|ESP32-S3 dual-core MCU, native USB PHY (GPIO 19/20),<br>2.0 in ST7789 TFT (240_×_320), CST816S capacitive<br>touch,24 V DC supply|
@@ -50,10 +52,9 @@ the volume cleanly so the drive can be removed without file-allocation-table cor
 |USB Flash Drive|Mass storage|USB 2.0/3.0 flash drive formatted as**FAT32**containing<br>/norvi_log.txtin the root directory|
 |24 V DC<br>Power Supply|Main power|Powers the NORVI X1 and regulates the internal5V<br>rail delivered to the X-BK0 and flash drive|
 
-
-Table 1: Hardware components required for NORVI X and X-BK0 USB host-mode operation
-
 ##### **2.3 Pin Allocation and Shared Bus Management** 
+
+**Table 2: **GPIO and expansion interface allocation on the NORVI X
 
 |**Function**|**GPIO /**<br>**Terminal**|**Notes**|
 |---|---|---|
@@ -63,15 +64,13 @@ Table 1: Hardware components required for NORVI X and X-BK0 USB host-mode operat
 |SPI Chip-Select Parks|IO1 / IO42|W5500_CS(IO1) andSD_CS(IO42) drivenHIGHat boot<br>toprevent SPI bus contention|
 |Capacitive Touch (I<sup>2</sup>C)|IO8 / IO9|SDA = 8,SCL = 9,INT = 47,RST = 48(CST816Sat<br>address0x15)|
 
-
-**Table 2: **GPIO and expansion interface allocation on the NORVI X
-
-
 ## **3. Hardware Assembly and X-BK0 Wiring** 
 
 #### **3.1 Wire the Type-A Female USB Connector to X-BK0** 
 
 Wire the four pins of the USB Type-A female receptacle to the corresponding terminals on the X- BK0 expander according to Table 3. 
+
+Table 3: Wiring between the NORVI X-BK0 expander terminals and a USB Type-A female connector
 
 |**X-BK0**<br>**Terminal**|**USB Type-A**<br>**Pin**|**Standard Wire**<br>**Color**|**Function**<br>l|
 |---|---|---|---|
@@ -79,8 +78,6 @@ Wire the four pins of the USB Type-A female receptacle to the corresponding term
 |USBN|Pin 2 (D_−_)|White|USB differential data negative<br>(GPIO 19)|
 |USBP|Pin 3 (D+)|Green|USB differential data positive<br>(GPIO 20)|
 |GND|Pin 4 (GND)|Black|Power and signal ground<br>reference|
-
-Table 3: Wiring between the NORVI X-BK0 expander terminals and a USB Type-A female connector
 
 ###### **Verify Polarity and Shared USB Lines** 
 
@@ -108,6 +105,8 @@ Figure 2: Complete wiring from NORVI X-BK0 terminals ( 5V , USBN , USBP , GND ) 
 
 Select ESP32S3 Dev Module as the board and configure the following under **Tools** before compiling and uploading (Table 4). 
 
+Table 4: Arduino IDE board settings for the NORVI X1 USB Host sketch
+
 |**Setting**|**Value**|
 |---|---|
 |Board|ESP32S3 Dev Module|
@@ -128,14 +127,13 @@ Select ESP32S3 Dev Module as the board and configure the following under **Tools
 |Upload Speed|921600|
 |USB Mode|Hardware CDC and JTAG|
 
-
-Table 4: Arduino IDE board settings for the NORVI X1 USB Host sketch
-
 **USB CDC On Boot** must stay Disabled so the CDC serial device does not claim the USB peripheral before USBHost.begin() runs. 
 
 ##### **4.2 Required Libraries** 
 
 Install the following libraries via the Arduino Library Manager or vendor repository: 
+
+Table 5: Arduino libraries used in the USB Host sketch
 
 |**Library**|**Header(s)**|**Purpose**|
 |---|---|---|
@@ -143,8 +141,6 @@ Install the following libraries via the Arduino Library Manager or vendor reposi
 |Adafruit GFX & ST7789|Adafruit_GFX.h,<br>Adafruit_ST7789.h|Renders header banners, status cards, justified text<br>rows,and scrollbars[2]|
 |CST816S Touch Driver|CST816S.h|Reads capacitive touch coordinates over I<sup>2</sup>C for<br>bidirectional scrolling [3]|
 
-
-Table 5: Arduino libraries used in the USB Host sketch
 
 ### **5. Firmware Architecture and Key Routines** 
 
@@ -180,13 +176,14 @@ and a right-edge scrollbar indicates position.
 
 The circular heartbeat indicator at top-right ((228 _,_ 14)) communicates hardware status at a glance: 
 
+Table 6: Status indicator states on the NORVI X1 display header
+
 |**Indicator Color**|**System Condition**|**Trigger Logic**|
 |---|---|---|
 |**Yellow**(blinking)|Ready / Idle|I<sup>2</sup>C touch healthy and USB Host initialized,<br>waitingfor flash drive|
 |**Green**(blinking)|Media Connected|USB flash drive enumerated on X-BK0 and<br>mounted(st.mounted == true)<br>|
 |**Red**(blinking)|Hardware / Bus Fault|CST816S I<sup>2</sup>C check failed (0x15NACK) or<br>USBHost.begin()failed|
 
-Table 6: Status indicator states on the NORVI X1 display header
 
 ### **6. Commissioning and Test Procedure** 
 
@@ -213,11 +210,14 @@ Format a USB flash drive as **FAT32** (allocation unit size: Default) on a PC an
 Figure 3: NORVI X1 display before inserting the USB flash drive: status card reads PLUG PENDRIVE.. with a blinking yellow header indicator
 
 
+
 <img src="https://raw.githubusercontent.com/NORVIControllers/NORVI-X-Version-02/main/docs/Images/tft_rw_complete.jpg" width="500" alt="My image">
 
 Figure 4: NORVI X1 display after completing the USB read/write cycle and displaying file contents
 
 ### **7. Troubleshooting** 
+
+Table 7: Troubleshooting guide for NORVI X1 and X-BK0 USB Host Mass Storage
 
 |**Symptom**|**Likely cause**|**Remedy**|
 |---|---|---|
@@ -227,9 +227,6 @@ Figure 4: NORVI X1 display after completing the USB read/write cycle and display
 |Header beater dot<br>blinks**red**|CST816S I<sup>2</sup>C NACK or<br>USB Host init error|CheckSDA=8,SCL=9, ensureTFT_RSTis_−_1,<br>andpower-cycle the 24 V supply|
 |Display remains<br>black|Shared SPI bus<br>contention|ConfirmW5500_CS(IO1) andSD_CS(IO42) are<br>drivenHIGHbeforeSPI.begin()|
 |Cannot upload<br>sketch from<br>Arduino IDE|Flash drive still<br>attached to X-BK0 or<br>USB in Host Mode|Unplug the drive from X-BK0; hold BOOT while<br>pressing RESET on the X1 to enter download<br>mode|
-
-
-Table 7: Troubleshooting guide for NORVI X1 and X-BK0 USB Host Mass Storage
 
 ### **References** 
 
