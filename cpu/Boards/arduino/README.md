@@ -56,11 +56,12 @@ The ESP32 package is already listed in the Arduino IDE, so you only need to inst
 
 1. Open **File → Preferences**.
 
-   <img src="https://raw.githubusercontent.com/NORVIControllers/NORVI-X-Version-02/main/docs/Images/01-file-preferences.jpg" width="500" alt="My image">
+   <img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/01-file-preferences.png" width="500" alt="My image">
+
 
 2. Find **Additional boards manager URLs** (highlighted below) and click the small window icon at its right.
 
-   <img src="https://raw.githubusercontent.com/NORVIControllers/NORVI-X-Version-02/main/docs/Images/02-preferences-highlight.jpg" width="500" alt="My image">
+   <img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/02-preferences-highlight.png" width="500" alt="My image">
 
 
 3. Add this link, then click **OK** in both windows:
@@ -72,7 +73,7 @@ The ESP32 package is already listed in the Arduino IDE, so you only need to inst
 
 4. Open **Tools → Board → Boards Manager**, search for **NORVI** and install **"NORVI X boards (ESP32-S3)"**.
 
-<img src="https://raw.githubusercontent.com/NORVIControllers/NORVI-X-Version-02/main/docs/Images/05-boards-manager-norvi.jpg" width="500" alt="My image">
+<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/05-boards-manager-norvi.png" width="500" alt="My image">
 
 
 > If you have other links in the box, put each link on its own line. If two links are on one line separated by a space, the IDE reports a "404 Not Found" error. If you use the single-line field, separate the links with a comma and no spaces.
@@ -81,8 +82,7 @@ The ESP32 package is already listed in the Arduino IDE, so you only need to inst
 
 Go to **Tools → Board → NORVI X boards** and select your model: **NORVI X CPU-ESPS3-X1**, **X2**, **X3**, **NORVI XN-MAIN**, or **NORVI X - N16R8**.
 
-<img src="https://raw.githubusercontent.com/NORVIControllers/NORVI-X-Version-02/main/docs/Images/06-select-board.jpg" width="500" alt="My image">
-
+<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/06-select-board.png" width="500" alt="My image">
 
 ## Step 4: Test
 
