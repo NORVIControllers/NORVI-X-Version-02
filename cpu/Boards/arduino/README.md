@@ -46,7 +46,7 @@ The ESP32 package is already listed in the Arduino IDE, so you only need to inst
 1. Open **Tools → Board → Boards Manager**.
 2. Search for **esp32** and install **"esp32 by Espressif Systems"**. Be sure to pick this exact name, not "Arduino ESP32 Boards".
 
-   <img src="https://raw.githubusercontent.com/NORVIControllers/NORVI-X-Version-02/main/docs/Images/04-boards-manager-esp32.jpg" width="500" alt="My image">
+   <img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/04-boards-manager-esp32.png" width="500" alt="My image">
 
    *Choose the package named **esp32 by Espressif Systems**. The "Arduino ESP32 Boards" package above it is a different package and does not work for NORVI.*
 
