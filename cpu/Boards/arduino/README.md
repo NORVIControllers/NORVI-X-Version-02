@@ -65,9 +65,9 @@ The ESP32 package is already listed in the Arduino IDE, so you only need to inst
 
 
 3. Add this link, then click **OK** in both windows:
-
-   ```https://raw.githubusercontent.com/NORVIControllers/NORVI-X-Version-02/main/cpu/Boards/arduino/package/package_norvi_index.json```
-   [NORVI Board Manager URL](https://raw.githubusercontent.com/NORVIControllers/NORVI-X-Version-02/main/cpu/Boards/arduino/package/package_norvi_index.json)
+```
+   https://raw.githubusercontent.com/NORVIControllers/NORVI-X-Version-02/main/cpu/Boards/arduino/package/package_norvi_index.json
+ ```                                                                                                                             
 
 5. Open **Tools → Board → Boards Manager**, search for **NORVI** and install **"NORVI X boards (ESP32-S3)"**.
 
