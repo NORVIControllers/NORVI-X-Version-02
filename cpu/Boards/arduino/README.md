@@ -69,11 +69,10 @@ The ESP32 package is already listed in the Arduino IDE, so you only need to inst
    ```
    https://raw.githubusercontent.com/NORVIControllers/NORVI-X-Version-02/main/cpu/Boards/arduino/package/package_norvi_index.json   ```
 
-   <img src="images/03-urls-dialog.png" alt="Additional Boards Manager URLs window with the NORVI link entered" width="520">
 
 4. Open **Tools → Board → Boards Manager**, search for **NORVI** and install **"NORVI X boards (ESP32-S3)"**.
 
-<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/05-boards-manager-norvi.png" width="500" alt="My image">
+   <img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/05-boards-manager-norvi.png" width="500" alt="My image">
 
 
 > If you have other links in the box, put each link on its own line. If two links are on one line separated by a space, the IDE reports a "404 Not Found" error. If you use the single-line field, separate the links with a comma and no spaces.
@@ -82,7 +81,7 @@ The ESP32 package is already listed in the Arduino IDE, so you only need to inst
 
 Go to **Tools → Board → NORVI X boards** and select your model: **NORVI X CPU-ESPS3-X1**, **X2**, **X3**, **NORVI XN-MAIN**, or **NORVI X - N16R8**.
 
-<img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/06-select-board.png" width="500" alt="My image">
+   <img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/06-select-board.png" width="500" alt="My image">
 
 ## Step 4: Test
 
