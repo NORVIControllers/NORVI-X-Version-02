@@ -80,7 +80,7 @@ The ESP32 package is already listed in the Arduino IDE, so you only need to inst
 
 Go to **Tools → Board → NORVI X boards** and select your model: **NORVI X CPU-ESPS3-X1**, **X2**, **X3**, **NORVI XN-MAIN**, or **NORVI X - N16R8**.
 
-      <img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/06-select-board.png" width="500" alt="My image">
+   <img src="https://github.com/NORVIControllers/NORVI-X-Version-02/blob/main/docs/Images/06-select-board.png" width="500" alt="My image">
 
 ## Step 4: Test
 
